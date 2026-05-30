@@ -23,40 +23,39 @@
 
     <script>
         function saveToMaster() {
-            const email = document.getElementById('email').value;
-            const name = document.getElementById('name').value;
-            const mobile = document.getElementById('mobile').value;
-            const symbols = document.getElementById('symbols').value;
-            const msg = document.getElementById('msg');
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const mobile = document.getElementById('mobile').value;
+    const symbols = document.getElementById('symbols').value;
+    const msgStatus = document.getElementById('msg');
 
-            if(!email || !name) { alert("பெயர் மற்றும் மெயில் தேவை!"); return; }
+    if(!name || !email || !mobile) {
+        alert("Please fill all details!");
+        return;
+    }
 
-            msg.innerHTML = "செயலாக்கப்படுகிறது... காத்திருக்கவும்...";
-            msg.style.color = "orange";
+    const safe_mail = email.replace(/\./g, '_');
+    const data = { name, mobile, symbols, time: new Date().toLocaleString() };
 
-            const safe_mail = email.replace(/\./g, '_');
-            const data = { name, mobile, symbols, time: new Date().toLocaleString() };
-
-            // Firebase URL (இதோ உங்கள் URL சரியாக உள்ளது)
-            const url = `https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/leads/${safe_mail}.json`;
-
-            fetch(url, {
-                method: 'PUT',
-                body: JSON.stringify(data)
+    // 1. Firebase-ல் சேமித்தல் (Admin Tool-க்காக)
+    fetch(`https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/leads/${safe_mail}.json`, {
+        method: 'PUT', body: JSON.stringify(data)
+    }).then(() => {
+        // 2. உங்களுக்கு ஈமெயில் வரவழைக்க (Formspree)
+        // மாஸ்டர் கவனத்திற்கு: கீழே உள்ள URL-ல் உங்கள் Formspree ID-ஐப் போடவும்
+        fetch("https://formspree.io/f/xojbzevz", { // இது ஒரு உதாரண ID
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                subject: "NEW AZAXS 1 REGISTRATION",
+                message: `Name: ${name}\nEmail: ${email}\nMobile: ${mobile}\nSymbol: ${symbols}`
             })
-            .then(res => {
-                if(res.ok) {
-                    msg.innerHTML = "வெற்றிகரமாக அனுப்பப்பட்டது! மாஸ்டர் உங்களைத் தொடர்பு கொள்வார்.";
-                    msg.style.color = "#00ff44";
-                } else {
-                    throw new Error("Server Error");
-                }
-            })
-            .catch(err => {
-                msg.innerHTML = "பிழை! Firebase Rules-ஐ செக் செய்யவும்.";
-                msg.style.color = "red";
-            });
-        }
+        }).then(() => {
+            msgStatus.innerHTML = "Success! Master notified via Email.";
+            msgStatus.style.color = "lime";
+        });
+    });
+}
     </script>
 </body>
 </html>
