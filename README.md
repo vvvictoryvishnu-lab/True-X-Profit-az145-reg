@@ -18,20 +18,20 @@
 
     <div class="container">
         <h1>AZ 145 MATRIX</h1>
-        <p style="color:#00ffcc; font-weight:bold;">இலவசமாக பதிவு செய்து ரகசிய கீ-யை பெற்றிடுங்கள்</p>
+        <p style="color:#00ffcc; font-weight:bold;"> பதிவு செய்</p>
         
         <!-- Formspree ID: உங்கள் மெயிலுக்கு தகவல் வர இங்கு உங்கள் ஈமெயிலை மாற்றவும் -->
         <form id="regForm" action="https://formspree.io/f/vvvictoryvishnu@gmail.com" method="POST">
             <input type="text" name="Customer_Name" id="name" placeholder="உங்கள் பெயர் (Full Name)" required>
             <input type="email" name="Customer_Email" id="email" placeholder="உங்கள் ஈமெயில் (Email Address)" required>
             <input type="tel" name="WhatsApp_Number" id="mobile" placeholder="வாட்ஸ்அப் எண் (WhatsApp Number)" required>
-            <input type="text" name="Target_Symbol" id="symbols" placeholder="தேவைப்படும் சிம்பல் (Ex: GOLD, OIL, BTC)" required>
+            <input type="text" name="Target_Symbol" id="symbols" placeholder="ALL சிம்பல் (Ex: GOLD,BTC/USD, OIL, EUR/USD)" required>
             
             <button type="button" onclick="submitToBoth()">இப்போதே பதிவு செய் (REGISTER NOW)</button>
         </form>
         
         <p id="msg" style="margin-top:15px; font-weight:bold;"></p>
-        <div class="footer">YouTube: True X Profit | Master Karthik</div>
+        <div class="footer">YouTube: True X Profit | Master </div>
     </div>
 
     <script>
