@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMNIVERSE - ULTIMATE MATRIX</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 10px; text-align: center; }
+        .header { border-bottom: 2px solid #333; padding: 10px; font-size: 14px; font-weight: bold; color: #00ff44; margin-bottom: 10px; }
+        .mummy-daddy { color: var(--gold); font-size: 40px; font-weight: 900; margin: 10px 0; }
+        
+        /* Work Name Input */
+        .work-box { margin: 10px 0; }
+        #workName { background: #111; color: var(--gold); border: 1px solid var(--gold); padding: 10px; width: 40%; font-weight: bold; text-align: center; border-radius: 5px; }
+
+        textarea { width: 92%; height: 150px; background: #000; color: #00ff44; border: 1px solid #333; padding: 12px; font-family: 'Consolas', monospace; border-radius: 5px; font-size: 15px; }
+        .status { background: #FFD700; color: black; padding: 10px; font-weight: bold; margin: 15px 0; width: 92%; display: inline-block; border-radius: 3px; }
+        
+        .btn-row { margin-bottom: 40px; display: flex; justify-content: center; gap: 20px; }
+        .btn-run { padding: 18px 40px; background: #004d40; color: var(--neon); border: 2px solid var(--neon); font-weight: bold; font-size: 18px; cursor: pointer; border-radius: 5px; flex: 2; max-width: 450px; }
+        .btn-clear { padding: 18px; background: #440000; color: white; border: 1px solid #ff3131; font-weight: bold; cursor: pointer; border-radius: 5px; flex: 1; max-width: 150px; }
+
+        #report { background: white; color: black; padding: 25px; border-radius: 5px; text-align: left; max-width: 600px; margin: 20px auto; display: none; border: 1px solid #000; }
+        .report-header { font-size: 13px; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        
+        .inst-box { border: 3px solid red; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; margin: 15px 0; }
+        .btn-print { display: block; width: 250px; margin: 15px auto; background: #eee; border: 2px solid #333; color: #000; font-size: 18px; padding: 12px; cursor: pointer; font-weight: bold; border-radius: 5px; }
+
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; margin-top: 15px; font-size: 22px; }
+        th, td { border: 1px solid #888; padding: 12px; }
+        .b-text { color: var(--blue); }
+        .s-text { color: var(--red); }
+        
+        .hist-box { font-size: 12px; background: #fffde7; padding: 10px; border: 1px solid #ccc; word-wrap: break-word; font-weight: bold; margin-bottom: 10px; }
+        .base-text { color: #d32f2f; font-size: 16px; font-weight: bold; margin: 10px 0; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .header, .mummy-daddy, .work-box, textarea, .status, .btn-row, .btn-print { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        YouTube: True X Profit | vvvictoryvishnu@gmail.com
+    </div>
+
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    
+    <div class="work-box">
+        <input type="text" id="workName" placeholder="ENTER WORK NAME (Ex: WORK 1 SCAN)">
+    </div>
+
+    <textarea id="inputData" placeholder="PASTE DATA HERE..."></textarea>
+
+    <div class="status" id="status">SYSTEM READY</div>
+
+    <div class="btn-row">
+        <button class="btn-clear" onclick="clearAll()">CLEAR</button>
+        <button class="btn-run" onclick="runOmniverseScan()">RUN ONE-CLICK MATRIX SCAN</button>
+    </div>
+
+    <div id="report">
+        <div class="report-header">
+            <span id="repWorkID" style="color: blue;"></span>
+            <span>YouTube: True X Profit | vvvictoryvishnu@gmail.com</span>
+        </div>
+        <h2 style="text-align: center; margin: 10px 0; font-size: 22px; color: #1a237e;">GLOBAL PRECISION MATRIX REPORT</h2>
+        
+        <div id="histContent" class="hist-box"></div>
+        <div id="baseContent" class="base-text"></div>
+
+        <div id="instBox" class="inst-box">
+            <span id="instText"></span>
+        </div>
+        
+        <button class="btn-print" onclick="window.print()">PRINT / SAVE REPORT</button>
+
+        <table id="resultTable">
+            <thead>
+                <tr><th>LAYER</th><th>RESULT</th></tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+            <tfoot>
+                <tr style="background:#e3f2fd;"><td>TOTAL</td><td id="totalVal"></td></tr>
+            </tfoot>
+        </table>
+        
+        <p style="text-align:center; font-size:12px; margin-top:30px; font-weight:bold; border-top: 1px solid #000; padding-top: 15px;">
+            Dedicated to MUMMY DADDY | Date: <span id="repDate"></span>
+        </p>
+    </div>
+
+    <script>
+        let primes = [];
+        function generatePrimes() {
+            let limit = 1000000;
+            let sieve = new Uint8Array(limit).fill(1);
+            sieve[0] = sieve[1] = 0;
+            for (let i = 2; i * i < limit; i++) {
+                if (sieve[i]) { for (let j = i * i; j < limit; j += i) sieve[j] = 0; }
+            }
+            for (let i = 2; i < limit; i++) {
+                if (sieve[i]) primes.push(i);
+                if (primes.length >= 60000) break;
+            }
+        }
+        generatePrimes();
+
+        function clearAll() {
+            document.getElementById('inputData').value = "";
+            document.getElementById('workName').value = "";
+            document.getElementById('report').style.display = "none";
+            document.getElementById('status').innerHTML = "SYSTEM READY";
+            document.getElementById('status').style.background = "#FFD700";
+        }
+
+        function runOmniverseScan() {
+            const raw = document.getElementById('inputData').value.trim();
+            if(!raw) return;
+            document.getElementById('status').innerHTML = "SCANNING ALL GLOBAL NUMBERS... PLEASE WAIT";
+            document.getElementById('status').style.background = "orange";
+            setTimeout(() => { processLogic(raw); }, 600);
+        }
+
+        function processLogic(raw) {
+            const lines = raw.split('\n').filter(l => l.trim() !== "");
+            let allNumbers = [];
+            let histItems = [];
+
+            lines.forEach(ln => {
+                let nums = ln.replace(/\D/g, '');
+                if (nums) allNumbers.push(parseInt(nums));
+                let cleanH = ln.toUpperCase().replace("OPEN","O:").replace("HIGH","H:").replace("LOW","L:").replace("CLOSE","C:").replace("DATE","DT:").replace("TIME","T:");
+                histItems.push(cleanH);
+            });
+
+            let rawSum = allNumbers.reduce((a, b) => a + b, 0);
+            let baseVal = (rawSum * 2) * 100;
+            let finalLayers = [];
+            let globalDivisors = [1, 4, 7, 9, 13];
+
+            for (let li = 7; li <= 15; li++) {
+                let layerVotes = [];
+                globalDivisors.forEach(div => {
+                    let bCount = 0, sCount = 0;
+                    for (let i = 0; i < 2000; i++) {
+                        let target = baseVal + (i * 123);
+                        let pIdx = (i + (li * 100) + (div * 500)) % primes.length;
+                        let prime = primes[pIdx];
+                        let rem = target % prime;
+                        let chk = (rem === 0) ? Math.floor(target / prime) : rem;
+                        if (chk % 2 !== 0) bCount++; else sCount++;
+                    }
+                    layerVotes.push(bCount >= sCount ? "B" : "S");
+                });
+                finalLayers.push(layerVotes.filter(x => x === "B").length >= 3 ? "B" : "S");
+            }
+            displayReport(histItems.join(" | "), baseVal, finalLayers);
+        }
+
+        function displayReport(hist, base, res) {
+            const workID = document.getElementById('workName').value.trim() || "WORK SCAN";
+            document.getElementById('repWorkID').innerText = workID.toUpperCase();
+            document.getElementById('histContent').innerText = "HISTORY: " + hist;
+            document.getElementById('baseContent').innerText = "BASE CALCULATION: " + base;
+            
+            let finalV = (res.filter(x => x === "B").length >= 5) ? "B" : "S";
+            const instBox = document.getElementById('instBox');
+            document.getElementById('instText').innerText = "? INSTITUTIONAL " + (finalV === "B" ? "BUY" : "SELL");
+            instBox.style.borderColor = instBox.style.color = (finalV === "B" ? "blue" : "red");
+
+            let rows = "";
+            res.forEach((val, i) => {
+                rows += `<tr><td>L${i+7}</td><td class="${val === "B" ? 'b-text' : 's-text'}">${val}</td></tr>`;
+            });
+            document.getElementById('tableBody').innerHTML = rows;
+            document.getElementById('totalVal').innerText = finalV;
+            document.getElementById('totalVal').className = (finalV === "B" ? 'b-text' : 's-text');
+            document.getElementById('repDate').innerText = new Date().toLocaleDateString('en-GB');
+            document.getElementById('report').style.display = "block";
+            document.getElementById('status').innerHTML = "SCAN COMPLETE";
+            document.getElementById('status').style.background = "#00ff44";
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
+</body>
+</html>
