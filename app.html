@@ -3,93 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRUE X PROFIT OMNIVERSE - GLOBAL WEB</title>
+    <title>TRUE X PROFIT OMNIVERSE - GLOBAL ONE-CLICK</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 10px; text-align: center; }
         
-        /* Header - Single Line */
-        .header { border-bottom: 2px solid #333; padding: 10px; font-size: 13px; font-weight: bold; display: flex; justify-content: space-between; max-width: 900px; margin: auto; }
-        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
-        .title { color: var(--neon); font-size: 18px; letter-spacing: 2px; margin-bottom: 20px; }
+        /* Header - Exactly as requested in one line */
+        .header { border-bottom: 2px solid #333; padding: 10px; font-size: 14px; font-weight: bold; max-width: 900px; margin: auto; color: #00ff44; }
+        .mummy-daddy { color: var(--gold); font-size: 38px; font-weight: 900; margin: 15px 0; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        .title { color: var(--neon); font-size: 18px; letter-spacing: 2px; margin-bottom: 20px; font-weight: bold; }
         
-        textarea { width: 90%; height: 120px; background: #000; color: #00ff44; border: 1px solid #333; padding: 10px; font-family: 'Consolas', monospace; border-radius: 5px; }
+        textarea { width: 92%; height: 130px; background: #000; color: #00ff44; border: 1px solid #333; padding: 12px; font-family: 'Consolas', monospace; border-radius: 5px; font-size: 14px; }
         
-        .theory-box { margin: 15px 0; }
-        select { background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 8px; width: 85%; font-weight: bold; }
-
-        .status { background: var(--neon); color: black; padding: 8px; font-weight: bold; margin: 15px 0; width: 92%; display: inline-block; }
+        .status { background: var(--neon); color: black; padding: 10px; font-weight: bold; margin: 20px 0; width: 92%; display: inline-block; border-radius: 3px; }
         
         /* Buttons Row */
-        .btn-row { margin-bottom: 30px; display: flex; justify-content: center; gap: 15px; }
-        .btn-run { padding: 15px 30px; background: #004d40; color: var(--neon); border: none; font-weight: bold; font-size: 16px; cursor: pointer; border-radius: 5px; flex: 2; max-width: 400px; }
-        .btn-clear { padding: 15px; background: #440000; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; flex: 1; max-width: 150px; }
+        .btn-row { margin-bottom: 40px; display: flex; justify-content: center; gap: 20px; }
+        .btn-run { padding: 18px 40px; background: #004d40; color: var(--neon); border: 2px solid var(--neon); font-weight: bold; font-size: 18px; cursor: pointer; border-radius: 5px; flex: 2; max-width: 450px; }
+        .btn-clear { padding: 18px; background: #440000; color: white; border: 1px solid #ff3131; font-weight: bold; cursor: pointer; border-radius: 5px; flex: 1; max-width: 150px; }
 
-        /* Report Style */
-        #report { background: white; color: black; padding: 20px; border-radius: 5px; text-align: left; max-width: 550px; margin: 20px auto; display: none; border: 1px solid #000; }
-        .inst-box { border: 3px solid red; padding: 12px; text-align: center; font-size: 20px; font-weight: bold; margin: 10px 0; position: relative; }
+        /* Report Style - Half Page A4 */
+        #report { background: white; color: black; padding: 25px; border-radius: 5px; text-align: left; max-width: 580px; margin: 20px auto; display: none; border: 1px solid #000; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .report-header { font-size: 12px; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; text-align: center; }
         
-        /* நீங்கள் கேட்ட Print Button - சிறியது, Background கிடையாது, வெறும் கட்டம் மட்டும் */
+        .inst-box { border: 3px solid red; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; margin: 15px 0; position: relative; }
+        
+        /* Print Button - No background, small frame */
         .btn-print { 
             position: absolute; right: 5px; top: 5px;
-            background: transparent; border: 1px solid #aaa; color: #555;
-            font-size: 10px; padding: 3px 8px; cursor: pointer; border-radius: 3px;
+            background: transparent; border: 1px solid #999; color: #777;
+            font-size: 10px; padding: 4px 10px; cursor: pointer; border-radius: 3px; font-weight: normal;
         }
-        .btn-print:hover { background: #eee; }
 
-        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; margin-top: 10px; font-size: 18px; }
-        th, td { border: 1px solid #ccc; padding: 8px; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; margin-top: 15px; font-size: 20px; }
+        th, td { border: 1px solid #888; padding: 10px; }
+        th { background: #f0f0f0; font-size: 14px; }
         .b-text { color: var(--blue); }
         .s-text { color: var(--red); }
-        .total-row { background: #f0f4ff; border-top: 2px solid #000; }
+        .total-row { background: #e3f2fd; border-top: 3px solid #000; }
 
-        /* Print Media - பிரிண்ட் எடுக்கும் போது மற்றவை தெரியாது */
+        .hist-box { font-size: 12px; background: #fffde7; padding: 10px; border: 1px solid #ccc; word-wrap: break-word; font-weight: bold; line-height: 1.5; margin-bottom: 10px; }
+        .base-text { color: #d32f2f; font-size: 16px; font-weight: bold; margin: 10px 0; }
+
         @media print {
-            body { background: white; }
-            .header, .mummy-daddy, .title, textarea, .theory-box, .status, .btn-row, .btn-print { display: none !important; }
-            #report { display: block !important; border: none; margin: 0; width: 100%; max-width: 100%; }
+            body { background: white; padding: 0; }
+            .header, .mummy-daddy, .title, textarea, .status, .btn-row, .btn-print { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; max-width: 100%; box-shadow: none; }
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <span style="color: #00ff44;">YouTube: True X Profit</span>
-        <span style="color: #5d9eff;">vvvictoryvishnu@gmail.com</span>
+        YouTube: True X Profit | vvvictoryvishnu@gmail.com | GLOBAL PRECISION OMNIVERSE
     </div>
 
     <div class="mummy-daddy">MUMMY DADDY</div>
-    <div class="title">TRUE X PROFIT OMNIVERSE</div>
+    <div class="title">OMNIVERSE - ULTIMATE MATRIX SCANNER</div>
 
-    <textarea id="inputData" placeholder="PASTE DATA HERE..."></textarea>
+    <textarea id="inputData" placeholder="PASTE LIVE TRADING DATA HERE..."></textarea>
 
-    <div class="theory-box">
-        <select id="theorySelect">
-            <option value="1">PART 1 (Standard Logic)</option>
-            <option value="4">PART 2 (Precision D2)</option>
-            <option value="7">PART 3 (Advanced D3)</option>
-            <option value="9">PART 4 (Stability D4)</option>
-            <option value="13">PART 5 (Master D5)</option>
-            <option value="15">PART 6 (Ultra Power)</option>
-        </select>
-    </div>
-
-    <div class="status" id="status">SYSTEM READY</div>
+    <div class="status" id="status">SYSTEM READY FOR GLOBAL SCAN</div>
 
     <div class="btn-row">
         <button class="btn-clear" onclick="clearAll()">CLEAR</button>
-        <button class="btn-run" onclick="runOmniverseScan()">RUN GLOBAL MATRIX SCAN</button>
+        <button class="btn-run" onclick="runOmniverseScan()">RUN ONE-CLICK MATRIX SCAN</button>
     </div>
 
     <div id="report">
-        <div style="font-size: 10px; border-bottom: 1px solid #000; padding-bottom: 5px; display: flex; justify-content: space-between;">
-            <span>YouTube: True X Profit</span>
-            <span>vvvictoryvishnu@gmail.com</span>
+        <div class="report-header">
+            YouTube: True X Profit | vvvictoryvishnu@gmail.com
         </div>
-        <h2 style="text-align: center; margin: 10px 0; font-size: 18px; color: #1a237e;">OMNIVERSE PRECISION REPORT</h2>
+        <h2 style="text-align: center; margin: 10px 0; font-size: 22px; color: #1a237e;">GLOBAL PRECISION MATRIX REPORT</h2>
         
-        <div id="histContent" style="font-size: 11px; background: #f9f9f9; padding: 8px; border: 1px solid #ddd; word-wrap: break-word; font-weight: bold; line-height: 1.4;"></div>
-        <div id="baseContent" style="color: #c62828; font-size: 14px; font-weight: bold; margin: 8px 0; border-bottom: 1px solid #eee; padding-bottom: 5px;"></div>
+        <div id="histContent" class="hist-box"></div>
+        <div id="baseContent" class="base-text"></div>
 
         <div id="instBox" class="inst-box">
             <span id="instText"></span>
@@ -98,15 +86,15 @@
 
         <table id="resultTable">
             <thead>
-                <tr><th>LAYER</th><th>RESULT</th></tr>
+                <tr><th>LAYER</th><th>GLOBAL RESULT</th></tr>
             </thead>
             <tbody id="tableBody"></tbody>
             <tfoot>
-                <tr class="total-row"><td>TOTAL</td><td id="totalVal"></td></tr>
+                <tr class="total-row"><td>TOTAL VERDICT</td><td id="totalVal"></td></tr>
             </tfoot>
         </table>
         
-        <p style="text-align:center; font-size:10px; margin-top:20px; font-weight:bold; border-top: 1px solid #eee; padding-top: 10px;">
+        <p style="text-align:center; font-size:12px; margin-top:30px; font-weight:bold; border-top: 1px solid #000; padding-top: 15px;">
             Dedicated to MUMMY DADDY | Date: <span id="repDate"></span>
         </p>
     </div>
@@ -124,7 +112,7 @@
             }
             for (let i = 2; i < limit; i++) {
                 if (sieve[i]) primes.push(i);
-                if (primes.length >= 50000) break;
+                if (primes.length >= 60000) break;
             }
         }
         generatePrimes();
@@ -139,16 +127,15 @@
         function runOmniverseScan() {
             const raw = document.getElementById('inputData').value.trim();
             if(!raw) return;
-            document.getElementById('status').innerHTML = "SCANNING... PLEASE WAIT";
-            document.getElementById('status').style.background = "orange";
+            document.getElementById('status').innerHTML = "ANALYZING ALL GLOBAL NUMBERS... PLEASE WAIT";
+            document.getElementById('status').style.background = "#FFD700";
 
             setTimeout(() => {
-                const divisor = parseInt(document.getElementById('theorySelect').value);
-                processLogic(raw, divisor);
-            }, 500);
+                processLogic(raw);
+            }, 600);
         }
 
-        function processLogic(raw, divisor) {
+        function processLogic(raw) {
             const lines = raw.split('\n').filter(l => l.trim() !== "");
             let priceDigits = [];
             let histItems = [];
@@ -163,38 +150,49 @@
             });
 
             if (priceDigits.length < 4) {
-                alert("Please paste full OHLC data!");
+                alert("Master, please paste full OHLC data!");
                 document.getElementById('status').innerHTML = "INPUT ERROR";
                 return;
             }
 
+            // --- GLOBAL BASE LOGIC (100% Python Sync) ---
             let priceSum = priceDigits[0] + priceDigits[1] + priceDigits[2] + priceDigits[3];
             let baseVal = (priceSum * 2) * 100;
 
-            let finalResults = [];
+            let finalLayers = [];
+            let globalDivisors = [1, 4, 7, 9, 13];
+
+            // 7 to 15 Layers Scan
             for (let li = 7; li <= 15; li++) {
-                let bCount = 0, sCount = 0;
-                for (let i = 0; i < 3000; i++) {
-                    let target = baseVal + (i * 123);
-                    let prime = primes[(i + (li * 50) + (divisor * 100)) % primes.length];
-                    let rem = target % prime;
-                    let val = (rem === 0) ? Math.floor(target / prime) : rem;
-                    if (val % 2 !== 0) bCount++;
-                    else sCount++;
-                }
-                finalResults.push(bCount >= sCount ? "B" : "S");
+                let layerVotes = [];
+                
+                // For each layer, we calculate results from all divisors and take the majority
+                globalDivisors.forEach(div => {
+                    let bCount = 0, sCount = 0;
+                    for (let i = 0; i < 2000; i++) {
+                        let target = baseVal + (i * 123);
+                        let pIdx = (i + (li * 100) + (div * 500)) % primes.length;
+                        let prime = primes[pIdx];
+                        let rem = target % prime;
+                        let chk = (rem === 0) ? Math.floor(target / prime) : rem;
+                        if (chk % 2 !== 0) bCount++; else sCount++;
+                    }
+                    layerVotes.push(bCount >= sCount ? "B" : "S");
+                });
+
+                // Final Layer result = Majority of all divisors
+                let bTotal = layerVotes.filter(x => x === "B").length;
+                finalLayers.push(bTotal >= 3 ? "B" : "S");
             }
 
-            displayReport(histItems.join(" | "), baseVal, finalResults);
+            displayReport(histItems.join(" | "), baseVal, finalLayers);
         }
 
         function displayReport(hist, base, res) {
             document.getElementById('histContent').innerText = "HISTORY: " + hist;
-            document.getElementById('baseContent').innerText = "BASE: " + base;
+            document.getElementById('baseContent').innerText = "BASE CALCULATION: " + base;
             
-            let bCount = res.filter(x => x === "B").length;
-            let sCount = res.filter(x => x === "S").length;
-            let finalV = bCount >= sCount ? "B" : "S";
+            let finalV = (res.filter(x => x === "B").length >= 5) ? "B" : "S";
 
             const instBox = document.getElementById('instBox');
             const instText = document.getElementById('instText');
@@ -212,10 +210,11 @@
             let tCell = document.getElementById('totalVal');
             tCell.innerText = finalV;
             tCell.className = finalV === "B" ? "b-text" : "s-text";
+            tCell.style.fontSize = "26px";
 
-            document.getElementById('repDate').innerText = new Date().toLocaleDateString();
+            document.getElementById('repDate').innerText = new Date().toLocaleDateString('en-GB');
             document.getElementById('report').style.display = "block";
-            document.getElementById('status').innerHTML = "SCAN COMPLETE";
+            document.getElementById('status').innerHTML = "GLOBAL MATRIX SCAN COMPLETE";
             document.getElementById('status').style.background = "#00ff44";
             
             window.scrollTo(0, document.body.scrollHeight);
