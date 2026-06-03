@@ -3,192 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRUE X PROFIT - OMNIVERSE V1</title>
+    <title>OMNIVERSE V2 - TRUE X PROFIT</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; overflow-x: hidden; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; }
         
-        /* Login Screen Overlay */
-        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; }
-        .login-box { background: #111; padding: 30px; border: 2px solid var(--neon); border-radius: 15px; text-align: center; width: 320px; box-shadow: 0 0 20px var(--neon); }
-        input { width: 90%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: var(--neon); text-align: center; font-weight: bold; border-radius: 5px; }
-        .btn-activate { width: 100%; padding: 15px; background: #004d40; color: var(--neon); border: 2px solid var(--neon); font-weight: bold; cursor: pointer; border-radius: 5px; }
+        #login-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1000; }
+        .login-box { background:#111; padding:30px; border:2px solid var(--neon); border-radius:15px; text-align:center; width:300px; }
+        input { width:90%; padding:12px; margin:10px 0; background:#000; border:1px solid #444; color:var(--neon); text-align:center; border-radius:5px; }
 
-        /* Main Dashboard */
-        #main-workspace { display: none; padding: 20px; text-align: center; }
-        .header { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; color: #888; font-size: 12px; }
-        .mummy-daddy { color: var(--gold); font-size: 45px; font-weight: 900; margin-bottom: 5px; text-shadow: 2px 2px 10px rgba(255,215,0,0.5); }
-        .domain-tag { color: var(--neon); font-size: 18px; font-weight: bold; margin-bottom: 20px; }
+        #main-workspace { display:none; padding:15px; text-align:center; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
+        .domain-tag { color: var(--neon); font-size: 16px; margin-bottom: 20px; }
 
-        /* 25 Parts Grid */
-        .parts-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 900px; margin: 20px auto; }
-        .part-btn { padding: 15px; background: #111; border: 1px solid #333; color: #666; font-weight: bold; border-radius: 5px; cursor: not-allowed; transition: 0.3s; }
-        .part-btn.unlocked { border-color: var(--neon); color: var(--neon); cursor: pointer; background: #001a1a; }
-        .part-btn.unlocked:hover { background: var(--neon); color: black; }
-        .part-btn.active-part { background: var(--gold); color: black; border-color: white; }
+        /* 25 Parts */
+        .parts-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-width: 800px; margin: 0 auto; }
+        .part-btn { padding: 12px; background: #111; border: 1px solid #333; color: #555; font-weight: bold; border-radius: 4px; font-size: 12px; cursor: not-allowed; }
+        .part-btn.unlocked { border-color: var(--neon); color: var(--neon); cursor: pointer; }
+        .part-btn.active-part { background: var(--gold); color: black; }
 
-        /* Scanner Area */
-        #scanner-section { display: none; margin-top: 30px; animation: fadeIn 0.5s; }
-        textarea { width: 90%; height: 150px; background: #000; color: #00ff44; border: 1px solid var(--neon); padding: 15px; font-family: 'Consolas', monospace; border-radius: 10px; font-size: 16px; box-shadow: inset 0 0 10px #004444; }
-        .status-bar { width: 90%; margin: 15px auto; padding: 10px; background: var(--gold); color: black; font-weight: bold; border-radius: 5px; }
-        .btn-run { padding: 20px 60px; background: #004d40; color: white; border: 2px solid var(--neon); font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; }
-
-        /* Report Styling */
-        #report-output { display: none; background: white; color: black; width: 550px; margin: 30px auto; padding: 20px; border: 1px solid #000; text-align: left; }
-        .inst-box { border: 3px solid red; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; margin: 15px 0; }
-        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 18px; }
-        th, td { border: 1px solid #aaa; padding: 8px; }
+        /* Scanner */
+        #scanner-section { display: none; margin-top: 20px; }
+        textarea { width: 95%; height: 120px; background: #000; color: #00ff44; border: 1px solid var(--neon); padding: 10px; font-family: 'Consolas', monospace; border-radius: 8px; }
+        .status-bar { width: 95%; margin: 10px auto; padding: 8px; background: var(--gold); color: black; font-weight: bold; border-radius: 4px; font-size: 14px; }
         
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .btn-row { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
+        .btn-run { padding: 15px 30px; background: #004d40; color: white; border: 2px solid var(--neon); font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; }
+        .btn-clear { padding: 15px 20px; background: #440000; color: white; border: 1px solid var(--red); font-weight: bold; border-radius: 5px; cursor: pointer; }
+
+        /* Compact Report */
+        #report-output { display: none; background: white; color: black; width: 95%; max-width: 500px; margin: 20px auto; padding: 15px; border: 1px solid #000; text-align: left; }
+        .report-header { font-size: 10px; display: flex; justify-content: space-between; border-bottom: 1px solid #000; padding-bottom: 5px; font-weight: bold; }
+        .inst-box { border: 2px solid red; padding: 10px; text-align: center; font-size: 18px; font-weight: bold; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 16px; }
+        th, td { border: 1px solid #ccc; padding: 6px; }
+        .b-text { color: var(--blue); }
+        .s-text { color: var(--red); }
     </style>
 </head>
 <body>
 
-    <!-- 1. LOGIN OVERLAY (வெற்றிகரமாக முடிந்ததும் இது மறைந்துவிடும்) -->
     <div id="login-overlay">
         <div class="mummy-daddy">MUMMY DADDY</div>
         <div class="login-box">
-            <h3 style="color: var(--gold); margin-top: 0;">USER ACTIVATION</h3>
             <input type="email" id="emailInput" placeholder="Enter Registered Email">
-            <button class="btn-activate" onclick="handleActivation()">ACTIVATE OMNIVERSE</button>
-            <p id="login-status" style="font-size: 12px; margin-top: 10px; color: #888;"></p>
+            <button style="width:100%; padding:15px; background:#004d40; color:var(--neon); border:1px solid var(--neon); font-weight:bold;" onclick="handleActivation()">ACTIVATE</button>
         </div>
     </div>
 
-    <!-- 2. MAIN WORKSPACE (DASHBOARD) -->
     <div id="main-workspace">
-        <div class="header">
-            <span>YouTube: True X Profit</span>
-            <span>admin@truexprofit.com</span>
-        </div>
-        
         <div class="mummy-daddy">MUMMY DADDY</div>
         <div class="domain-tag">www.truexprofit.com</div>
 
-        <h4 style="color: var(--gold);">SELECT THEORY PART TO SCAN</h4>
-        <div class="parts-grid" id="partsGrid">
-            <!-- 25 Buttons generated by JS -->
-        </div>
+        <div class="parts-grid" id="partsGrid"></div>
 
-        <!-- 3. SCANNER SECTION -->
         <div id="scanner-section">
-            <h2 id="selectedPartTitle" style="color: var(--neon);">PART 1 SCAN</h2>
-            <textarea id="inputData" placeholder="PASTE TRADING DATA HERE..."></textarea>
-            <div class="status-bar" id="statusBar">READY FOR PRECISION SCAN</div>
-            <div style="margin-bottom: 40px;">
+            <h3 id="selectedPartTitle" style="color: var(--neon);">PART 1</h3>
+            <textarea id="inputData" placeholder="PASTE DATA HERE..."></textarea>
+            <div class="status-bar" id="statusBar">READY</div>
+            
+            <div class="btn-row">
+                <button class="btn-clear" onclick="clearData()">CLEAR</button>
                 <button class="btn-run" onclick="startScan()">RUN ONE-CLICK MATRIX SCAN</button>
             </div>
 
-            <!-- 4. REPORT OUTPUT -->
             <div id="report-output">
-                <div style="font-size: 12px; font-weight: bold; display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 5px;">
+                <div class="report-header">
                     <span>YouTube: True X Profit</span>
                     <span>admin@truexprofit.com</span>
                 </div>
-                <h2 style="text-align: center; color: #1a237e; margin: 10px 0;">GLOBAL PRECISION MATRIX REPORT</h2>
-                <div id="histArea" style="font-size: 11px; background: #f9f9f9; padding: 8px; border: 1px solid #ddd; margin-bottom: 10px; font-weight: bold;"></div>
+                <h3 style="text-align: center; margin: 10px 0; color: #1a237e;">GLOBAL PRECISION MATRIX REPORT</h3>
+                <div id="histArea" style="font-size: 9px; background: #f2f2f2; padding: 5px; border: 1px solid #ddd; margin-bottom: 5px; font-weight: bold;"></div>
+                <div id="baseArea" style="font-size: 12px; color: red; font-weight: bold; margin-bottom: 10px;"></div>
                 <div id="instBox" class="inst-box">? INSTITUTIONAL</div>
                 <table id="resTable">
                     <thead><tr><th>LAYER</th><th>D2 RESULT</th></tr></thead>
                     <tbody id="resBody"></tbody>
                     <tr style="background: #e3f2fd;"><td>TOTAL</td><td id="totalVal"></td></tr>
                 </table>
-                <div style="text-align: center; font-size: 11px; margin-top: 20px; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px;">
+                <p style="text-align:center; font-size:10px; margin-top:15px; font-weight:bold; border-top: 1px solid #000; padding-top: 5px;">
                     Dedicated to MUMMY DADDY | Date: <span id="repDate"></span>
-                </div>
-                <button onclick="window.print()" style="margin-top: 20px; width: 100%; padding: 10px; cursor: pointer; font-weight: bold;">PRINT / SAVE PDF</button>
+                </p>
+                <button onclick="window.print()" style="margin-top:10px; width:100%; padding:8px; font-weight:bold; cursor:pointer;">PRINT / SAVE PDF</button>
             </div>
         </div>
     </div>
 
     <script>
         const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
-        let currentUser = null;
-        let selectedPart = 0;
+        let primes = [];
+        function genPrimes() { let limit=500000; let s=new Uint8Array(limit).fill(1); for(let i=2;i*i<limit;i++){if(s[i]){for(let j=i*i;j<limit;j+=i)s[j]=0}} for(let i=2;i<limit;i++)if(s[i])primes.push(i); }
+        genPrimes();
 
-        // Generate 25 Buttons
         const grid = document.getElementById('partsGrid');
         for(let i=1; i<=25; i++) {
-            let btn = document.createElement('div');
-            btn.className = 'part-btn';
-            btn.id = 'part-' + i;
-            btn.innerText = 'PART ' + i;
-            btn.onclick = () => selectPart(i);
-            grid.appendChild(btn);
+            let btn = document.createElement('div'); btn.className = 'part-btn'; btn.id = 'part-'+i; btn.innerText = 'PART '+i;
+            btn.onclick = () => selectPart(i); grid.appendChild(btn);
         }
 
         async function handleActivation() {
             const email = document.getElementById('emailInput').value.trim().toLowerCase();
-            const statusMsg = document.getElementById('login-status');
-            
             if(!email) return;
-            statusMsg.innerText = "Verifying access...";
-            
-            const safeMail = email.replace(/\./g, '_');
             try {
-                const response = await fetch(`${FB_URL}/users/${safeMail}.json`);
-                const data = await response.json();
-
+                const res = await fetch(`${FB_URL}/users/${email.replace(/\./g, '_')}.json`);
+                const data = await res.json();
                 if(data && data.status === "active") {
-                    // SUCCESS: Hide Login, Show Workspace
                     document.getElementById('login-overlay').style.display = 'none';
                     document.getElementById('main-workspace').style.display = 'block';
-                    currentUser = data;
-                    unlockParts(data.access);
-                } else {
-                    alert("ACCESS DENIED! Contact Master.");
-                }
-            } catch (e) { alert("Server Error. Check Internet."); }
+                    for(let i=1; i<=25; i++) document.getElementById('part-'+i).classList.add('unlocked');
+                } else { alert("Not Activated!"); }
+            } catch(e) { alert("Error!"); }
         }
 
-        function unlockParts(access) {
-            // அட்மின் பேனலில் இருந்து வரும் 25 பார்ட் அனுமதியை இங்கே சரிபார்க்கும்
-            for(let i=1; i<=25; i++) {
-                const btn = document.getElementById('part-' + i);
-                // இப்போதைக்கு டெஸ்டுக்காக பார்ட் 1 முதல் 5 வரை அன்லாக் செய்கிறேன்
-                if(i <= 5) { btn.classList.add('unlocked'); }
-            }
+        function clearData() {
+            document.getElementById('inputData').value = "";
+            document.getElementById('report-output').style.display = "none";
+            document.getElementById('statusBar').innerText = "READY";
+            document.getElementById('statusBar').style.background = "#FFD700";
         }
 
         function selectPart(num) {
-            const btn = document.getElementById('part-' + num);
-            if(!btn.classList.contains('unlocked')) {
-                alert("Please pay to unlock PART " + num);
-                return;
-            }
-            selectedPart = num;
             document.querySelectorAll('.part-btn').forEach(b => b.classList.remove('active-part'));
-            btn.classList.add('active-part');
+            document.getElementById('part-'+num).classList.add('active-part');
             document.getElementById('scanner-section').style.display = 'block';
             document.getElementById('selectedPartTitle').innerText = "PART " + num + " - PRECISION SCAN";
-            window.scrollTo(0, document.body.scrollHeight);
         }
 
         function startScan() {
             const raw = document.getElementById('inputData').value.trim();
             if(!raw) return;
-            document.getElementById('statusBar').innerText = "SCANNING MATRIX... PLEASE WAIT";
-            setTimeout(() => { processLogic(raw); }, 1000);
+            document.getElementById('statusBar').innerText = "SCANNING... PLEASE WAIT";
+            setTimeout(() => { processLogic(raw); }, 800);
         }
 
         function processLogic(raw) {
-            // (10/10 ரிசர்ச் லாஜிக் இங்கே செயல்படும்)
-            // ரிப்போர்ட் மட்டும் காட்டுகிறேன்
             const lines = raw.split('\n').filter(l => l.trim() !== "");
-            let hist = lines.join(" | ").toUpperCase();
-            
-            document.getElementById('histArea').innerText = "HISTORY: " + hist;
-            document.getElementById('repDate').innerText = new Date().toLocaleDateString('en-GB');
-            
-            let html = "";
-            for(let i=7; i<=15; i++) {
-                html += `<tr><td>L${i}</td><td style="color:blue;">B</td></tr>`;
+            let prices = [];
+            let histItems = [];
+            lines.forEach(ln => {
+                let nums = ln.replace(/\D/g, '');
+                if(nums) prices.push(parseInt(nums));
+                histItems.push(ln.toUpperCase().replace("OPEN","O:").replace("HIGH","H:").replace("LOW","L:").replace("CLOSE","C:"));
+            });
+
+            let baseVal = (prices.slice(0,4).reduce((a,b)=>a+b, 0) * 2) * 100;
+            let results = [];
+            for(let li=7; li<=15; li++) {
+                let b=0, s=0;
+                for(let i=0; i<1500; i++) {
+                    let target = baseVal + (i * 123);
+                    let p = primes[(i + li*100 + 4*500) % primes.length];
+                    let chk = (target % p === 0) ? Math.floor(target/p) : (target % p);
+                    if(chk % 2 !== 0) b++; else s++;
+                }
+                results.push(b >= s ? "B" : "S");
             }
+
+            document.getElementById('histArea').innerText = "HISTORY: " + histItems.join(" | ");
+            document.getElementById('baseArea').innerText = "BASE: " + baseVal;
+            let finalV = results.filter(x=>x==="B").length >= 5 ? "B" : "S";
+            const inst = document.getElementById('instBox');
+            inst.innerText = "? INSTITUTIONAL " + (finalV === "B" ? "BUY" : "SELL");
+            inst.style.color = inst.style.borderColor = (finalV === "B" ? "blue" : "red");
+
+            let html = "";
+            results.forEach((v, i) => {
+                html += `<tr><td>L${i+7}</td><td class="${v==="B"?'b-text':'s-text'}">${v}</td></tr>`;
+            });
             document.getElementById('resBody').innerHTML = html;
-            document.getElementById('totalVal').innerText = "B";
-            document.getElementById('totalVal').style.color = "blue";
+            document.getElementById('totalVal').innerText = finalV;
+            document.getElementById('totalVal').className = (finalV==="B"?'b-text':'s-text');
+            document.getElementById('repDate').innerText = new Date().toLocaleDateString('en-GB');
             document.getElementById('report-output').style.display = "block";
             document.getElementById('statusBar').innerText = "SCAN COMPLETE";
+            document.getElementById('statusBar').style.background = "#00ff44";
         }
     </script>
 </body>
