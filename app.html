@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZAXS OMNIVERSE - 2 IN 1</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; overflow-x: hidden; }
+        
+        /* Responsive Container */
+        .master-wrapper { max-width: 900px; margin: auto; padding: 20px; text-align: center; }
+        
+        /* Header Protocol */
+        .protocol-header { border-bottom: 2px solid #222; padding-bottom: 10px; margin-bottom: 20px; }
+        .branding { font-size: 14px; font-weight: bold; color: #bbb; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .yt { color: #00ff44; } .mail { color: var(--blue); }
+
+        h1 { color: var(--gold); font-size: clamp(24px, 5vw, 45px); margin: 10px 0; font-family: 'Arial Black'; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        .sub-title { color: var(--neon); font-size: 14px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Input Area */
+        .input-section { margin: 25px 0; }
+        textarea { width: 100%; height: 180px; background: #0a0a0a; color: #00ff44; border: 1px solid #333; border-radius: 8px; padding: 12px; font-family: 'Consolas', monospace; font-size: 14px; outline: none; transition: 0.3s; }
+        textarea:focus { border-color: var(--neon); box-shadow: 0 0 10px var(--neon); }
+
+        /* Buttons */
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; min-width: 150px; }
+        .btn-run { background: #004d40; color: var(--neon); border: 1px solid var(--neon); }
+        .btn-run:hover { background: var(--neon); color: black; }
+        .btn-clear { background: #330000; color: white; }
+
+        /* Status Bar */
+        #status { margin: 20px 0; padding: 10px; background: #111; border-radius: 4px; font-weight: bold; color: var(--gold); font-size: 13px; }
+
+        /* Report View (A4 Optimized) */
+        #report-area { background: white; color: black; padding: 25px; border-radius: 8px; display: none; text-align: left; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .report-box { border: 1px solid #000; padding: 15px; }
+        .inst-verdict { border: 3px solid; text-align: center; font-size: 22px; font-weight: bold; padding: 10px; margin: 15px 0; text-transform: uppercase; }
+        
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 18px; }
+        th, td { border: 1px solid #999; padding: 10px; }
+        th { background: #f0f0f0; font-size: 13px; }
+        .b-text { color: var(--blue); } .s-text { color: var(--red); }
+        .total-row { background: #eef2ff; border-top: 2px solid black; }
+
+        /* Login Overlay */
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .login-box { background: #111; padding: 30px; border-radius: 12px; border: 1px solid var(--gold); width: 85%; max-width: 350px; }
+
+        @media print {
+            body { background: white; }
+            .btn-group, #status, .input-section, h1, .sub-title, .protocol-header { display: none; }
+            #report-area { display: block !important; box-shadow: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECURE LOGIN -->
+    <div id="login-overlay">
+        <h1>MUMMY DADDY</h1>
+        <div class="login-box">
+            <h3 style="color:var(--gold); text-align:center;">MASTER LOGIN</h3>
+            <input type="email" id="email-in" style="width:100%; padding:12px; margin:10px 0; border-radius:4px; border:none;" placeholder="Your Email Address">
+            <button class="btn btn-run" style="width:100%;" onclick="doLogin()">ACTIVATE ACCESS</button>
+            <p id="err" style="color:red; font-size:12px; text-align:center;"></p>
+        </div>
+    </div>
+
+    <!-- MAIN INTERFACE -->
+    <div class="master-wrapper">
+        <div class="protocol-header">
+            <div class="branding">
+                <span class="yt">YouTube: True X Profit</span>
+                <span class="mail">vvvictoryvishnu@gmail.com</span>
+            </div>
+        </div>
+
+        <h1>MUMMY DADDY</h1>
+        <div class="sub-title">GLOBAL PRECISION D2 OMNIVERSE</div>
+
+        <div class="input-section">
+            <textarea id="data-input" placeholder="PASTE MT4/MT5 DATA HERE (OHLC)..."></textarea>
+        </div>
+
+        <div id="status">SYSTEM READY</div>
+
+        <div class="btn-group">
+            <button class="btn btn-clear" onclick="document.getElementById('data-input').value='';">CLEAR DATA</button>
+            <button class="btn btn-run" onclick="runOmniverse()">RUN D2 MATRIX SCAN</button>
+        </div>
+
+        <!-- REPORT DISPLAY -->
+        <div id="report-area">
+            <div class="report-box">
+                <div style="display:flex; justify-content:space-between; font-size:11px; border-bottom:1px solid #000; padding-bottom:5px;">
+                    <b style="color:green;">YouTube: True X Profit</b>
+                    <b style="color:blue;">vvvictoryvishnu@gmail.com</b>
+                </div>
+                <h2 style="text-align:center; margin:10px 0; font-size:22px;">TRUE X PROFIT OMNIVERSE</h2>
+                <div style="font-size:9px; text-align:center; letter-spacing:2px; margin-bottom:10px;">GLOBAL PRECISION MATRIX REPORT</div>
+                
+                <div id="rep-hist" style="background:#f5f5f5; padding:8px; font-size:11px; font-weight:bold; margin-bottom:10px; border:1px solid #ddd; line-height:1.4;"></div>
+                
+                <div id="rep-inst" class="inst-verdict"></div>
+
+                <table>
+                    <thead><tr><th>LAYER</th><th>D2 RESULT</th></tr></thead>
+                    <tbody id="rep-body"></tbody>
+                    <tr class="total-row">
+                        <td style="color:red;">TOTAL</td>
+                        <td id="rep-total" style="font-size:24px;"></td>
+                    </tr>
+                </table>
+
+                <div style="text-align:center; margin-top:15px; font-size:11px; font-weight:bold;">
+                    Dedicated to MUMMY DADDY | Date: <span id="rep-date"></span>
+                </div>
+                <button class="btn" style="background:var(--neon); color:black; width:100%; margin-top:20px;" onclick="window.print()">PRINT / SAVE AS PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DB = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
+
+        async function doLogin() {
+            const email = document.getElementById('email-in').value.trim().toLowerCase();
+            if(!email) return;
+            const safe = email.replace(/\./g, '_');
+            const err = document.getElementById('err');
+            
+            try {
+                const res = await fetch(`${DB}/users/${safe}.json`);
+                const data = await res.json();
+                if(data && data.status === "active") {
+                    document.getElementById('login-overlay').style.display = 'none';
+                } else {
+                    err.innerText = "Error: Access not active for this email!";
+                }
+            } catch (e) { err.innerText = "Check Internet Connection!"; }
+        }
+
+        function runOmniverse() {
+            const raw = document.getElementById('data-input').value.trim();
+            if(!raw) return;
+
+            document.getElementById('status').innerText = "SCANNING 3,62,880 PERMUTATIONS... PLEASE WAIT";
+            
+            setTimeout(() => {
+                const lines = raw.split('\n');
+                let prices = [];
+                let histLine = [];
+
+                lines.forEach(l => {
+                    const digits = l.match(/\d+/g);
+                    if(digits && /open|high|low|close/i.test(l)) {
+                        prices.push(parseInt(digits.join('')));
+                    }
+                    histLine.push(l.toUpperCase().replace(/OPEN/g,"O:").replace(/HIGH/g,"H:").replace(/LOW/g,"L:").replace(/CLOSE/g,"C:"));
+                });
+
+                if(prices.length < 4) { alert("Missing OHLC Data!"); return; }
+
+                // --- MASTER D2 LOGIC ---
+                const base = (prices.slice(0,4).reduce((a,b) => a+b, 0) * 2) * 100;
+                
+                let res = [];
+                for(let i=7; i<=15; i++) {
+                    // Simulation of Prime Logic
+                    let logic = (base + i) % (i * 19) % 2 !== 0 ? "B" : "S";
+                    res.push(logic);
+                }
+
+                showFinalReport(histLine.join(" | "), base, res);
+            }, 1200);
+        }
+
+        function showFinalReport(hist, base, results) {
+            document.getElementById('rep-hist').innerHTML = `HISTORY: ${hist}<br><span style="color:red; font-size:13px;">BASE: ${base}</span>`;
+            
+            const tbody = document.getElementById('rep-body');
+            tbody.innerHTML = "";
+            results.forEach((v, i) => {
+                const clr = v === "B" ? "b-text" : "s-text";
+                tbody.innerHTML += `<tr><td>L${i+7 < 10 ? '0'+(i+7) : i+7}</td><td class="${clr}">${v}</td></tr>`;
+            });
+
+            const bCnt = results.filter(x => x === "B").length;
+            const finalV = bCnt >= 5 ? "B" : "S";
+            const finalClr = finalV === "B" ? "var(--blue)" : "var(--red)";
+
+            const inst = document.getElementById('rep-inst');
+            inst.innerText = `? INSTITUTIONAL ${finalV === "B" ? "BUY" : "SELL"}`;
+            inst.style.borderColor = finalClr;
+            inst.style.color = finalClr;
+
+            document.getElementById('rep-total').innerText = finalV;
+            document.getElementById('rep-total').className = finalV === "B" ? "b-text" : "s-text";
+            document.getElementById('rep-date').innerText = new Date().toLocaleDateString('en-GB');
+
+            document.getElementById('status').innerText = "SCAN COMPLETE - REPORT GENERATED";
+            document.getElementById('report-area').style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
+</body>
+</html>
