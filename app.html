@@ -7,26 +7,48 @@
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 10px; text-align: center; }
-        .header { border-bottom: 2px solid #333; padding: 10px; font-size: 14px; font-weight: bold; display: flex; justify-content: space-around; }
-        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        
+        /* Header - Single Line */
+        .header { border-bottom: 2px solid #333; padding: 10px; font-size: 13px; font-weight: bold; display: flex; justify-content: space-between; max-width: 900px; margin: auto; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
         .title { color: var(--neon); font-size: 18px; letter-spacing: 2px; margin-bottom: 20px; }
         
-        /* Theory Selector */
-        .theory-box { margin: 15px 0; background: #111; padding: 10px; border-radius: 5px; border: 1px solid #333; }
-        select { background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 10px; width: 80%; font-weight: bold; cursor: pointer; }
-
         textarea { width: 90%; height: 120px; background: #000; color: #00ff44; border: 1px solid #333; padding: 10px; font-family: 'Consolas', monospace; border-radius: 5px; }
-        .status { background: var(--neon); color: black; padding: 8px; font-weight: bold; margin: 15px 0; width: 95%; display: inline-block; }
-        button { width: 90%; padding: 15px; background: #004d40; color: var(--neon); border: none; font-weight: bold; font-size: 16px; cursor: pointer; border-radius: 5px; margin-bottom: 20px; }
         
+        .theory-box { margin: 15px 0; }
+        select { background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 8px; width: 85%; font-weight: bold; }
+
+        .status { background: var(--neon); color: black; padding: 8px; font-weight: bold; margin: 15px 0; width: 92%; display: inline-block; }
+        
+        /* Buttons Row */
+        .btn-row { margin-bottom: 30px; display: flex; justify-content: center; gap: 15px; }
+        .btn-run { padding: 15px 30px; background: #004d40; color: var(--neon); border: none; font-weight: bold; font-size: 16px; cursor: pointer; border-radius: 5px; flex: 2; max-width: 400px; }
+        .btn-clear { padding: 15px; background: #440000; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; flex: 1; max-width: 150px; }
+
         /* Report Style */
-        #report { background: white; color: black; padding: 15px; border-radius: 5px; text-align: left; max-width: 550px; margin: auto; display: none; }
-        .inst-box { border: 3px solid red; padding: 10px; text-align: center; font-size: 20px; font-weight: bold; margin: 10px 0; }
-        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; margin-top: 10px; }
+        #report { background: white; color: black; padding: 20px; border-radius: 5px; text-align: left; max-width: 550px; margin: 20px auto; display: none; border: 1px solid #000; }
+        .inst-box { border: 3px solid red; padding: 12px; text-align: center; font-size: 20px; font-weight: bold; margin: 10px 0; position: relative; }
+        
+        /* நீங்கள் கேட்ட Print Button - சிறியது, Background கிடையாது, வெறும் கட்டம் மட்டும் */
+        .btn-print { 
+            position: absolute; right: 5px; top: 5px;
+            background: transparent; border: 1px solid #aaa; color: #555;
+            font-size: 10px; padding: 3px 8px; cursor: pointer; border-radius: 3px;
+        }
+        .btn-print:hover { background: #eee; }
+
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; margin-top: 10px; font-size: 18px; }
         th, td { border: 1px solid #ccc; padding: 8px; }
         .b-text { color: var(--blue); }
         .s-text { color: var(--red); }
-        .total-row { background: #f0f4ff; }
+        .total-row { background: #f0f4ff; border-top: 2px solid #000; }
+
+        /* Print Media - பிரிண்ட் எடுக்கும் போது மற்றவை தெரியாது */
+        @media print {
+            body { background: white; }
+            .header, .mummy-daddy, .title, textarea, .theory-box, .status, .btn-row, .btn-print { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; max-width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -42,7 +64,6 @@
     <textarea id="inputData" placeholder="PASTE DATA HERE..."></textarea>
 
     <div class="theory-box">
-        <label style="color:var(--gold)">SELECT RESEARCH PART:</label><br><br>
         <select id="theorySelect">
             <option value="1">PART 1 (Standard Logic)</option>
             <option value="4">PART 2 (Precision D2)</option>
@@ -54,18 +75,26 @@
     </div>
 
     <div class="status" id="status">SYSTEM READY</div>
-    <button onclick="runOmniverseScan()">RUN GLOBAL MATRIX SCAN</button>
+
+    <div class="btn-row">
+        <button class="btn-clear" onclick="clearAll()">CLEAR</button>
+        <button class="btn-run" onclick="runOmniverseScan()">RUN GLOBAL MATRIX SCAN</button>
+    </div>
 
     <div id="report">
-        <div style="font-size: 10px; border-bottom: 1px solid #000; padding-bottom: 5px;">
-            YouTube: True X Profit | vvvictoryvishnu@gmail.com
+        <div style="font-size: 10px; border-bottom: 1px solid #000; padding-bottom: 5px; display: flex; justify-content: space-between;">
+            <span>YouTube: True X Profit</span>
+            <span>vvvictoryvishnu@gmail.com</span>
         </div>
-        <h2 style="text-align: center; margin: 10px 0; font-size: 18px;">OMNIVERSE PRECISION REPORT</h2>
+        <h2 style="text-align: center; margin: 10px 0; font-size: 18px; color: #1a237e;">OMNIVERSE PRECISION REPORT</h2>
         
-        <div id="histContent" style="font-size: 11px; background: #f9f9f9; padding: 5px; border: 1px solid #ddd; word-wrap: break-word; font-weight: bold;"></div>
-        <div id="baseContent" style="color: red; font-size: 13px; font-weight: bold; margin: 5px 0;"></div>
+        <div id="histContent" style="font-size: 11px; background: #f9f9f9; padding: 8px; border: 1px solid #ddd; word-wrap: break-word; font-weight: bold; line-height: 1.4;"></div>
+        <div id="baseContent" style="color: #c62828; font-size: 14px; font-weight: bold; margin: 8px 0; border-bottom: 1px solid #eee; padding-bottom: 5px;"></div>
 
-        <div id="instBox" class="inst-box"></div>
+        <div id="instBox" class="inst-box">
+            <span id="instText"></span>
+            <button class="btn-print" onclick="window.print()">PRINT / SAVE</button>
+        </div>
 
         <table id="resultTable">
             <thead>
@@ -77,12 +106,13 @@
             </tfoot>
         </table>
         
-        <p style="text-align:center; font-size:10px; margin-top:15px; font-weight:bold;">Dedicated to MUMMY DADDY | Date: <span id="repDate"></span></p>
+        <p style="text-align:center; font-size:10px; margin-top:20px; font-weight:bold; border-top: 1px solid #eee; padding-top: 10px;">
+            Dedicated to MUMMY DADDY | Date: <span id="repDate"></span>
+        </p>
     </div>
 
     <script>
         let primes = [];
-        // Fast Sieve to generate primes in browser
         function generatePrimes() {
             let limit = 1000000;
             let sieve = new Uint8Array(limit).fill(1);
@@ -99,6 +129,13 @@
         }
         generatePrimes();
 
+        function clearAll() {
+            document.getElementById('inputData').value = "";
+            document.getElementById('report').style.display = "none";
+            document.getElementById('status').innerHTML = "SYSTEM READY";
+            document.getElementById('status').style.background = "#00E5FF";
+        }
+
         function runOmniverseScan() {
             const raw = document.getElementById('inputData').value.trim();
             if(!raw) return;
@@ -112,7 +149,7 @@
         }
 
         function processLogic(raw, divisor) {
-            const lines = raw.split('\n');
+            const lines = raw.split('\n').filter(l => l.trim() !== "");
             let priceDigits = [];
             let histItems = [];
 
@@ -131,21 +168,17 @@
                 return;
             }
 
-            // --- THE SECRET BASE CALCULATION ---
             let priceSum = priceDigits[0] + priceDigits[1] + priceDigits[2] + priceDigits[3];
             let baseVal = (priceSum * 2) * 100;
 
             let finalResults = [];
-            // 7 to 15 Layers
             for (let li = 7; li <= 15; li++) {
                 let bCount = 0, sCount = 0;
-                // Sampled Loop for Speed in Web (3000 iterations for stability)
                 for (let i = 0; i < 3000; i++) {
-                    let target = baseVal + (i * 123); // Pseudo Permutation
+                    let target = baseVal + (i * 123);
                     let prime = primes[(i + (li * 50) + (divisor * 100)) % primes.length];
                     let rem = target % prime;
                     let val = (rem === 0) ? Math.floor(target / prime) : rem;
-
                     if (val % 2 !== 0) bCount++;
                     else sCount++;
                 }
@@ -164,21 +197,21 @@
             let finalV = bCount >= sCount ? "B" : "S";
 
             const instBox = document.getElementById('instBox');
-            instBox.innerText = "? INSTITUTIONAL " + (finalV === "B" ? "BUY" : "SELL");
+            const instText = document.getElementById('instText');
+            instText.innerText = "? INSTITUTIONAL " + (finalV === "B" ? "BUY" : "SELL");
             instBox.style.borderColor = finalV === "B" ? "blue" : "red";
             instBox.style.color = finalV === "B" ? "blue" : "red";
 
             let rows = "";
             res.forEach((val, i) => {
                 let clr = val === "B" ? "b-text" : "s-text";
-                rows += `<tr><td>L${i+7 < 10 ? '0'+(i+7) : i+7}</td><td class="${clr}">${val}</td></tr>`;
+                rows += `<tr><td>L${i+7}</td><td class="${clr}">${val}</td></tr>`;
             });
             document.getElementById('tableBody').innerHTML = rows;
             
             let tCell = document.getElementById('totalVal');
             tCell.innerText = finalV;
             tCell.className = finalV === "B" ? "b-text" : "s-text";
-            tCell.style.fontSize = "22px";
 
             document.getElementById('repDate').innerText = new Date().toLocaleDateString();
             document.getElementById('report').style.display = "block";
