@@ -10,11 +10,12 @@
         .header { border-bottom: 2px solid #333; padding: 10px; font-size: 14px; font-weight: bold; color: #00ff44; margin-bottom: 10px; }
         .mummy-daddy { color: var(--gold); font-size: 40px; font-weight: 900; margin: 10px 0; }
         
-        /* Work Name Input */
-        .work-box { margin: 10px 0; }
-        #workName { background: #111; color: var(--gold); border: 1px solid var(--gold); padding: 10px; width: 40%; font-weight: bold; text-align: center; border-radius: 5px; }
+        /* Login & Work Details */
+        .input-group { background: #111; padding: 15px; border-radius: 8px; border: 1px solid #333; width: 90%; margin: 10px auto; }
+        .login-input { background: #000; color: var(--neon); border: 1px solid var(--neon); padding: 12px; width: 80%; font-weight: bold; text-align: center; border-radius: 5px; margin-bottom: 10px; font-size: 16px; }
+        .work-input { background: #000; color: var(--gold); border: 1px solid var(--gold); padding: 10px; width: 80%; font-weight: bold; text-align: center; border-radius: 5px; }
 
-        textarea { width: 92%; height: 150px; background: #000; color: #00ff44; border: 1px solid #333; padding: 12px; font-family: 'Consolas', monospace; border-radius: 5px; font-size: 15px; }
+        textarea { width: 92%; height: 150px; background: #000; color: #00ff44; border: 1px solid #333; padding: 12px; font-family: 'Consolas', monospace; border-radius: 5px; font-size: 15px; margin-top: 10px; }
         .status { background: #FFD700; color: black; padding: 10px; font-weight: bold; margin: 15px 0; width: 92%; display: inline-block; border-radius: 3px; }
         
         .btn-row { margin-bottom: 40px; display: flex; justify-content: center; gap: 20px; }
@@ -23,21 +24,20 @@
 
         #report { background: white; color: black; padding: 25px; border-radius: 5px; text-align: left; max-width: 600px; margin: 20px auto; display: none; border: 1px solid #000; }
         .report-header { font-size: 13px; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; display: flex; justify-content: space-between; }
-        
         .inst-box { border: 3px solid red; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; margin: 15px 0; }
-        .btn-print { display: block; width: 250px; margin: 15px auto; background: #eee; border: 2px solid #333; color: #000; font-size: 18px; padding: 12px; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        
+        .btn-print { display: block; width: 280px; margin: 15px auto; background: #f0f0f0; border: 2px solid #333; color: #000; font-size: 20px; padding: 15px; cursor: pointer; font-weight: bold; border-radius: 8px; }
 
         table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; margin-top: 15px; font-size: 22px; }
         th, td { border: 1px solid #888; padding: 12px; }
         .b-text { color: var(--blue); }
         .s-text { color: var(--red); }
-        
         .hist-box { font-size: 12px; background: #fffde7; padding: 10px; border: 1px solid #ccc; word-wrap: break-word; font-weight: bold; margin-bottom: 10px; }
         .base-text { color: #d32f2f; font-size: 16px; font-weight: bold; margin: 10px 0; }
 
         @media print {
             body { background: white; padding: 0; }
-            .header, .mummy-daddy, .work-box, textarea, .status, .btn-row, .btn-print { display: none !important; }
+            .header, .mummy-daddy, .input-group, textarea, .status, .btn-row, .btn-print { display: none !important; }
             #report { display: block !important; border: none; margin: 0; width: 100%; max-width: 100%; }
         }
     </style>
@@ -50,17 +50,18 @@
 
     <div class="mummy-daddy">MUMMY DADDY</div>
     
-    <div class="work-box">
-        <input type="text" id="workName" placeholder="ENTER WORK NAME (Ex: WORK 1 SCAN)">
+    <div class="input-group">
+        <input type="email" id="userEmail" class="login-input" placeholder="ENTER REGISTERED EMAIL">
+        <input type="text" id="workName" class="work-input" placeholder="ENTER WORK NAME (Ex: WORK 1 SCAN)">
     </div>
 
-    <textarea id="inputData" placeholder="PASTE DATA HERE..."></textarea>
+    <textarea id="inputData" placeholder="TYPE OR PASTE ANY TRADING DATA HERE..."></textarea>
 
     <div class="status" id="status">SYSTEM READY</div>
 
     <div class="btn-row">
         <button class="btn-clear" onclick="clearAll()">CLEAR</button>
-        <button class="btn-run" onclick="runOmniverseScan()">RUN ONE-CLICK MATRIX SCAN</button>
+        <button class="btn-run" onclick="validateAndScan()">RUN ONE-CLICK MATRIX SCAN</button>
     </div>
 
     <div id="report">
@@ -69,61 +70,88 @@
             <span>YouTube: True X Profit | vvvictoryvishnu@gmail.com</span>
         </div>
         <h2 style="text-align: center; margin: 10px 0; font-size: 22px; color: #1a237e;">GLOBAL PRECISION MATRIX REPORT</h2>
-        
         <div id="histContent" class="hist-box"></div>
         <div id="baseContent" class="base-text"></div>
-
-        <div id="instBox" class="inst-box">
-            <span id="instText"></span>
-        </div>
-        
+        <div id="instBox" class="inst-box"><span id="instText"></span></div>
         <button class="btn-print" onclick="window.print()">PRINT / SAVE REPORT</button>
-
         <table id="resultTable">
-            <thead>
-                <tr><th>LAYER</th><th>RESULT</th></tr>
-            </thead>
+            <thead><tr><th>LAYER</th><th>RESULT</th></tr></thead>
             <tbody id="tableBody"></tbody>
-            <tfoot>
-                <tr style="background:#e3f2fd;"><td>TOTAL</td><td id="totalVal"></td></tr>
-            </tfoot>
+            <tfoot><tr style="background:#e3f2fd;"><td>TOTAL</td><td id="totalVal"></td></tr></tfoot>
         </table>
-        
         <p style="text-align:center; font-size:12px; margin-top:30px; font-weight:bold; border-top: 1px solid #000; padding-top: 15px;">
             Dedicated to MUMMY DADDY | Date: <span id="repDate"></span>
         </p>
     </div>
 
     <script>
+        const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
         let primes = [];
+        
         function generatePrimes() {
             let limit = 1000000;
             let sieve = new Uint8Array(limit).fill(1);
             sieve[0] = sieve[1] = 0;
-            for (let i = 2; i * i < limit; i++) {
-                if (sieve[i]) { for (let j = i * i; j < limit; j += i) sieve[j] = 0; }
-            }
-            for (let i = 2; i < limit; i++) {
-                if (sieve[i]) primes.push(i);
-                if (primes.length >= 60000) break;
-            }
+            for (let i = 2; i * i < limit; i++) { if (sieve[i]) { for (let j = i * i; j < limit; j += i) sieve[j] = 0; } }
+            for (let i = 2; i < limit; i++) { if (sieve[i]) primes.push(i); if (primes.length >= 60000) break; }
         }
         generatePrimes();
 
         function clearAll() {
             document.getElementById('inputData').value = "";
-            document.getElementById('workName').value = "";
             document.getElementById('report').style.display = "none";
             document.getElementById('status').innerHTML = "SYSTEM READY";
             document.getElementById('status').style.background = "#FFD700";
         }
 
-        function runOmniverseScan() {
+        async function validateAndScan() {
+            const email = document.getElementById('userEmail').value.trim().toLowerCase();
             const raw = document.getElementById('inputData').value.trim();
-            if(!raw) return;
-            document.getElementById('status').innerHTML = "SCANNING ALL GLOBAL NUMBERS... PLEASE WAIT";
+            
+            if(!email) { alert("Master, please enter the Registered Email!"); return; }
+            if(!raw) { alert("Please paste data!"); return; }
+
+            document.getElementById('status').innerHTML = "VERIFYING ACCESS... PLEASE WAIT";
             document.getElementById('status').style.background = "orange";
-            setTimeout(() => { processLogic(raw); }, 600);
+
+            const safeMail = email.replace(/\./g, '_');
+            try {
+                const response = await fetch(`${FB_URL}/users/${safeMail}.json`);
+                const userData = await response.json();
+
+                if (!userData) {
+                    alert("User not found! Registration required.");
+                    document.getElementById('status').innerHTML = "ACCESS DENIED";
+                    return;
+                }
+
+                // --- இதுதான் மாஸ்டர் கேட்ட 'முழுக்கட்டுப்பாடு' லாஜிக் ---
+                if (userData.status === "blocked" || userData.status === "deactive") {
+                    alert("YOUR ACCESS HAS BEEN BLOCKED / DEACTIVATED BY MASTER!");
+                    document.getElementById('status').innerHTML = "BLOCKED BY MASTER";
+                    return;
+                }
+
+                // எக்ஸ்பைரி செக்
+                const expiryDate = new Date(userData.expiry);
+                if (new Date() > expiryDate) {
+                    alert("YOUR LICENSE HAS EXPIRED!");
+                    document.getElementById('status').innerHTML = "EXPIRED";
+                    return;
+                }
+
+                // எல்லாம் சரியாக இருந்தால் ஸ்கேன் தொடங்கும்
+                runOmniverseScan(raw);
+
+            } catch (error) {
+                alert("Server Connection Error!");
+                document.getElementById('status').innerHTML = "OFFLINE";
+            }
+        }
+
+        function runOmniverseScan(raw) {
+            document.getElementById('status').innerHTML = "SCANNING GLOBAL MATRIX... PLEASE WAIT";
+            setTimeout(() => { processLogic(raw); }, 500);
         }
 
         function processLogic(raw) {
@@ -168,7 +196,9 @@
             document.getElementById('histContent').innerText = "HISTORY: " + hist;
             document.getElementById('baseContent').innerText = "BASE CALCULATION: " + base;
             
-            let finalV = (res.filter(x => x === "B").length >= 5) ? "B" : "S";
+            let bCount = res.filter(x => x === "B").length;
+            let finalV = bCount >= 5 ? "B" : "S";
+
             const instBox = document.getElementById('instBox');
             document.getElementById('instText').innerText = "? INSTITUTIONAL " + (finalV === "B" ? "BUY" : "SELL");
             instBox.style.borderColor = instBox.style.color = (finalV === "B" ? "blue" : "red");
