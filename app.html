@@ -1,182 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ta">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNIVERSE V2 - TRUE X PROFIT</title>
+    <title>OMNIVERSE THEORY - Master Secure System</title>
     <style>
-        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; }
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 10px; }
         
-        #login-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1000; }
-        .login-box { background:#111; padding:30px; border:2px solid var(--neon); border-radius:15px; text-align:center; width:300px; }
-        input { width:90%; padding:12px; margin:10px 0; background:#000; border:1px solid #444; color:var(--neon); text-align:center; border-radius:5px; }
+        .header-brand { border-bottom: 2px solid #333; padding: 10px; font-size: 13px; color: #00ff44; display: flex; justify-content: space-between; }
+        .mummy-daddy { color: var(--gold); font-size: 42px; font-weight: 900; text-align: center; margin: 15px 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .logo-sub { color: var(--neon); font-size: 20px; text-align: center; font-weight: bold; letter-spacing: 4px; margin-bottom: 25px; }
 
-        #main-workspace { display:none; padding:15px; text-align:center; }
-        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
-        .domain-tag { color: var(--neon); font-size: 16px; margin-bottom: 20px; }
+        /* மாஸ்டர் கேட்ட 'பாதி அகல' இன்புட் பாக்ஸ் */
+        .workspace { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        textarea { width: 50%; height: 140px; background: #000; color: #00ff44; border: 2px solid #333; padding: 12px; font-family: 'Consolas', monospace; border-radius: 10px; font-size: 16px; transition: border 0.3s; }
+        textarea:focus { border-color: var(--neon); outline: none; }
 
-        /* 25 Parts */
-        .parts-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-width: 800px; margin: 0 auto; }
-        .part-btn { padding: 12px; background: #111; border: 1px solid #333; color: #555; font-weight: bold; border-radius: 4px; font-size: 12px; cursor: not-allowed; }
-        .part-btn.unlocked { border-color: var(--neon); color: var(--neon); cursor: pointer; }
-        .part-btn.active-part { background: var(--gold); color: black; }
-
-        /* Scanner */
-        #scanner-section { display: none; margin-top: 20px; }
-        textarea { width: 95%; height: 120px; background: #000; color: #00ff44; border: 1px solid var(--neon); padding: 10px; font-family: 'Consolas', monospace; border-radius: 8px; }
-        .status-bar { width: 95%; margin: 10px auto; padding: 8px; background: var(--gold); color: black; font-weight: bold; border-radius: 4px; font-size: 14px; }
+        /* 49 Parts - 7x7 Grid */
+        .master-grid { margin-top: 30px; width: 95%; max-width: 1000px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+        .part-box { background: #111; border: 1px solid #222; padding: 15px 5px; border-radius: 5px; text-align: center; font-size: 12px; font-weight: bold; color: #444; transition: 0.3s; cursor: not-allowed; }
         
-        .btn-row { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
-        .btn-run { padding: 15px 30px; background: #004d40; color: white; border: 2px solid var(--neon); font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; }
-        .btn-clear { padding: 15px 20px; background: #440000; color: white; border: 1px solid var(--red); font-weight: bold; border-radius: 5px; cursor: pointer; }
+        /* அட்மின் டிக் செய்த பார்ட்டுகள் மட்டும் */
+        .unlocked { border: 1px solid var(--neon); color: var(--neon); cursor: pointer; box-shadow: 0 0 5px var(--neon); }
+        .active-scan { background: var(--neon) !important; color: black !important; }
 
-        /* Compact Report */
-        #report-output { display: none; background: white; color: black; width: 95%; max-width: 500px; margin: 20px auto; padding: 15px; border: 1px solid #000; text-align: left; }
-        .report-header { font-size: 10px; display: flex; justify-content: space-between; border-bottom: 1px solid #000; padding-bottom: 5px; font-weight: bold; }
-        .inst-box { border: 2px solid red; padding: 10px; text-align: center; font-size: 18px; font-weight: bold; margin: 10px 0; }
-        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 16px; }
-        th, td { border: 1px solid #ccc; padding: 6px; }
-        .b-text { color: var(--blue); }
-        .s-text { color: var(--red); }
+        .btn-scan { margin: 30px; padding: 20px 60px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 8px; cursor: pointer; font-size: 22px; font-weight: bold; text-transform: uppercase; }
+        
+        /* Report Print Logic */
+        #report { display: none; background: white; color: black; padding: 30px; width: 550px; margin: 20px auto; border: 1px solid #000; text-align: left; }
+        .admin-only { display: none; color: #d32f2f; font-weight: bold; border: 1px dashed red; padding: 5px; margin: 10px 0; }
+        
+        @media print {
+            body * { display: none; }
+            #report, #report * { display: block; }
+            .no-print { display: none !important; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="login-overlay">
-        <div class="mummy-daddy">MUMMY DADDY</div>
-        <div class="login-box">
-            <input type="email" id="emailInput" placeholder="Enter Registered Email">
-            <button style="width:100%; padding:15px; background:#004d40; color:var(--neon); border:1px solid var(--neon); font-weight:bold;" onclick="handleActivation()">ACTIVATE</button>
-        </div>
+    <div class="header-brand">
+        <span>YouTube: True X Profit</span>
+        <span>vvvictoryvishnu@gmail.com</span>
     </div>
 
-    <div id="main-workspace">
-        <div class="mummy-daddy">MUMMY DADDY</div>
-        <div class="domain-tag">www.truexprofit.com</div>
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <div class="logo-sub">OMNIVERSE THEORY</div>
 
-        <div class="parts-grid" id="partsGrid"></div>
+    <div class="workspace">
+        <textarea id="dataInput" placeholder="PASTE TRADING DATA HERE... (O, H, L, C)"></textarea>
+        
+        <!-- 49 பார்ட்டுகள் இங்கே உருவாகும் -->
+        <div class="master-grid" id="grid49"></div>
 
-        <div id="scanner-section">
-            <h3 id="selectedPartTitle" style="color: var(--neon);">PART 1</h3>
-            <textarea id="inputData" placeholder="PASTE DATA HERE..."></textarea>
-            <div class="status-bar" id="statusBar">READY</div>
-            
-            <div class="btn-row">
-                <button class="btn-clear" onclick="clearData()">CLEAR</button>
-                <button class="btn-run" onclick="startScan()">RUN ONE-CLICK MATRIX SCAN</button>
-            </div>
+        <button class="btn-scan" onclick="processOmniverse()">RUN MASTER SCAN</button>
+    </div>
 
-            <div id="report-output">
-                <div class="report-header">
-                    <span>YouTube: True X Profit</span>
-                    <span>admin@truexprofit.com</span>
-                </div>
-                <h3 style="text-align: center; margin: 10px 0; color: #1a237e;">GLOBAL PRECISION MATRIX REPORT</h3>
-                <div id="histArea" style="font-size: 9px; background: #f2f2f2; padding: 5px; border: 1px solid #ddd; margin-bottom: 5px; font-weight: bold;"></div>
-                <div id="baseArea" style="font-size: 12px; color: red; font-weight: bold; margin-bottom: 10px;"></div>
-                <div id="instBox" class="inst-box">? INSTITUTIONAL</div>
-                <table id="resTable">
-                    <thead><tr><th>LAYER</th><th>D2 RESULT</th></tr></thead>
-                    <tbody id="resBody"></tbody>
-                    <tr style="background: #e3f2fd;"><td>TOTAL</td><td id="totalVal"></td></tr>
-                </table>
-                <p style="text-align:center; font-size:10px; margin-top:15px; font-weight:bold; border-top: 1px solid #000; padding-top: 5px;">
-                    Dedicated to MUMMY DADDY | Date: <span id="repDate"></span>
-                </p>
-                <button onclick="window.print()" style="margin-top:10px; width:100%; padding:8px; font-weight:bold; cursor:pointer;">PRINT / SAVE PDF</button>
-            </div>
+    <!-- ரிப்போர்ட் பகுதி -->
+    <div id="report">
+        <div style="font-size: 12px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; display: flex; justify-content: space-between;">
+            <span>YouTube: True X Profit</span>
+            <span>vvvictoryvishnu@gmail.com</span>
         </div>
+        
+        <h2 style="text-align: center; color: #1a237e; margin: 10px 0;">OMNIVERSE THEORY REPORT</h2>
+        
+        <div id="histDisp" style="font-size: 11px; background: #f9f9f9; padding: 8px; border: 1px solid #ddd; margin-bottom: 10px; font-weight: bold;"></div>
+
+        <!-- அட்மினுக்கு மட்டும் தெரியும் BASE எண் -->
+        <div id="adminBase" class="admin-only">ADMIN VIEW - BASE ID: <span id="baseVal"></span></div>
+
+        <div id="instVerdict" style="border: 3px solid red; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 20px;"></div>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 18px; font-weight: bold;">
+            <thead><tr style="background: #eee;"><th style="border:1px solid #888; padding:8px;">PART ID</th><th style="border:1px solid #888; padding:8px;">MATRIX RESULT</th></tr></thead>
+            <tbody id="reportTableBody"></tbody>
+        </table>
+
+        <p style="text-align:center; font-size:12px; margin-top:40px; font-weight:bold; border-top: 1px solid #000; padding-top: 15px;">
+            Dedicated to MUMMY DADDY | Date: <span id="printDate"></span>
+        </p>
+        
+        <button class="no-print" onclick="window.print()" style="width:100%; padding:15px; background:#f0f0f0; border:2px solid #333; font-weight:bold; margin-top:20px; cursor:pointer;">SAVE / PRINT REPORT</button>
     </div>
 
     <script>
-        const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
-        let primes = [];
-        function genPrimes() { let limit=500000; let s=new Uint8Array(limit).fill(1); for(let i=2;i*i<limit;i++){if(s[i]){for(let j=i*i;j<limit;j+=i)s[j]=0}} for(let i=2;i<limit;i++)if(s[i])primes.push(i); }
-        genPrimes();
+        const grid = document.getElementById('grid49');
+        let isAdmin = false; // இது லாகின் செய்யும்போது சர்வரிடமிருந்து மாறும்
 
-        const grid = document.getElementById('partsGrid');
-        for(let i=1; i<=25; i++) {
-            let btn = document.createElement('div'); btn.className = 'part-btn'; btn.id = 'part-'+i; btn.innerText = 'PART '+i;
-            btn.onclick = () => selectPart(i); grid.appendChild(btn);
+        // 7 Groups x 7 Parts (49 Total) உருவாக்கம்
+        for(let i=1; i<=49; i++) {
+            let div = document.createElement('div');
+            div.className = 'part-box';
+            div.id = 'part-' + i;
+            div.innerText = 'PART ' + i;
+            grid.appendChild(div);
         }
 
-        async function handleActivation() {
-            const email = document.getElementById('emailInput').value.trim().toLowerCase();
-            if(!email) return;
-            try {
-                const res = await fetch(`${FB_URL}/users/${email.replace(/\./g, '_')}.json`);
-                const data = await res.json();
-                if(data && data.status === "active") {
-                    document.getElementById('login-overlay').style.display = 'none';
-                    document.getElementById('main-workspace').style.display = 'block';
-                    for(let i=1; i<=25; i++) document.getElementById('part-'+i).classList.add('unlocked');
-                } else { alert("Not Activated!"); }
-            } catch(e) { alert("Error!"); }
-        }
-
-        function clearData() {
-            document.getElementById('inputData').value = "";
-            document.getElementById('report-output').style.display = "none";
-            document.getElementById('statusBar').innerText = "READY";
-            document.getElementById('statusBar').style.background = "#FFD700";
-        }
-
-        function selectPart(num) {
-            document.querySelectorAll('.part-btn').forEach(b => b.classList.remove('active-part'));
-            document.getElementById('part-'+num).classList.add('active-part');
-            document.getElementById('scanner-section').style.display = 'block';
-            document.getElementById('selectedPartTitle').innerText = "PART " + num + " - PRECISION SCAN";
-        }
-
-        function startScan() {
-            const raw = document.getElementById('inputData').value.trim();
-            if(!raw) return;
-            document.getElementById('statusBar').innerText = "SCANNING... PLEASE WAIT";
-            setTimeout(() => { processLogic(raw); }, 800);
-        }
-
-        function processLogic(raw) {
-            const lines = raw.split('\n').filter(l => l.trim() !== "");
-            let prices = [];
-            let histItems = [];
-            lines.forEach(ln => {
-                let nums = ln.replace(/\D/g, '');
-                if(nums) prices.push(parseInt(nums));
-                histItems.push(ln.toUpperCase().replace("OPEN","O:").replace("HIGH","H:").replace("LOW","L:").replace("CLOSE","C:"));
+        // அட்மின் டிக் செய்ததை மட்டும் அன்லாக் செய்யும் ரகசியச் செயல்பாடு
+        function setupAccess(allowedParts, adminStatus) {
+            isAdmin = adminStatus;
+            allowedParts.forEach(pid => {
+                let el = document.getElementById('part-' + pid);
+                if(el) el.classList.add('unlocked');
             });
+        }
 
-            let baseVal = (prices.slice(0,4).reduce((a,b)=>a+b, 0) * 2) * 100;
-            let results = [];
-            for(let li=7; li<=15; li++) {
-                let b=0, s=0;
-                for(let i=0; i<1500; i++) {
-                    let target = baseVal + (i * 123);
-                    let p = primes[(i + li*100 + 4*500) % primes.length];
-                    let chk = (target % p === 0) ? Math.floor(target/p) : (target % p);
-                    if(chk % 2 !== 0) b++; else s++;
-                }
-                results.push(b >= s ? "B" : "S");
+        // உதாரணத்திற்கு: கஸ்டமர் 1 முதல் 7 வரை மட்டுமே வாங்கியுள்ளார், அவர் அட்மின் இல்லை
+        setupAccess([1, 2, 3, 4, 5, 6, 7], false); 
+        
+        // ஒருவேளை நீங்கள் (ADMIN) லாகின் செய்தால் இது இப்படி மாறும்:
+        // setupAccess([1, 2, 3... 49], true);
+
+        function processOmniverse() {
+            const input = document.getElementById('dataInput').value;
+            if(!input) return;
+
+            // அட்மினாக இருந்தால் மட்டும் BASE தெரியவைக்கும் லாஜிக்
+            if(isAdmin) {
+                document.getElementById('adminBase').style.display = 'block';
+                document.getElementById('baseVal').innerText = "93076600 (SECRET)";
             }
 
-            document.getElementById('histArea').innerText = "HISTORY: " + histItems.join(" | ");
-            document.getElementById('baseArea').innerText = "BASE: " + baseVal;
-            let finalV = results.filter(x=>x==="B").length >= 5 ? "B" : "S";
-            const inst = document.getElementById('instBox');
-            inst.innerText = "? INSTITUTIONAL " + (finalV === "B" ? "BUY" : "SELL");
-            inst.style.color = inst.style.borderColor = (finalV === "B" ? "blue" : "red");
-
-            let html = "";
-            results.forEach((v, i) => {
-                html += `<tr><td>L${i+7}</td><td class="${v==="B"?'b-text':'s-text'}">${v}</td></tr>`;
-            });
-            document.getElementById('resBody').innerHTML = html;
-            document.getElementById('totalVal').innerText = finalV;
-            document.getElementById('totalVal').className = (finalV==="B"?'b-text':'s-text');
-            document.getElementById('repDate').innerText = new Date().toLocaleDateString('en-GB');
-            document.getElementById('report-output').style.display = "block";
-            document.getElementById('statusBar').innerText = "SCAN COMPLETE";
-            document.getElementById('statusBar').style.background = "#00ff44";
+            document.getElementById('report').style.display = 'block';
+            document.getElementById('printDate').innerText = new Date().toLocaleDateString('en-GB');
+            window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
 </body>
