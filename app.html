@@ -3,67 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRUE X PROFIT OMNIVERSE - GLOBAL ONE-CLICK</title>
+    <title>OMNIVERSE - ULTIMATE MATRIX</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 10px; text-align: center; }
         
-        /* Header - Exactly as requested in one line */
-        .header { border-bottom: 2px solid #333; padding: 10px; font-size: 14px; font-weight: bold; max-width: 900px; margin: auto; color: #00ff44; }
-        .mummy-daddy { color: var(--gold); font-size: 38px; font-weight: 900; margin: 15px 0; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        .header { border-bottom: 2px solid #333; padding: 10px; font-size: 14px; font-weight: bold; color: #00ff44; margin-bottom: 10px; }
+        .mummy-daddy { color: var(--gold); font-size: 40px; font-weight: 900; margin: 10px 0; }
         .title { color: var(--neon); font-size: 18px; letter-spacing: 2px; margin-bottom: 20px; font-weight: bold; }
         
-        textarea { width: 92%; height: 130px; background: #000; color: #00ff44; border: 1px solid #333; padding: 12px; font-family: 'Consolas', monospace; border-radius: 5px; font-size: 14px; }
+        textarea { width: 92%; height: 150px; background: #000; color: #00ff44; border: 1px solid #333; padding: 12px; font-family: 'Consolas', monospace; border-radius: 5px; font-size: 15px; }
+        .status { background: #FFD700; color: black; padding: 10px; font-weight: bold; margin: 15px 0; width: 92%; display: inline-block; border-radius: 3px; }
         
-        .status { background: var(--neon); color: black; padding: 10px; font-weight: bold; margin: 20px 0; width: 92%; display: inline-block; border-radius: 3px; }
-        
-        /* Buttons Row */
         .btn-row { margin-bottom: 40px; display: flex; justify-content: center; gap: 20px; }
         .btn-run { padding: 18px 40px; background: #004d40; color: var(--neon); border: 2px solid var(--neon); font-weight: bold; font-size: 18px; cursor: pointer; border-radius: 5px; flex: 2; max-width: 450px; }
         .btn-clear { padding: 18px; background: #440000; color: white; border: 1px solid #ff3131; font-weight: bold; cursor: pointer; border-radius: 5px; flex: 1; max-width: 150px; }
 
-        /* Report Style - Half Page A4 */
-        #report { background: white; color: black; padding: 25px; border-radius: 5px; text-align: left; max-width: 580px; margin: 20px auto; display: none; border: 1px solid #000; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        /* Report Style */
+        #report { background: white; color: black; padding: 25px; border-radius: 5px; text-align: left; max-width: 600px; margin: 20px auto; display: none; border: 2px solid #000; }
         .report-header { font-size: 12px; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; text-align: center; }
         
-        .inst-box { border: 3px solid red; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; margin: 15px 0; position: relative; }
+        .inst-box { border: 3px solid red; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; margin: 15px 0; position: relative; }
         
-        /* Print Button - No background, small frame */
+        /* பெரிய PRINT / SAVE பட்டன் */
         .btn-print { 
-            position: absolute; right: 5px; top: 5px;
-            background: transparent; border: 1px solid #999; color: #777;
-            font-size: 10px; padding: 4px 10px; cursor: pointer; border-radius: 3px; font-weight: normal;
+            display: block; width: 200px; margin: 10px auto 0 auto;
+            background: #f0f0f0; border: 2px solid #000; color: #000;
+            font-size: 16px; padding: 10px; cursor: pointer; font-weight: bold; border-radius: 5px;
         }
 
-        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; margin-top: 15px; font-size: 20px; }
-        th, td { border: 1px solid #888; padding: 10px; }
-        th { background: #f0f0f0; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; margin-top: 15px; font-size: 22px; }
+        th, td { border: 1px solid #888; padding: 12px; }
         .b-text { color: var(--blue); }
         .s-text { color: var(--red); }
         .total-row { background: #e3f2fd; border-top: 3px solid #000; }
 
-        .hist-box { font-size: 12px; background: #fffde7; padding: 10px; border: 1px solid #ccc; word-wrap: break-word; font-weight: bold; line-height: 1.5; margin-bottom: 10px; }
+        .hist-box { font-size: 12px; background: #fffde7; padding: 10px; border: 1px solid #ccc; word-wrap: break-word; font-weight: bold; margin-bottom: 10px; }
         .base-text { color: #d32f2f; font-size: 16px; font-weight: bold; margin: 10px 0; }
 
         @media print {
             body { background: white; padding: 0; }
             .header, .mummy-daddy, .title, textarea, .status, .btn-row, .btn-print { display: none !important; }
-            #report { display: block !important; border: none; margin: 0; width: 100%; max-width: 100%; box-shadow: none; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        YouTube: True X Profit | vvvictoryvishnu@gmail.com | GLOBAL PRECISION OMNIVERSE
+        YouTube: True X Profit | vvvictoryvishnu@gmail.com | GLOBAL PRECISION SYSTEM
     </div>
 
     <div class="mummy-daddy">MUMMY DADDY</div>
-    <div class="title">OMNIVERSE - ULTIMATE MATRIX SCANNER</div>
+    <div class="title">OMNIVERSE MATRIX SCANNER</div>
 
-    <textarea id="inputData" placeholder="PASTE LIVE TRADING DATA HERE..."></textarea>
+    <textarea id="inputData" placeholder="TYPE OR PASTE ANY TRADING DATA HERE..."></textarea>
 
-    <div class="status" id="status">SYSTEM READY FOR GLOBAL SCAN</div>
+    <div class="status" id="status">SYSTEM READY</div>
 
     <div class="btn-row">
         <button class="btn-clear" onclick="clearAll()">CLEAR</button>
@@ -81,16 +77,16 @@
 
         <div id="instBox" class="inst-box">
             <span id="instText"></span>
-            <button class="btn-print" onclick="window.print()">PRINT / SAVE</button>
         </div>
+        <button class="btn-print" onclick="window.print()">PRINT / SAVE REPORT</button>
 
         <table id="resultTable">
             <thead>
-                <tr><th>LAYER</th><th>GLOBAL RESULT</th></tr>
+                <tr><th>LAYER</th><th>RESULT</th></tr>
             </thead>
             <tbody id="tableBody"></tbody>
             <tfoot>
-                <tr class="total-row"><td>TOTAL VERDICT</td><td id="totalVal"></td></tr>
+                <tr class="total-row"><td>TOTAL</td><td id="totalVal"></td></tr>
             </tfoot>
         </table>
         
@@ -121,14 +117,14 @@
             document.getElementById('inputData').value = "";
             document.getElementById('report').style.display = "none";
             document.getElementById('status').innerHTML = "SYSTEM READY";
-            document.getElementById('status').style.background = "#00E5FF";
+            document.getElementById('status').style.background = "#FFD700";
         }
 
         function runOmniverseScan() {
             const raw = document.getElementById('inputData').value.trim();
             if(!raw) return;
-            document.getElementById('status').innerHTML = "ANALYZING ALL GLOBAL NUMBERS... PLEASE WAIT";
-            document.getElementById('status').style.background = "#FFD700";
+            document.getElementById('status').innerHTML = "SCANNING GLOBAL MATRIX... PLEASE WAIT";
+            document.getElementById('status').style.background = "orange";
 
             setTimeout(() => {
                 processLogic(raw);
@@ -137,36 +133,33 @@
 
         function processLogic(raw) {
             const lines = raw.split('\n').filter(l => l.trim() !== "");
-            let priceDigits = [];
+            let allNumbers = [];
             let histItems = [];
 
             lines.forEach(ln => {
+                // வரியில் இருக்கும் அத்தனை எண்களையும் எடுக்கிறது
                 let nums = ln.replace(/\D/g, '');
-                if (nums && ln.toLowerCase().match(/open|high|low|close/)) {
-                    priceDigits.push(parseInt(nums));
-                }
+                if (nums) allNumbers.push(parseInt(nums));
+                
                 let cleanH = ln.toUpperCase().replace("OPEN","O:").replace("HIGH","H:").replace("LOW","L:").replace("CLOSE","C:").replace("DATE","DT:").replace("TIME","T:");
                 histItems.push(cleanH);
             });
 
-            if (priceDigits.length < 4) {
-                alert("Master, please paste full OHLC data!");
-                document.getElementById('status').innerHTML = "INPUT ERROR";
+            if (allNumbers.length === 0) {
+                alert("Please enter some numbers to calculate!");
+                document.getElementById('status').innerHTML = "NO NUMBERS FOUND";
                 return;
             }
 
-            // --- GLOBAL BASE LOGIC (100% Python Sync) ---
-            let priceSum = priceDigits[0] + priceDigits[1] + priceDigits[2] + priceDigits[3];
-            let baseVal = (priceSum * 2) * 100;
+            // --- ரகசியக் கணக்கீடு: அத்தனை எண்களின் கூட்டுத்தொகை * 2 ---
+            let rawSum = allNumbers.reduce((a, b) => a + b, 0);
+            let baseVal = (rawSum * 2) * 100;
 
             let finalLayers = [];
             let globalDivisors = [1, 4, 7, 9, 13];
 
-            // 7 to 15 Layers Scan
             for (let li = 7; li <= 15; li++) {
                 let layerVotes = [];
-                
-                // For each layer, we calculate results from all divisors and take the majority
                 globalDivisors.forEach(div => {
                     let bCount = 0, sCount = 0;
                     for (let i = 0; i < 2000; i++) {
@@ -179,8 +172,6 @@
                     }
                     layerVotes.push(bCount >= sCount ? "B" : "S");
                 });
-
-                // Final Layer result = Majority of all divisors
                 let bTotal = layerVotes.filter(x => x === "B").length;
                 finalLayers.push(bTotal >= 3 ? "B" : "S");
             }
@@ -192,7 +183,8 @@
             document.getElementById('histContent').innerText = "HISTORY: " + hist;
             document.getElementById('baseContent').innerText = "BASE CALCULATION: " + base;
             
-            let finalV = (res.filter(x => x === "B").length >= 5) ? "B" : "S";
+            let bCount = res.filter(x => x === "B").length;
+            let finalV = bCount >= 5 ? "B" : "S";
 
             const instBox = document.getElementById('instBox');
             const instText = document.getElementById('instText');
@@ -210,11 +202,10 @@
             let tCell = document.getElementById('totalVal');
             tCell.innerText = finalV;
             tCell.className = finalV === "B" ? "b-text" : "s-text";
-            tCell.style.fontSize = "26px";
 
             document.getElementById('repDate').innerText = new Date().toLocaleDateString('en-GB');
             document.getElementById('report').style.display = "block";
-            document.getElementById('status').innerHTML = "GLOBAL MATRIX SCAN COMPLETE";
+            document.getElementById('status').innerHTML = "SCAN COMPLETE";
             document.getElementById('status').style.background = "#00ff44";
             
             window.scrollTo(0, document.body.scrollHeight);
