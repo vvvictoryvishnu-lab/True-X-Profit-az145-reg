@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMNIVERSE MASTER V11 - TRUE X PROFIT</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
+        
+        /* 1. Login Screen */
+        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        .login-card { background: #111; padding: 40px; border: 2px solid var(--neon); border-radius: 15px; width: 340px; box-shadow: 0 0 20px var(--neon); }
+        .login-card input { width: 90%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: var(--neon); text-align: center; border-radius: 5px; font-weight: bold; font-size: 16px; }
+        .btn-login { width: 100%; padding: 15px; background: #004d40; color: white; border: 1px solid var(--neon); border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        /* 2. Main App Screen */
+        #main-app { display: none; padding: 20px 10px; }
+        .mummy-daddy { color: var(--gold); font-size: 40px; font-weight: 900; margin: 10px 0; }
+        .omniverse-tag { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 20px; }
+
+        .workspace { display: flex; flex-direction: column; align-items: center; }
+        textarea { width: 95%; max-width: 500px; height: 120px; background: #000; color: #00ff44; border: 2px solid #333; padding: 10px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 16px; }
+
+        /* Buttons Row (CLEAR + RUN) */
+        .btn-row { display: flex; gap: 15px; margin: 20px 0; justify-content: center; }
+        .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn-clear { padding: 15px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        .grid-preview { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 600px; margin: 10px auto; }
+        .p-box { padding: 8px 2px; background: #111; border: 1px solid #333; border-radius: 4px; color: var(--neon); font-size: 10px; font-weight: bold; }
+
+        .status-strip { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 60%; margin: 10px auto; border-radius: 4px; display: none; }
+
+        /* 3. Professional Report (A4 Half Size Focus) */
+        #report { display: none; background: white; color: black; width: 600px; margin: 20px auto; padding: 25px; border: 1.5px solid #000; text-align: left; }
+        .rep-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
+        .hist-box { font-size: 12px; background: #f2f2f2; padding: 8px; border: 1px solid #ccc; margin-bottom: 10px; font-weight: bold; word-break: break-all; }
+        
+        .inst-signal { border: 3px solid red; padding: 12px; text-align: center; font-size: 24px; font-weight: 900; margin-bottom: 15px; }
+        
+        .grid-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
+        .grid-table td { border: 1px solid #000; padding: 5px 0; height: 50px; }
+        .pid-cell { font-size: 14px; color: #555; display: block; }
+        .res-cell { font-size: 24px; display: block; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
+        .total-row { background: #e3f2fd; font-size: 26px; border: 2px solid #000; }
+
+        .footer { text-align: center; font-weight: bold; margin-top: 20px; border-top: 1px solid #000; padding-top: 10px; font-size: 12px; }
+        .btn-print { width: 100%; padding: 12px; background: #fff; border: 2px solid #000; color: #000; font-weight: bold; margin-top: 15px; cursor: pointer; font-size: 16px; }
+
+        @media print {
+            body { background: white !important; }
+            .no-print, #login-screen, .workspace, .btn-row, .grid-preview, .mummy-daddy, .omniverse-tag { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. LOGIN SCREEN -->
+    <div id="login-screen">
+        <div class="mummy-daddy">MUMMY DADDY</div>
+        <div class="login-card">
+            <h2 style="color: var(--neon);">ACTIVATION</h2>
+            <input type="email" id="loginEmail" placeholder="Email Address">
+            <input type="password" id="loginKey" placeholder="Access Key">
+            <button class="btn-login" onclick="validateLogin()">ACTIVATE NOW</button>
+        </div>
+    </div>
+
+    <!-- 2. MAIN APP -->
+    <div id="main-app">
+        <div class="mummy-daddy">MUMMY DADDY</div>
+        <div class="omniverse-tag">OMNIVERSE THEORY - V11</div>
+
+        <div class="workspace">
+            <textarea id="mainInput" placeholder="Paste OHLC Data here..."></textarea>
+            
+            <div class="grid-preview" id="pGrid"></div>
+            <div class="status-strip" id="status">SCANNING MATRIX... PLEASE WAIT</div>
+
+            <div class="btn-row no-print">
+                <button class="btn-clear" onclick="clearOnlyData()">CLEAR</button>
+                <button class="btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
+            </div>
+        </div>
+
+        <!-- 3. PRINT REPORT -->
+        <div id="report">
+            <div class="rep-header">
+                <span style="color:green;">YouTube: True X Profit</span>
+                <span style="color:blue;">vvvictoryvishnu@gmail.com</span>
+            </div>
+            <h3 style="text-align:center; margin:5px 0;">OMNIVERSE THEORY PRECISION REPORT</h3>
+            <div id="histDisp" class="hist-box"></div>
+            <div id="instVerdict" class="inst-signal"></div>
+            
+            <table class="grid-table"><tbody id="gridBody"></tbody></table>
+            
+            <div class="footer">
+                Dedicated to MUMMY DADDY | Date: <span id="rDate"></span>
+            </div>
+            <button class="btn-print no-print" onclick="window.print()">PRINT / SAVE REPORT</button>
+        </div>
+    </div>
+
+    <script>
+        const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        let primes = [];
+
+        function initPrimes() {
+            let lim=300000; let s=new Uint8Array(lim).fill(1);
+            for(let i=2;i*i<lim;i++) if(s[i]) for(let j=i*i;j<lim;j+=i) s[j]=0;
+            for(let i=2;i<lim;i++) if(s[i]) primes.push(i);
+            
+            const g = document.getElementById('pGrid');
+            for(let i=1; i<=49; i++) {
+                let d = document.createElement('div'); d.className='p-box';
+                d.innerText = 'P'+(i<10?'0':'')+i; g.appendChild(d);
+            }
+        }
+        initPrimes();
+
+        async function validateLogin() {
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const key = document.getElementById('loginKey').value.trim();
+            if(!email || !key) return;
+            try {
+                const res = await fetch(`${FB_URL}/users/${email.replace(/\./g, '_')}.json`);
+                const user = await res.json();
+                if(user && String(user.key) === key && user.status === "active") {
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                } else { alert("Invalid Credentials!"); }
+            } catch(e) { alert("Internet Error!"); }
+        }
+
+        function clearOnlyData() {
+            document.getElementById('mainInput').value = "";
+            document.getElementById('report').style.display = "none";
+            document.getElementById('status').style.display = "none";
+        }
+
+        function runOmniverse() {
+            const raw = document.getElementById('mainInput').value.trim();
+            if(!raw) return;
+            document.getElementById('status').style.display = 'block';
+            document.getElementById('report').style.display = "none";
+
+            setTimeout(() => {
+                let pNums = [];
+                raw.split('\n').forEach(ln => {
+                    let d = ln.replace(/\D/g, ''); if(d) pNums.push(parseInt(d));
+                });
+                // Success Logic D2
+                let base = (pNums.slice(0,4).reduce((a,b)=>a+b, 0) * 2) * 100;
+                let results = {};
+                for(let pid=1; pid<=49; pid++) {
+                    let b=0, s=0;
+                    for(let i=0; i<2500; i++) {
+                        let target = base + (i * 123);
+                        let p = primes[(i + pid * 150) % primes.length];
+                        let chk = (target % p === 0) ? Math.floor(target/p) : (target % p);
+                        if(chk % 2 !== 0) b++; else s++;
+                    }
+                    results[pid] = (b >= s ? "B" : "S");
+                }
+                renderReport(raw.replace(/\n/g, ' | '), results);
+            }, 600);
+        }
+
+        function renderReport(hist, res) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + hist;
+            const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
+            let html = ""; let colData = ["","","","","","",""];
+
+            for(let r=0; r<7; r++) {
+                html += "<tr>"; let rowS = "";
+                for(let c=0; c<7; c++) {
+                    let pid = (r*7)+(c+1); let val = res[pid];
+                    rowS += val; colData[c] += val;
+                    html += `<td><span class="pid-cell">${pid<10?'0':''}${pid}</span><span class="res-cell ${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
+                }
+                let rV = maj(rowS);
+                html += `<td><span class="res-cell ${rV==='B'?'b-clr':'s-clr'}">${rV}</span></td></tr>`;
+            }
+
+            let bRow = "<tr>"; let grandV = "";
+            for(let c=0; c<7; c++) {
+                let cV = maj(colData[c]); grandV += cV;
+                bRow += `<td><span class="res-cell ${cV==='B'?'b-clr':'s-clr'}">${cV}</span></td>`;
+            }
+            let final = maj(grandV);
+            bRow += `<td class="total-row ${final==='B'?'b-clr':'s-clr'}">${final}</td></tr>`;
+
+            document.getElementById('gridBody').innerHTML = html + bRow;
+            let iv = document.getElementById('instVerdict');
+            iv.innerText = (final === "B" ? "↑ INSTITUTIONAL BUY" : "↓ INSTITUTIONAL SELL");
+            iv.style.color = iv.style.borderColor = (final === "B" ? "blue" : "red");
+            
+            document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
+            document.getElementById('report').style.display = "block";
+            document.getElementById('status').style.display = 'none';
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
+</body>
+</html>
