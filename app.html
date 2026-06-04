@@ -3,144 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNIVERSE THEORY - MASTER PRO</title>
+    <title>OMNIVERSE MASTER PRO - APPA</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
         
-        .mummy-daddy { color: var(--gold); font-size: 40px; font-weight: 900; margin: 15px 0; text-shadow: 0 0 10px var(--gold); }
-        .omniverse-title { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 20px; }
+        .master-header { border-bottom: 2px solid #333; padding: 10px 20px; display: flex; justify-content: space-between; font-weight: bold; color: #00ff44; font-size: 13px; }
+        .mummy-daddy { color: var(--gold); font-size: 40px; font-weight: 900; margin: 15px 0; }
+        .omniverse-tag { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 20px; }
 
-        /* Input Area - Half Width */
+        /* Input Area - Clean & Anonymous */
         .workspace { display: flex; flex-direction: column; align-items: center; padding: 0 15px; }
-        .input-label { color: var(--gold); font-weight: bold; width: 50%; text-align: left; font-size: 13px; margin-bottom: 5px; }
-        textarea { width: 100%; max-width: 500px; height: 120px; background: #000; color: #00ff44; border: 1px solid #333; padding: 10px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 15px; }
+        .input-label { color: var(--gold); font-weight: bold; width: 50%; text-align: left; font-size: 14px; margin-bottom: 5px; }
+        textarea { width: 100%; max-width: 500px; height: 140px; background: #000; color: #00ff44; border: 2px solid #333; padding: 12px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 16px; }
 
-        /* Selection Controls */
-        .controls { margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 800px; margin-left: auto; margin-right: auto; }
-        .ctrl-btn { padding: 8px 15px; background: #111; border: 1px solid var(--neon); color: var(--neon); border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; }
-        .ctrl-btn:hover { background: var(--neon); color: black; }
-        .all-btn { border-color: var(--gold); color: var(--gold); }
+        /* Grid */
+        .grid-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 800px; margin: 25px auto; padding: 0 10px; }
+        .p-btn { padding: 12px 5px; background: #111; border: 1px solid #333; border-radius: 4px; color: #666; font-size: 11px; font-weight: bold; }
+        .active-p { background: var(--neon) !important; color: black !important; border-color: var(--neon); }
 
-        /* 49 Grid */
-        .grid-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 800px; margin: 10px auto; padding: 0 10px; }
-        .p-btn { padding: 12px 5px; background: #111; border: 1px solid #222; border-radius: 4px; color: #444; font-size: 10px; font-weight: bold; cursor: pointer; }
-        .unlocked { border-color: #333; color: #aaa; }
-        .active-p { background: var(--neon) !important; color: black !important; border-color: var(--neon); box-shadow: 0 0 10px var(--neon); }
+        .status-strip { background: #00ff44; color: black; padding: 10px; font-weight: bold; width: 60%; margin: 15px auto; border-radius: 4px; display: none; }
+        .btn-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 50px; }
+        .btn-run { padding: 18px 45px; background: transparent; color: white; border: 2px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn-clear { padding: 18px 25px; background: #330000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* Run/Clear Buttons */
-        .action-row { display: flex; justify-content: center; gap: 15px; margin: 30px 0; }
-        .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 5px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .btn-clear { padding: 15px 20px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 5px; font-weight: bold; cursor: pointer; }
+        /* PRINT REPORT - 8x8 Matrix */
+        #report { display: none; background: white; color: black; width: 650px; margin: 20px auto; padding: 25px; border: 1px solid #000; text-align: left; }
+        .rep-header { font-size: 11px; font-weight: bold; display: flex; justify-content: space-between; border-bottom: 1px solid #000; padding-bottom: 5px; }
+        .hist-box { font-size: 13px; background: #fff; padding: 10px; border: 1px solid #000; margin: 10px 0; font-weight: bold; }
+        .verdict-line { font-size: 22px; font-weight: 900; text-align: center; margin: 15px 0; }
         
-        .status-strip { background: #00ff44; color: black; padding: 10px; font-weight: bold; width: 50%; margin: 10px auto; border-radius: 4px; display: none; }
-
-        /* PRINT REPORT - 7x7 GRID */
-        #report { display: none; background: white; color: black; width: 650px; margin: 20px auto; padding: 20px; border: 1px solid #000; text-align: left; }
-        .rep-header { font-size: 12px; font-weight: bold; display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 5px; }
-        .hist-box { font-size: 13px; background: #f2f2f2; padding: 8px; border: 1px solid #ccc; margin: 10px 0; font-weight: bold; line-height: 1.4; }
-        .verdict-text { font-size: 20px; font-weight: 900; text-align: center; margin: 15px 0; }
-        
-        .grid-table { width: 100%; border-collapse: collapse; text-align: center; margin-top: 10px; font-weight: bold; }
-        .grid-table td, .grid-table th { border: 1px solid #999; padding: 8px; font-size: 16px; }
+        .grid-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; background: white; }
+        .grid-table td { border: 1px solid #000; padding: 8px; font-size: 18px; }
         .b-clr { color: var(--blue); }
         .s-clr { color: var(--red); }
-        .tot-row { background: #e3f2fd; font-size: 18px; }
+        .to-box { background: #f0f0f0; font-size: 20px; } /* Gray background for sub-totals */
 
         @media print {
-            body * { display: none !important; }
-            #report, #report * { display: block !important; }
-            .grid-table { display: table !important; }
-            .grid-table tr { display: table-row !important; }
-            .grid-table td, .grid-table th { display: table-cell !important; }
+            body { background: white; }
+            .no-print, .master-header, .mummy-daddy, .omniverse-tag, .workspace, .btn-row, .grid-container { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; }
         }
     </style>
 </head>
 <body>
 
+    <div class="master-header">
+        <span>YouTube: True X Profit</span>
+        <span>vvvictoryvishnu@gmail.com</span>
+    </div>
+
     <div class="mummy-daddy">MUMMY DADDY</div>
-    <div class="omniverse-title">OMNIVERSE THEORY</div>
+    <div class="omniverse-tag">OMNIVERSE THEORY - APPA</div>
 
     <div class="workspace">
         <div class="input-label">INPUT DATA</div>
-        <textarea id="mainInput" placeholder="Symbol, Date, Time, OHLC Data..."></textarea>
-
-        <!-- Group Selection -->
-        <div class="controls">
-            <button class="ctrl-btn all-btn" onclick="selectAll()">SELECT ALL (49)</button>
-            <button class="ctrl-btn" onclick="selectGroup(1)">GROUP 1 (1-7)</button>
-            <button class="ctrl-btn" onclick="selectGroup(2)">GROUP 2 (8-14)</button>
-            <button class="ctrl-btn" onclick="selectGroup(3)">GROUP 3 (15-21)</button>
-            <button class="ctrl-btn" onclick="selectGroup(4)">GROUP 4 (22-28)</button>
-            <button class="ctrl-btn" onclick="clearSelection()">RESET SELECTION</button>
-        </div>
+        <textarea id="mainInput" placeholder=""></textarea> <!-- மாஸ்டர் கேட்ட காலியான பாக்ஸ் -->
 
         <div class="grid-container" id="pGrid"></div>
+        <div class="status-strip" id="status">SCANNING 3,62,880 CALCULATIONS... PLEASE WAIT</div>
 
-        <div class="status-strip" id="status">SCANNING... PLEASE WAIT</div>
-
-        <div class="action-row">
+        <div class="action-row btn-row">
             <button class="btn-clear" onclick="location.reload()">CLEAR</button>
             <button class="btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
         </div>
     </div>
 
-    <!-- Professional 7x7 Report -->
     <div id="report">
         <div class="rep-header">
             <span>YouTube: True X Profit</span>
-            <span>vvvictoryvishnu@gmail.com</span>
+            <span>admin@truexprofit.com</span>
         </div>
-        <h3 style="text-align:center; margin:10px 0;">OMNIVERSE THEORY PRECISION REPORT</h3>
+        <h3 style="text-align:center; margin:5px 0;">OMNIVERSE THEORY PRECISION REPORT</h3>
         <div id="histDisp" class="hist-box"></div>
-        <div id="verdictLine" class="verdict-text"></div>
+        <div id="verdictLine" class="verdict-line"></div>
 
         <table class="grid-table">
             <tbody id="gridBody"></tbody>
-            <tr id="totalRow" class="tot-row"></tr>
         </table>
 
-        <p style="text-align:center; font-size:12px; margin-top:30px; font-weight:bold; border-top: 1px solid #000; padding-top: 10px;">
+        <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top: 1px solid #000; padding-top: 10px;">
             Dedicated to MUMMY DADDY | Date: <span id="rDate"></span>
         </p>
-        <button onclick="window.print()" style="margin-top:15px; width:100%; padding:10px; font-weight:bold; cursor:pointer;">SAVE / PRINT REPORT</button>
+        <button class="no-print" onclick="window.print()" style="width:100%; padding:12px; margin-top:10px; font-weight:bold; cursor:pointer;">SAVE / PRINT REPORT</button>
     </div>
 
     <script>
-        let selectedParts = [];
         let primes = [];
-
         function init() {
-            // Prime Gen
-            let lim=500000; let s=new Uint8Array(lim).fill(1);
+            let lim=600000; let s=new Uint8Array(lim).fill(1);
             for(let i=2;i*i<lim;i++) if(s[i]) for(let j=i*i;j<lim;j+=i) s[j]=0;
             for(let i=2;i<lim;i++) if(s[i]) primes.push(i);
 
             const g = document.getElementById('pGrid');
             for(let i=1; i<=49; i++) {
                 let b = document.createElement('div');
-                b.className = 'part-btn unlocked';
-                b.id = 'p-'+i; b.innerText = (i < 10 ? '0' : '') + i;
-                b.onclick = () => {
-                    b.classList.toggle('active-p');
-                    if(selectedParts.includes(i)) selectedParts = selectedParts.filter(p=>p!==i);
-                    else selectedParts.push(i);
-                };
+                b.className = 'p-btn unlocked active-p'; // Default All On for Master
+                b.innerText = (i < 10 ? '0' : '') + i;
                 g.appendChild(b);
             }
         }
         init();
 
-        function selectAll() { for(let i=1; i<=49; i++) if(!selectedParts.includes(i)) document.getElementById('p-'+i).click(); }
-        function clearSelection() { for(let i=1; i<=49; i++) { document.getElementById('p-'+i).classList.remove('active-p'); } selectedParts = []; }
-        function selectGroup(g) {
-            let start = (g-1)*7 + 1; let end = g*7;
-            for(let i=start; i<=end; i++) if(!selectedParts.includes(i)) document.getElementById('p-'+i).click();
-        }
-
         function runOmniverse() {
             const raw = document.getElementById('mainInput').value;
-            if(!raw || selectedParts.length === 0) return;
+            if(!raw) return;
             document.getElementById('status').style.display = 'block';
             
             setTimeout(() => {
@@ -149,58 +116,70 @@
                     let d = ln.replace(/\D/g, ''); if(d) pNums.push(parseInt(d));
                 });
 
+                // Stability Fix: Uses Fixed Divisor & Primes
                 let base = (pNums.slice(0,4).reduce((a,b)=>a+b, 0) * 2) * 100;
                 let results = {};
-                selectedParts.forEach(pid => {
+                for(let pid=1; pid<=49; pid++) {
                     let b=0, s=0;
-                    for(let i=0; i<2500; i++) {
+                    for(let i=0; i<3000; i++) {
                         let target = base + (i * 123);
-                        let p = primes[(i + pid * 150) % primes.length];
+                        // Fixed Slice per Part ensures stable results
+                        let p = primes[(i + pid * 200) % primes.length];
                         let chk = (target % p === 0) ? Math.floor(target/p) : (target % p);
                         if(chk % 2 !== 0) b++; else s++;
                     }
                     results[pid] = (b >= s ? "B" : "S");
-                });
+                }
                 renderReport(raw.replace(/\n/g, ' | '), results);
             }, 800);
         }
 
         function renderReport(hist, res) {
             document.getElementById('histDisp').innerText = "HISTORY: " + hist;
+            const maj = (l) => l.count("B") >= l.count("S") ? "B" : "S";
+            String.prototype.count=function(c) { return this.split(c).length-1; };
+
             let html = "";
-            let columnCounts = Array(7).fill(0); // For Vertical Totals
+            let colData = ["","","","","","",""]; // To track columns for vertical TOT
 
-            for(let row=0; row<7; row++) {
+            for(let r=0; r<7; r++) {
                 html += "<tr>";
-                for(let col=1; col<=7; col++) {
-                    let pid = row*7 + col;
-                    let val = res[pid] || "-";
-                    if(val === "B") columnCounts[col-1]++;
-                    html += `<td><span style="font-size:10px; color:#888;">${(pid<10?'0':'')+pid}</span><br><span class="${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
+                let rowRes = "";
+                for(let c=0; c<7; c++) {
+                    let pid = (r*7) + (c+1);
+                    let val = res[pid];
+                    rowRes += val;
+                    colData[c] += val;
+                    html += `<td><span style="font-size:9px; color:#555;">${pid}</span><br><span class="${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
                 }
-                html += "</tr>";
+                // Horizontal Total (TO)
+                let rV = maj(rowRes);
+                html += `<td class="to-box ${rV==='B'?'b-clr':'s-clr'}">${rV}</td></tr>`;
             }
-            document.getElementById('gridBody').innerHTML = html;
 
-            // Vertical Totals Row
-            let totRow = "<td>TOTAL</td>";
-            let overallB = 0;
-            columnCounts.forEach(count => {
-                let v = count >= 4 ? "B" : "S";
-                if(v === "B") overallB++;
-                totRow += `<td class="${v==='B'?'b-clr':'s-clr'}">${v}</td>`;
-            });
-            document.getElementById('totalRow').innerHTML = totRow;
-
-            // Verdict Arrow Logic
-            let finalVerdict = overallB >= 4 ? "B" : "S";
+            // Bottom Vertical Total Row
+            let bottomRow = "<tr>";
+            let grandVString = "";
+            for(let c=0; c<7; c++) {
+                let cV = maj(colData[c]);
+                grandVString += cV;
+                bottomRow += `<td class="to-box ${cV==='B'?'b-clr':'s-clr'}">${cV}</td>`;
+            }
+            
+            // Grand Final Intersection
+            let finalV = maj(grandVString);
+            bottomRow += `<td style="background:#000; color:#fff; font-size:24px;">${finalV}</td></tr>`;
+            
+            document.getElementById('gridBody').innerHTML = html + bottomRow;
+            
             let vLine = document.getElementById('verdictLine');
-            vLine.innerHTML = finalVerdict === "B" ? "↑ INSTITUTIONAL BUY" : "↓ INSTITUTIONAL SELL";
-            vLine.style.color = finalVerdict === "B" ? "blue" : "red";
+            vLine.innerHTML = finalV === "B" ? "↑ BUY" : "↓ SELL";
+            vLine.style.color = finalV === "B" ? "blue" : "red";
 
             document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
             document.getElementById('report').style.display = "block";
             document.getElementById('status').style.display = 'none';
+            window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
 </body>
