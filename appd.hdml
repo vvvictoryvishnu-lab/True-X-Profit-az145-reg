@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMNIVERSE MASTER V10 - APPA</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
+        
+        /* Login Screen */
+        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        .login-card { background: #111; padding: 40px; border: 2px solid var(--neon); border-radius: 15px; width: 340px; box-shadow: 0 0 20px var(--neon); position: relative; }
+        
+        .input-container { position: relative; width: 100%; }
+        .login-card input { width: 90%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: var(--neon); text-align: center; border-radius: 5px; font-weight: bold; font-size: 16px; }
+        
+        /* கண் சின்னம் (Eye Icon) */
+        .toggle-password { position: absolute; right: 25px; top: 22px; cursor: pointer; color: var(--neon); font-size: 20px; z-index: 10; }
+
+        .btn-login { width: 100%; padding: 15px; background: #004d40; color: white; border: 1px solid var(--neon); border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+
+        /* Main App (V9-ல் இருந்தது போலவே) */
+        #main-app { display: none; padding-top: 20px; }
+        .mummy-daddy { color: var(--gold); font-size: 45px; font-weight: 900; margin: 15px 0; }
+        .omniverse-tag { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 20px; }
+
+        textarea { width: 95%; max-width: 500px; height: 130px; background: #000; color: #00ff44; border: 2px solid #333; padding: 10px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 18px; }
+        .grid-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 800px; margin: 25px auto; }
+        .p-btn { padding: 10px 5px; background: #111; border: 1px solid #333; border-radius: 4px; color: #666; font-size: 11px; font-weight: bold; }
+        .active-p { background: var(--neon) !important; color: black !important; }
+        .status-strip { background: #00ff44; color: black; padding: 10px; font-weight: bold; width: 60%; margin: 15px auto; border-radius: 4px; display: none; }
+        .btn-run { padding: 18px 45px; background: transparent; color: white; border: 2px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        
+        /* Report Grid 24px */
+        #report { display: none; background: white; color: black; width: 630px; margin: 20px auto; padding: 15px; border: 1px solid #000; text-align: left; }
+        .grid-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
+        .grid-table td { border: 1px solid #000; padding: 5px 0; height: 65px; }
+        .pid-num, .res-val { font-size: 24px; display: block; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
+
+        @media print { body { background: white; } .no-print, #login-screen, .grid-container, .btn-run { display: none !important; } #report { display: block !important; } }
+    </style>
+</head>
+<body>
+
+    <!-- 1. லாகின் திரை -->
+    <div id="login-screen">
+        <div class="mummy-daddy">MUMMY DADDY</div>
+        <div class="login-card">
+            <h2 style="color: var(--neon); margin-bottom: 20px;">ACTIVATION</h2>
+            <input type="email" id="loginEmail" placeholder="Email Address">
+            
+            <div class="input-container">
+                <input type="password" id="loginKey" placeholder="Enter Numeric Key">
+                <span class="toggle-password" onclick="toggleKey()">👁</span>
+            </div>
+            
+            <button class="btn-login" onclick="validateLogin()">ACTIVATE NOW</button>
+        </div>
+    </div>
+
+    <!-- 2. மெயின் ஆப் -->
+    <div id="main-app">
+        <div class="mummy-daddy">MUMMY DADDY</div>
+        <div class="omniverse-tag">OMNIVERSE THEORY - V10</div>
+
+        <div class="workspace">
+            <textarea id="mainInput" placeholder="Paste Data..."></textarea>
+            <div class="grid-container" id="pGrid"></div>
+            <div class="status-strip" id="status">SCANNING... PLEASE WAIT</div>
+            <button class="btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
+        </div>
+
+        <div id="report">
+            <h3 style="text-align:center;">OMNIVERSE THEORY PRECISION REPORT</h3>
+            <div id="histDisp" style="font-size:14px; border:1px solid #000; padding:10px; margin-bottom:10px; font-weight:bold;"></div>
+            <div id="verdictLine" style="font-size:24px; text-align:center; font-weight:bold; margin:15px 0;"></div>
+            <table class="grid-table"><tbody id="gridBody"></tbody></table>
+            <p style="text-align:center; font-weight:bold; margin-top:30px; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY | Date: <span id="rDate"></span></p>
+            <button class="no-print" onclick="window.print()" style="width:100%; padding:15px; margin-top:15px; font-weight:bold; cursor:pointer;">SAVE / PRINT</button>
+        </div>
+    </div>
+
+    <script>
+        const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        let primes = [];
+
+        // கண் சின்னத்தை அழுத்தினால் கீ-யைக் காட்டும் வசதி
+        function toggleKey() {
+            const keyInput = document.getElementById('loginKey');
+            const eyeIcon = document.querySelector('.toggle-password');
+            if (keyInput.type === "password") {
+                keyInput.type = "text";
+                eyeIcon.innerText = "🔒"; // மூடிய கண் அல்லது பூட்டு சின்னம்
+            } else {
+                keyInput.type = "password";
+                eyeIcon.innerText = "👁";
+            }
+        }
+
+        async function validateLogin() {
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const key = document.getElementById('loginKey').value.trim();
+            if(!email || !key) return;
+
+            try {
+                const res = await fetch(`${FB_URL}/users/${email.replace(/\./g, '_')}.json`);
+                const user = await res.json();
+
+                // கீ மற்றும் ஸ்டேட்டஸ் செக்
+                if(user && String(user.key) === key && user.status === "active") {
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                } else {
+                    alert("Invalid Numeric Key or Access Denied!");
+                }
+            } catch(e) { alert("Internet Error!"); }
+        }
+
+        function init() {
+            let lim=500000; let s=new Uint8Array(lim).fill(1);
+            for(let i=2;i*i<lim;i++) if(s[i]) for(let j=i*i;j<lim;j+=i) s[j]=0;
+            for(let i=2;i<lim;i++) if(s[i]) primes.push(i);
+
+            const g = document.getElementById('pGrid');
+            for(let i=1; i<=49; i++) {
+                let b = document.createElement('div');
+                b.className = 'p-btn active-p'; 
+                b.innerText = (i < 10 ? '0' : '') + i;
+                g.appendChild(b);
+            }
+        }
+        init();
+
+        function runOmniverse() {
+            const raw = document.getElementById('mainInput').value.trim();
+            if(!raw) return;
+            document.getElementById('status').style.display = 'block';
+            setTimeout(() => {
+                let pNums = [];
+                raw.split('\n').forEach(ln => {
+                    let d = ln.replace(/\D/g, ''); if(d) pNums.push(parseInt(d));
+                });
+                let base = (pNums.slice(0,4).reduce((a,b)=>a+b, 0) * 2) * 100;
+                let results = {};
+                for(let pid=1; pid<=49; pid++) {
+                    let b=0, s=0;
+                    for(let i=0; i<3000; i++) {
+                        let target = base + (i * 123);
+                        let p = primes[(i + pid * 200) % primes.length];
+                        let chk = (target % p === 0) ? Math.floor(target/p) : (target % p);
+                        if(chk % 2 !== 0) b++; else s++;
+                    }
+                    results[pid] = (b >= s ? "B" : "S");
+                }
+                renderReport(raw.replace(/\n/g, ' | '), results);
+            }, 500);
+        }
+
+        function renderReport(hist, res) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + hist;
+            const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
+            let html = ""; let colData = ["","","","","","",""];
+
+            for(let r=0; r<7; r++) {
+                html += "<tr>";
+                let rowRes = "";
+                for(let c=0; c<7; c++) {
+                    let pid = (r*7) + (c+1);
+                    let val = res[pid];
+                    rowRes += val; colData[c] += val;
+                    html += `<td><span class="pid-num">${(pid<10?'0':'')+pid}</span><span class="res-val ${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
+                }
+                let rV = maj(rowRes);
+                html += `<td><span class="res-val ${rV==='B'?'b-clr':'s-clr'}">${rV}</span></td></tr>`;
+            }
+
+            let bottomRow = "<tr>";
+            let grandVString = "";
+            for(let c=0; c<7; c++) {
+                let cV = maj(colData[c]); grandVString += cV;
+                bottomRow += `<td><span class="res-val ${cV==='B'?'b-clr':'s-clr'}">${cV}</span></td>`;
+            }
+            let finalV = maj(grandVString);
+            bottomRow += `<td style="font-size:32px; border:2px solid #000;"><span class="${finalV==='B'?'b-clr':'s-clr'}">${finalV}</span></td></tr>`;
+            
+            document.getElementById('gridBody').innerHTML = html + bottomRow;
+            let vLine = document.getElementById('verdictLine');
+            vLine.innerHTML = finalV === "B" ? "↑ INSTITUTIONAL BUY" : "↓ INSTITUTIONAL SELL";
+            vLine.style.color = finalV === "B" ? "blue" : "red";
+            document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
+            document.getElementById('report').style.display = "block";
+            document.getElementById('status').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
