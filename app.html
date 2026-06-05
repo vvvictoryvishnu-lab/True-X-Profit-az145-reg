@@ -3,122 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNIVERSE V12 - TRUE X PROFIT</title>
+    <title>TRUE X PROFIT OMNIVERSE</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
         
-        .master-header { border-bottom: 2px solid #333; padding: 10px 20px; display: flex; justify-content: space-between; color: #00ff44; font-size: 13px; font-weight: bold; }
-        .mummy-daddy { color: var(--gold); font-size: 45px; font-weight: 900; margin: 15px 0; }
-        .omniverse-tag { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 20px; }
+        #gate { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:5000; }
+        .login-box { background:#111; padding:30px; border:2px solid var(--neon); border-radius:12px; width:300px; }
+        input { width:90%; padding:12px; margin:10px 0; background:#000; border:1px solid #444; color:var(--neon); text-align:center; border-radius:5px; }
 
-        .workspace { display: flex; flex-direction: column; align-items: center; }
-        textarea { width: 95%; max-width: 500px; height: 120px; background: #000; color: #00ff44; border: 1px solid #333; padding: 10px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 17px; }
+        #main-content { display:none; padding:15px; }
+        .mummy-daddy { color: var(--gold); font-size: 38px; font-weight: 900; margin: 10px 0; }
+        .header-top { border-bottom: 2px solid #333; padding: 8px 20px; color: #00ff44; font-size: 13px; display: flex; justify-content: space-between; font-weight: bold; }
 
-        .btn-row { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
-        .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .btn-clear { padding: 15px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
+        textarea { width: 95%; max-width: 500px; height: 120px; background: #000; color: #00ff44; border: 2px solid #333; padding: 10px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 16px; margin: 15px 0; }
+        
+        .btn-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .btn-clear { padding: 15px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-        #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 15px; border: 2px solid #000; text-align: left; }
-        .rep-top { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; border-bottom: 2.5px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
-        .hist-box { font-size: 15px; background: #fff; padding: 8px; border: 1px solid #000; margin-bottom: 15px; font-weight: bold; word-break: break-all; }
-        .inst-verdict { border: 4px solid red; padding: 15px; text-align: center; font-size: 24px; font-weight: 900; margin-bottom: 15px; }
+        /* Report Styles (A4 HALF) */
+        #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
+        .rep-info { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
+        .hist-box { font-size: 13px; background: #f2f2f2; padding: 10px; border: 1px solid #000; margin-bottom: 10px; font-weight: bold; word-break: break-all; }
+        .verdict-box { border: 4px solid red; padding: 15px; text-align: center; font-size: 24px; font-weight: 900; margin-bottom: 15px; text-transform: uppercase; }
         
         .grid-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
-        .grid-table td { border: 1px solid #000; padding: 5px 0; height: 60px; vertical-align: middle; }
-        .pid-num { font-size: 14px; color: #555; display: block; margin-bottom: -5px; }
-        .res-val { font-size: 24px; display: block; }
+        .grid-table td { border: 1px solid #000; padding: 6px 0; height: 60px; vertical-align: middle; }
+        .p-num { font-size: 15px; color: #555; display: block; margin-bottom: -5px; }
+        .r-val { font-size: 24px; display: block; font-weight: 900; }
         .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
-        .total-cell { background: #e3f2fd; border: 2px solid #000 !important; }
+        .tot-row { background: #e3f2fd; border-top: 2.5px solid #000; }
 
         @media print {
             body { background: white !important; }
-            .no-print, .master-header, .mummy-daddy, .omniverse-tag, .workspace, .btn-row { display: none !important; }
+            .no-print, #gate, .mummy-daddy, textarea, .btn-row, .header-top { display: none !important; }
             #report { display: block !important; border: none; margin: 0; width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="master-header">
-        <span>YouTube: True X Profit | admin@truexprofit.com</span>
-        <span>vvvictoryvishnu@gmail.com</span>
-    </div>
-
-    <div class="mummy-daddy">MUMMY DADDY</div>
-    <div class="omniverse-tag">OMNIVERSE THEORY - V12</div>
-
-    <div class="workspace">
-        <textarea id="mainInput" placeholder="INPUT DATA"></textarea>
-        <div class="btn-row">
-            <button class="btn-clear" onclick="document.getElementById('mainInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
-            <button class="btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
+    <div id="gate">
+        <div class="mummy-daddy">MUMMY DADDY</div>
+        <div class="login-box">
+            <h3 style="color:var(--neon)">SYSTEM ACTIVATION</h3>
+            <input type="email" id="uMail" placeholder="Registered Email">
+            <input type="password" id="uKey" placeholder="Access Key">
+            <button class="btn-run" style="width:100%" onclick="login()">ENTER</button>
         </div>
     </div>
 
-    <div id="report">
-        <div class="rep-top">
+    <div id="main-content">
+        <div class="header-top">
             <span>YouTube: True X Profit</span>
-            <span>vvvictoryvishnu@gmail.com</span>
+            <span id="userDisp"></span>
+            <span>admin@truexprofit.com</span>
         </div>
-        <h3 style="text-align:center; margin:10px 0;">OMNIVERSE THEORY PRECISION REPORT</h3>
-        <div id="histDisp" class="hist-box"></div>
-        <div id="instVerdict" class="inst-verdict"></div>
+        <div class="mummy-daddy">MUMMY DADDY</div>
+
+        <textarea id="dataInput" placeholder="PASTE ORIGINAL OHLC DATA HERE..."></textarea>
         
-        <table class="grid-table"><tbody id="gridBody"></tbody></table>
-        
-        <p style="text-align:center; font-size:12px; margin-top:30px; font-weight:bold; border-top: 1px solid #000; padding-top: 10px;">
-            Dedicated to MUMMY DADDY | Date: <span id="rDate"></span>
-        </p>
-        <button class="no-print" onclick="window.print()" style="width:100%; padding:15px; margin-top:10px; font-weight:bold; cursor:pointer;">PRINT / SAVE REPORT</button>
+        <div class="btn-row">
+            <button class="btn-clear no-print" onclick="document.getElementById('dataInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
+            <button class="btn-run no-print" onclick="runScan()">RUN OMNIVERSE SCAN</button>
+        </div>
+
+        <div id="report">
+            <div class="rep-info">
+                <span>YouTube: True X Profit</span>
+                <span>vvvictoryvishnu@gmail.com</span>
+            </div>
+            <h3 style="text-align:center; margin:10px 0;">OMNIVERSE THEORY PRECISION REPORT</h3>
+            <div id="histDisp" class="hist-box"></div>
+            <div id="ivBox" class="verdict-box"></div>
+            <table class="grid-table"><tbody id="tableBody"></tbody></table>
+            <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY | Date: <span id="rDate"></span></p>
+            <button class="btn-run no-print" style="width:100%; background:white; color:black;" onclick="window.print()">PRINT / SAVE REPORT</button>
+        </div>
     </div>
 
     <script>
-        const SERVER_URL = "http://46.202.162.155:5000/scan";
-        async function runOmniverse() {
-            const raw = document.getElementById('mainInput').value.trim();
+        const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        const SERV_URL = "http://46.202.162.155:5000/omniverse_scan";
+
+        async function login() {
+            const email = document.getElementById('uMail').value.trim().toLowerCase();
+            const key = document.getElementById('uKey').value.trim();
+            if(!email || !key) return;
+            const res = await fetch(`${FB_URL}/users/${email.replace(/\./g, '_')}.json`);
+            const data = await res.json();
+            if(data && data.key === key && data.status === "active") {
+                document.getElementById('gate').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('userDisp').innerText = email;
+            } else { alert("Access Denied!"); }
+        }
+
+        async function runScan() {
+            const raw = document.getElementById('dataInput').value.trim();
             if(!raw) return;
             try {
-                const response = await fetch(SERVER_URL, {
+                const response = await fetch(SERV_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ input: raw })
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({input: raw})
                 });
                 const data = await response.json();
-                if(data.results) { renderReport(raw, data.results); }
-            } catch (e) { alert("Please click http://46.202.162.155:5000 once in new tab to allow connection."); }
+                if(data.results) renderReport(raw, data.results);
+            } catch(e) { alert("Server Connection Error! Click http://46.202.162.155:5000 once in new tab."); }
         }
 
         function renderReport(hist, res) {
             document.getElementById('histDisp').innerText = "HISTORY: " + hist.replace(/\n/g, ' | ').toUpperCase();
             const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
+            const clr = (v) => v === "B" ? "b-clr" : "s-clr";
+
             let html = ""; let colData = ["","","","","","",""];
-
             for(let r=0; r<7; r++) {
-                html += "<tr>"; let rowS = "";
+                html += "<tr>"; let rowStr = "";
                 for(let c=0; c<7; c++) {
-                    let pid = (r*7)+(c+1); let val = res[pid];
-                    rowS += val; colData[c] += val;
-                    html += `<td><span class="pid-num">${pid<10?'0':''}${pid}</span><span class="res-val ${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
+                    let pid = (r*7)+(c+1); let v = res[pid.toString()];
+                    rowStr += v; colData[c] += v;
+                    html += `<td><span class="p-num">${pid<10?'0':''}${pid}</span><span class="r-val ${clr(v)}">${v}</span></td>`;
                 }
-                let rV = maj(rowS);
-                html += `<td style="background:#f9f9f9;"><span class="res-val ${rV==='B'?'b-clr':'s-clr'}">${rV}</span></td></tr>`;
+                let rV = maj(rowStr);
+                html += `<td style="background:#f9f9f9;"><span class="r-val ${clr(rV)}">${rV}</span></td></tr>`;
             }
-
-            let bRow = "<tr>"; let grandVStr = "";
+            let bRow = "<tr>"; let grandStr = "";
             for(let c=0; c<7; c++) {
-                let cV = maj(colData[c]); grandVStr += cV;
-                bRow += `<td style="background:#f9f9f9;"><span class="res-val ${cV==='B'?'b-clr':'s-clr'}">${cV}</span></td>`;
+                let cV = maj(colData[c]); grandStr += cV;
+                bRow += `<td style="background:#f9f9f9;"><span class="r-val ${clr(cV)}">${cV}</span></td>`;
             }
-            let final = maj(grandVStr);
-            bRow += `<td class="total-cell ${final==='B'?'b-clr':'s-clr'}">${final}</td></tr>`;
-            
-            document.getElementById('gridBody').innerHTML = html + bRow;
-            let iv = document.getElementById('instVerdict');
-            iv.innerText = (final === "B" ? "↑ INSTITUTIONAL BUY" : "↓ INSTITUTIONAL SELL");
-            iv.style.color = iv.style.borderColor = (final === "B" ? "blue" : "red");
+            let fV = maj(grandStr);
+            bRow += `<td class="tot-row ${clr(fV)}">${fV}</td></tr>`;
+
+            document.getElementById('tableBody').innerHTML = html + bRow;
+            const iv = document.getElementById('ivBox');
+            iv.innerText = (fV === "B" ? "↑ INSTITUTIONAL BUY" : "↓ INSTITUTIONAL SELL");
+            iv.style.color = iv.style.borderColor = (fV === "B" ? "blue" : "red");
             document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
             document.getElementById('report').style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
 </body>
