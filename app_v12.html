@@ -3,58 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNIVERSE THEORY V12 - PRIVATE SERVER</title>
+    <title>OMNIVERSE THEORY V12 - FINAL PRO</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
-        .mummy-daddy { color: var(--gold); font-size: 40px; font-weight: 900; margin: 15px 0; }
-        .omniverse-tag { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 20px; }
-        .workspace { display: flex; flex-direction: column; align-items: center; }
-        textarea { width: 95%; max-width: 500px; height: 120px; background: #000; color: #00ff44; border: 1px solid #333; padding: 10px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 18px; }
-        .btn-row { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
-        .btn-run { padding: 18px 45px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        
+        /* Gatekeeper Login */
+        #login-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:3000; }
+        .login-box { background:#111; padding:35px; border:2px solid var(--neon); border-radius:15px; width:320px; box-shadow: 0 0 25px var(--neon); }
+        .login-box input { width:90%; padding:12px; margin:10px 0; background:#000; border:1px solid #444; color:var(--neon); text-align:center; border-radius:5px; font-weight:bold; }
+        .btn-gate { width:100%; padding:15px; background:#004d40; color:white; border:1px solid var(--neon); border-radius:5px; cursor:pointer; font-weight:bold; font-size:16px; }
+
+        /* Main Workspace */
+        #main-app { display:none; padding:20px 10px; }
+        .mummy-daddy { color: var(--gold); font-size: clamp(35px, 10vw, 50px); font-weight: 900; margin: 10px 0; text-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
+        .brand-header { border-bottom: 2px solid #333; padding: 10px 20px; font-weight: bold; color: #00ff44; font-size: 13px; display: flex; justify-content: space-between; }
+        
+        textarea { width: 95%; max-width: 500px; height: 130px; background: #000; color: #00ff44; border: 2px solid #333; padding: 12px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 17px; margin-top: 20px; }
+
+        .btn-row { display: flex; justify-content: center; gap: 15px; margin: 25px 0; }
+        .btn-run { padding: 18px 45px; background: #004d40; color: white; border: 2.5px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
         .btn-clear { padding: 18px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        .status-bar { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 70%; margin: 15px auto; border-radius: 4px; display: none; }
+
+        /* Perfect Print Report (A4 Half Page) */
         #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
+        .rep-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
+        .hist-box { font-size: 14px; background: #f2f2f2; padding: 10px; border: 1.5px solid #000; margin-bottom: 15px; font-weight: bold; word-break: break-all; line-height: 1.4; }
+        .inst-verdict { border: 4px solid red; padding: 15px; text-align: center; font-size: 26px; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
+        
         .grid-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
-        .grid-table td { border: 1px solid #000; padding: 5px 0; height: 60px; vertical-align: middle; }
-        .pid-num { font-size: 14px; color: #555; display: block; }
-        .res-val { font-size: 24px; display: block; }
+        .grid-table td { border: 1px solid #000; padding: 6px 0; height: 60px; vertical-align: middle; }
+        .pid-cell { font-size: 15px; color: #555; display: block; margin-bottom: -5px; }
+        .res-cell { font-size: 24px; display: block; font-weight: 900; }
         .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
-        .status-strip { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 70%; margin: 10px auto; border-radius: 5px; display: none; }
+        .total-cell { background: #e3f2fd; border: 2.5px solid #000 !important; font-size: 28px !important; }
+
+        .btn-print { width: 100%; padding: 15px; background: #fff; border: 2px solid #000; color: #000; font-weight: bold; margin-top: 20px; cursor: pointer; font-size: 18px; border-radius: 8px; }
+
         @media print {
             body { background: white !important; }
-            .no-print, .mummy-daddy, .omniverse-tag, .workspace, .btn-row { display: none !important; }
-            #report { display: block !important; border: none; margin: 0; width: 100%; }
+            .no-print, #login-overlay, .mummy-daddy, textarea, .btn-row, .status-bar, .brand-header, .btn-print, h2 { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; padding: 0; }
         }
     </style>
 </head>
 <body>
-    <div class="mummy-daddy">MUMMY DADDY</div>
-    <div class="omniverse-tag">OMNIVERSE THEORY - VPS SECURED</div>
-    <div class="workspace">
-        <textarea id="mainInput" placeholder="INPUT DATA"></textarea>
-        <div class="status-strip" id="status">CONNECTING TO PRIVATE SERVER...</div>
-        <div class="btn-row">
-            <button class="btn-clear" onclick="document.getElementById('mainInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
-            <button class="btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
+
+    <!-- 1. LOGIN GATE -->
+    <div id="login-overlay">
+        <div class="mummy-daddy">MUMMY DADDY</div>
+        <div class="login-box">
+            <h3 style="color: var(--neon); letter-spacing: 2px;">OMNIVERSE V12</h3>
+            <input type="email" id="userEmail" placeholder="Registered Email">
+            <input type="password" id="userKey" placeholder="Access Key">
+            <button class="btn-gate" onclick="handleLogin()">ACTIVATE WORKSPACE</button>
         </div>
     </div>
-    <div id="report">
-        <div style="font-size:12px; font-weight:bold; border-bottom:1px solid #000; padding-bottom:5px; display:flex; justify-content:space-between;">
-            <span>YouTube: True X Profit</span>
-            <span>admin@truexprofit.com</span>
+
+    <!-- 2. MAIN SYSTEM -->
+    <div id="main-app">
+        <div class="brand-header">
+            <span>YouTube: True X Profit | admin@truexprofit.com</span>
+            <span id="displayUser"></span>
         </div>
-        <h3 style="text-align:center;">OMNIVERSE THEORY PRECISION REPORT</h3>
-        <div id="histDisp" style="font-size:14px; border:1px solid #000; padding:10px; margin-bottom:15px; font-weight:bold;"></div>
-        <table class="grid-table"><tbody id="gridBody"></tbody></table>
-        <button class="no-print" onclick="window.print()" style="width:100%; padding:15px; margin-top:15px; font-weight:bold; cursor:pointer;">PRINT REPORT</button>
+
+        <div class="mummy-daddy">MUMMY DADDY</div>
+        <h2 style="color: var(--neon); letter-spacing: 5px;">OMNIVERSE THEORY</h2>
+
+        <div class="workspace">
+            <textarea id="dataInput" placeholder="PASTE ORIGINAL OHLC DATA HERE..."></textarea>
+            <div class="status-bar" id="statusBox">CONNECTING TO VPS...</div>
+
+            <div class="btn-row">
+                <button class="btn-clear no-print" onclick="clearAllData()">CLEAR</button>
+                <button class="btn-run no-print" onclick="runMasterScan()">RUN MASTER SCAN</button>
+            </div>
+        </div>
+
+        <!-- 3. PROFESSIONAL REPORT -->
+        <div id="report">
+            <div class="rep-header">
+                <span style="color:green;">YouTube: True X Profit</span>
+                <span style="color:blue;">vvvictoryvishnu@gmail.com</span>
+                <span style="color:red;">V12_VPS</span>
+            </div>
+            <h3 style="text-align:center; margin:10px 0; color: #1a237e;">OMNIVERSE THEORY PRECISION REPORT</h3>
+            <div id="histDisp" class="hist-box"></div>
+            <div id="verdictBox" class="inst-verdict"></div>
+            
+            <table class="grid-table"><tbody id="tableGridBody"></tbody></table>
+            
+            <p style="text-align:center; font-size:12px; margin-top:25px; font-weight:bold; border-top: 1px solid #000; padding-top: 15px;">
+                Dedicated to MUMMY DADDY | Date: <span id="repDate"></span>
+            </p>
+            <button class="btn-print no-print" onclick="window.print()">PRINT / SAVE REPORT</button>
+        </div>
     </div>
+
     <script>
         const SERVER_URL = "http://46.202.162.155:5000/scan";
-        async function runOmniverse() {
-            const raw = document.getElementById('mainInput').value.trim();
+        const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        
+        let logoutTimer;
+        function resetTimer() {
+            clearTimeout(logoutTimer);
+            logoutTimer = setTimeout(() => { alert("Session Expired!"); location.reload(); }, 20 * 60 * 1000);
+        }
+        document.onmousemove = resetTimer;
+
+        async function handleLogin() {
+            const email = document.getElementById('userEmail').value.trim().toLowerCase();
+            const key = document.getElementById('userKey').value.trim();
+            if(!email || !key) return;
+
+            try {
+                const res = await fetch(`${FB_URL}/users/${email.replace(/\./g, '_')}.json`);
+                const user = await res.json();
+                if(user && user.key === key && user.status === "active") {
+                    document.getElementById('login-overlay').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                    document.getElementById('displayUser').innerText = email;
+                    resetTimer();
+                } else { alert("Invalid Credentials or Blocked!"); }
+            } catch(e) { alert("Server Connection Error!"); }
+        }
+
+        function clearAllData() {
+            document.getElementById('dataInput').value = "";
+            document.getElementById('report').style.display = "none";
+            document.getElementById('statusBox').style.display = "none";
+        }
+
+        async function runMasterScan() {
+            const raw = document.getElementById('dataInput').value.trim();
             if(!raw) return;
-            document.getElementById('status').style.display = 'block';
+            const sb = document.getElementById('statusBox');
+            sb.innerText = "CALCULATING ON MASTER VPS... PLEASE WAIT";
+            sb.style.display = 'block';
+
             try {
                 const response = await fetch(SERVER_URL, {
                     method: 'POST',
@@ -63,24 +151,43 @@
                 });
                 const data = await response.json();
                 if(data.results) { renderReport(raw, data.results); }
-            } catch (e) { alert("Error connecting to Server!"); }
-            finally { document.getElementById('status').style.display = 'none'; }
+            } catch (e) {
+                alert("Please ensure http://46.202.162.155:5000 is allowed in your browser.");
+            } finally { sb.style.display = 'none'; }
         }
+
         function renderReport(hist, res) {
             document.getElementById('histDisp').innerText = "HISTORY: " + hist.replace(/\n/g, ' | ').toUpperCase();
             const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
-            let html = "";
+            let html = ""; let colData = ["","","","","","",""];
+
             for(let r=0; r<7; r++) {
-                html += "<tr>"; let rowS = "";
+                html += "<tr>"; let rowStr = "";
                 for(let c=0; c<7; c++) {
-                    let pid = (r*7)+(c+1); let val = res[pid];
-                    rowS += val;
-                    html += `<td><span class="pid-num">${pid}</span><span class="res-val ${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
+                    let pid = (r*7)+(c+1); 
+                    let val = res[pid.toString()] || res[pid]; // Handling string/number keys
+                    rowStr += val; colData[c] += val;
+                    html += `<td><span class="pid-cell">${pid<10?'0':''}${pid}</span><span class="res-cell ${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
                 }
-                html += `<td><span class="res-val">${maj(rowS)}</span></td></tr>`;
+                let rV = maj(rowStr);
+                html += `<td style="background:#f9f9f9;"><span class="res-cell ${rV==='B'?'b-clr':'s-clr'}">${rV}</span></td></tr>`;
             }
-            document.getElementById('gridBody').innerHTML = html;
+
+            let bRow = "<tr>"; let gV = "";
+            for(let c=0; c<7; c++) {
+                let cV = maj(colData[c]); gV += cV;
+                bRow += `<td style="background:#f9f9f9;"><span class="res-cell ${cV==='B'?'b-clr':'s-clr'}">${cV}</span></td>`;
+            }
+            let final = maj(gV);
+            bRow += `<td class="total-cell ${final==='B'?'b-clr':'s-clr'}">${final}</td></tr>`;
+
+            document.getElementById('tableGridBody').innerHTML = html + bRow;
+            let vb = document.getElementById('verdictBox');
+            vb.innerText = (final === "B" ? "↑ INSTITUTIONAL BUY" : "↓ INSTITUTIONAL SELL");
+            vb.style.color = vb.style.borderColor = (final === "B" ? "blue" : "red");
+            document.getElementById('repDate').innerText = new Date().toLocaleDateString('en-GB');
             document.getElementById('report').style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
 </body>
