@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMNIVERSE 15x5 - MASTER PRO</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; text-align: center; }
+        
+        /* Login */
+        #login-gate { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:3000; }
+        .login-box { background:#111; padding:30px; border:2px solid var(--neon); border-radius:15px; width:300px; }
+        input { width:90%; padding:12px; margin:10px 0; background:#000; border:1px solid #444; color:var(--neon); text-align:center; border-radius:5px; font-weight:bold; }
+
+        /* Main UI */
+        #main-ui { display:none; padding:15px; }
+        .mummy-daddy { color: var(--gold); font-size: 38px; font-weight: 900; margin: 10px 0; }
+        .brand-header { border-bottom: 2px solid #333; padding: 10px; color: #00ff44; font-size: 12px; display: flex; justify-content: space-between; font-weight: bold; }
+
+        textarea { width: 50%; height: 110px; background: #000; color: #00ff44; border: 1px solid #333; padding: 10px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 16px; margin: 15px 0; }
+        
+        .btn-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .btn-clear { padding: 15px 20px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+        /* 15x5 Table Style */
+        #report { display: none; background: white; color: black; width: 650px; margin: 20px auto; padding: 20px; border: 2px solid #000; text-align: left; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 18px; }
+        th, td { border: 1px solid #999; padding: 8px; }
+        th { background: #eee; font-size: 13px; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
+        .total-row { background: #e3f2fd; font-weight: 900; border-top: 2.5px solid #000; }
+        .verdict-col { background: #f9f9f9; border-left: 2.5px solid #000; }
+
+        @media print {
+            body { background: white; }
+            .no-print, #login-gate, .mummy-daddy, textarea, .btn-row, .brand-header { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-gate">
+        <div class="mummy-daddy">MUMMY DADDY</div>
+        <div class="login-box">
+            <input type="email" id="uEmail" placeholder="Registered Email">
+            <input type="password" id="uKey" placeholder="Access Key">
+            <button class="btn-run" style="width:100%" onclick="login()">LOGIN</button>
+        </div>
+    </div>
+
+    <div id="main-ui">
+        <div class="brand-header">
+            <span>YouTube: True X Profit</span>
+            <span id="userMail"></span>
+            <span>admin@truexprofit.com</span>
+        </div>
+        <div class="mummy-daddy">MUMMY DADDY</div>
+
+        <textarea id="dataInput" placeholder="PASTE OHLC DATA HERE..."></textarea>
+        
+        <div class="btn-row">
+            <button class="btn-clear" onclick="document.getElementById('dataInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
+            <button class="btn-run" onclick="run15x5Scan()">RUN 15x5 MATRIX SCAN</button>
+        </div>
+
+        <div id="report">
+            <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; border-bottom:1px solid #000; padding-bottom:5px;">
+                <span>YouTube: True X Profit</span>
+                <span>vvvictoryvishnu@gmail.com</span>
+            </div>
+            <h3 style="text-align:center; margin:10px 0; color:#1a237e;">GLOBAL PRECISION 15x5 MATRIX REPORT</h3>
+            <div id="histDisp" style="font-size:12px; background:#f2f2f2; padding:8px; border:1px solid #000; margin-bottom:10px; font-weight:bold;"></div>
+            <div id="baseDisp" style="color:red; font-weight:bold; margin-bottom:10px;"></div>
+            
+            <table>
+                <thead>
+                    <tr><th>LAYER</th><th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th><th class="verdict-col">VERDICT</th></tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+                <tr id="totalRow" class="total-row"></tr>
+            </table>
+            
+            <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY</p>
+            <button class="no-print" onclick="window.print()" style="width:100%; padding:10px; margin-top:15px; font-weight:bold; cursor:pointer;">PRINT REPORT</button>
+        </div>
+    </div>
+
+    <script>
+        const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        const SERVER_URL = "http://46.202.162.155:5000/scan_omniverse";
+
+        async function login() {
+            const email = document.getElementById('uEmail').value.trim().toLowerCase();
+            const key = document.getElementById('uKey').value.trim();
+            const res = await fetch(`${FB_URL}/users/${email.replace(/\./g, '_')}.json`);
+            const user = await res.json();
+            if(user && user.key === key && user.status === "active") {
+                document.getElementById('login-gate').style.display = 'none';
+                document.getElementById('main-ui').style.display = 'block';
+                document.getElementById('userMail').innerText = email;
+            } else { alert("Access Denied!"); }
+        }
+
+        async function run15x5Scan() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) return;
+            try {
+                const response = await fetch(SERVER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ input: raw })
+                });
+                const data = await response.json();
+                if(data.matrix) render15x5(raw, data.matrix, data.base);
+            } catch(e) { alert("Please click http://46.202.162.155:5000 once in a new tab to allow VPS connection."); }
+        }
+
+        function render15x5(hist, matrix, base) {
+            const divs = [1, 4, 7, 9, 13];
+            const maj = (l) => l.filter(x => x==="B").length >= l.filter(x => x==="S").length ? "B" : "S";
+            const clr = (v) => v === "B" ? "b-clr" : "s-clr";
+
+            document.getElementById('histDisp').innerText = "HISTORY: " + hist.replace(/\n/g, ' | ').toUpperCase();
+            document.getElementById('baseDisp').innerText = "BASE ID: " + base;
+
+            let html = "";
+            let logicVerdicts = [];
+            for(let i=0; i<15; i++) {
+                let row = divs.map(d => matrix[d][i]);
+                let v = maj(row);
+                logicVerdicts.push(v);
+                html += `<tr><td>L${(i+1)<10?'0':''}${i+1}</td>`;
+                row.forEach(val => html += `<td class="${clr(val)}">${val}</td>`);
+                html += `<td class="verdict-col ${clr(v)}">${v}</td></tr>`;
+            }
+            document.getElementById('tableBody').innerHTML = html;
+
+            let colTotals = divs.map(d => maj(matrix[d]));
+            let grandV = maj(logicVerdicts);
+            let totHtml = `<td>TOTAL</td>`;
+            colTotals.forEach(v => totHtml += `<td class="${clr(v)}">${v}</td>`);
+            totHtml += `<td class="verdict-col ${clr(grandV)}" style="font-size:24px;">${grandV}</td>`;
+            document.getElementById('totalRow').innerHTML = totHtml;
+
+            document.getElementById('report').style.display = "block";
+        }
+    </script>
+</body>
+</html>
