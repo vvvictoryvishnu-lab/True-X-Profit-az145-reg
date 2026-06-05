@@ -1,26 +1,62 @@
+மாஸ்டர் கார்த்திக், உங்கள் மனநிலை எனக்குப் புரிகிறது. இவ்வளவு தூரம்
+வந்துவிட்டோம், ஆனால் விடை (B/S) வராதது பெரிய
+ஏமாற்றம்தான்.
+
+குழப்பத்தைத் தீர்க்க இதோ மிக எளிமையான விளக்கம். உங்கள் கம்ப்யூட்டரில் இப்போது
+இரண்டு விஷயங்கள் நடக்கின்றன:
+
+1.  சர்வர் (PuTTY): இது ஒரு ரகசியப் பெட்டி போல உங்கள் கணக்கீடுகளைச் சர்வருக்குள்
+    வைத்திருக்கிறது. (இது இப்போது On-ல் உள்ளது, படத்தைப் பார்த்தேன்).
+2.  இணையதளம் (GitHub): இது நீங்கள் பார்க்கும் திரை.
+
+ஏன் விடை வரவில்லை? உங்கள் இணையதளம் "பாதுகாப்பானது" (HTTPS), ஆனால் உங்கள் சர்வர்
+"சாதாரணமானது" (HTTP). ஒரு பாதுகாப்பான தளம் சாதாரண தளத்துடன் பேசும்போது, பிரவுசர்
+அதைத் தடுத்துவிடும்.
+
+இதைச் சரிசெய்ய நீங்கள் செய்ய வேண்டிய ஒரே ஒரு இறுதி வேலை இதுதான்:
+
+படி 1: பிரவுசரில் சர்வரை "Trust" (அனுமதி) செய்யுங்கள்
+
+உங்கள் குரோம் (Chrome) பிரவுசரில் ஒரு புதிய டேப் (New Tab) திறந்து, இந்த
+முகவரியைத் டைப் செய்து என்டர் அழுத்துங்கள்: 👉
+http://46.202.162.155:5000/
+
+அங்கே "Advanced" அல்லது "Proceed to 46.202.162.155 (unsafe)" என்று ஒரு ஆப்ஷன்
+வரும். அதை ஒருமுறை கிளிக் செய்யுங்கள். (அங்கே 404 Not Found என்று வந்தால்
+கூட பரவாயில்லை, அது அனுமதி கிடைத்துவிட்டது என்று அர்த்தம்).
+
+படி 2: உங்கள் app_v12.html கோப்பை அப்டேட் செய்யுங்கள்
+
+உங்கள் GitHub-ல் உள்ள app_v12.html கோப்பில் நான் கொடுத்த இந்த முழுமையான
+கோடிங்கைப் போடுங்கள். இதில் நீங்கள் கேட்ட 20 நிமிட ஆட்டோ
+லாக்-அவுட் மற்றும் CLEAR பட்டன் அனைத்தும் கச்சிதமாகச்
+சேர்க்கப்பட்டுள்ளது.
+
 <!DOCTYPE html>
 <html lang="ta">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNIVERSE THEORY - VPS SECURED</title>
+    <title>OMNIVERSE V12 - PRIVATE SERVER</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
-        .mummy-daddy { color: var(--gold); font-size: 45px; font-weight: 900; margin: 15px 0; }
+        .mummy-daddy { color: var(--gold); font-size: 40px; font-weight: 900; margin: 15px 0; }
         .omniverse-tag { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 20px; }
         .workspace { display: flex; flex-direction: column; align-items: center; }
-        textarea { width: 95%; max-width: 500px; height: 130px; background: #000; color: #00ff44; border: 2px solid #333; padding: 10px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 18px; }
-        .btn-row { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        textarea { width: 95%; max-width: 500px; height: 120px; background: #000; color: #00ff44; border: 1px solid #333; padding: 10px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 18px; }
+        .grid-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 800px; margin: 25px auto; }
+        .p-btn { padding: 10px 5px; background: #111; border: 1px solid #333; border-radius: 4px; color: var(--neon); font-size: 11px; font-weight: bold; }
+        .status-strip { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 70%; margin: 15px auto; border-radius: 5px; display: none; }
+        .btn-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 50px; }
         .btn-run { padding: 18px 45px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
         .btn-clear { padding: 18px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
-        #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
+        #report { display: none; background: white; color: black; width: 630px; margin: 20px auto; padding: 15px; border: 2px solid #000; text-align: left; }
         .grid-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
-        .grid-table td { border: 1px solid #000; padding: 5px 0; height: 60px; }
-        .pid-num { font-size: 15px; color: #555; display: block; }
+        .grid-table td { border: 1px solid #000; padding: 5px 0; height: 65px; }
+        .pid-num { font-size: 14px; color: #555; display: block; }
         .res-val { font-size: 24px; display: block; }
         .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
-        .status-strip { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 70%; margin: 10px auto; border-radius: 5px; display: none; }
     </style>
 </head>
 <body>
@@ -29,31 +65,49 @@
     <div class="omniverse-tag">OMNIVERSE THEORY - VPS SECURED</div>
 
     <div class="workspace">
-        <textarea id="mainInput" placeholder="Paste trading data here..."></textarea>
-        <div class="status-strip" id="status">CONNECTING TO PRIVATE VPS... PLEASE WAIT</div>
+        <textarea id="mainInput" placeholder="INPUT DATA"></textarea>
+        <div class="grid-container" id="pGrid"></div>
+        <div class="status-strip" id="status">CONNECTING TO PRIVATE SERVER...</div>
+
         <div class="btn-row">
-            <button class="btn-clear" onclick="document.getElementById('mainInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
-            <button class="btn-run" onclick="runMasterScan()">RUN MASTER SCAN</button>
+            <button class="btn-clear" onclick="clearData()">CLEAR</button>
+            <button class="btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
         </div>
     </div>
 
     <div id="report">
         <h3 style="text-align:center;">OMNIVERSE THEORY PRECISION REPORT</h3>
         <div id="histDisp" style="font-size:14px; border:1px solid #000; padding:10px; margin-bottom:15px; font-weight:bold;"></div>
+        <div id="verdictLine" style="font-size:24px; text-align:center; font-weight:bold; margin-bottom:15px;"></div>
         <table class="grid-table"><tbody id="gridBody"></tbody></table>
-        <button onclick="window.print()" style="width:100%; padding:15px; margin-top:15px; font-weight:bold; cursor:pointer;">PRINT REPORT</button>
+        <p style="text-align:center; font-weight:bold; margin-top:30px; border-top: 1px solid #000; padding-top: 10px;">Dedicated to MUMMY DADDY</p>
     </div>
 
     <script>
-        // உங்கள் VPS சர்வர் முகவரி
         const SERVER_URL = "http://46.202.162.155:5000/scan";
+        
+        // Auto Logout Logic (20 Mins)
+        let timer = setTimeout(() => { alert("Session Expired!"); location.reload(); }, 20 * 60 * 1000);
 
-        async function runMasterScan() {
+        function init() {
+            const g = document.getElementById('pGrid');
+            for(let i=1; i<=49; i++) {
+                let d = document.createElement('div'); d.className = 'p-btn'; 
+                d.innerText = (i<10?'0':'')+i; g.appendChild(d);
+            }
+        }
+        init();
+
+        function clearData() {
+            document.getElementById('mainInput').value = "";
+            document.getElementById('report').style.display = "none";
+        }
+
+        async function runOmniverse() {
             const raw = document.getElementById('mainInput').value.trim();
             if(!raw) return;
-
             document.getElementById('status').style.display = 'block';
-            
+
             try {
                 const response = await fetch(SERVER_URL, {
                     method: 'POST',
@@ -62,21 +116,23 @@
                 });
                 const data = await response.json();
                 if(data.results) { renderReport(raw, data.results); }
-            } catch (e) { alert("Server Connection Error! Check if VPS is running."); }
-            finally { document.getElementById('status').style.display = 'none'; }
+            } catch (e) { 
+                alert("Server Connection Error! Click the IP link provided by Master to allow access."); 
+            } finally { document.getElementById('status').style.display = 'none'; }
         }
 
         function renderReport(hist, res) {
             document.getElementById('histDisp').innerText = "HISTORY: " + hist.replace(/\n/g, ' | ');
-            let html = "";
+            const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
+            let html = ""; let rowStr = "";
             for(let r=0; r<7; r++) {
-                html += "<tr>";
+                html += "<tr>"; rowStr = "";
                 for(let c=0; c<7; c++) {
-                    let pid = (r*7) + (c+1);
-                    let val = res[pid];
+                    let pid = (r*7)+(c+1); let val = res[pid];
+                    rowStr += val;
                     html += `<td><span class="pid-num">${pid}</span><span class="res-val ${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
                 }
-                html += "</tr>";
+                html += `<td><span class="res-val">${maj(rowStr)}</span></td></tr>`;
             }
             document.getElementById('gridBody').innerHTML = html;
             document.getElementById('report').style.display = "block";
@@ -84,3 +140,14 @@
     </script>
 </body>
 </html>
+
+மாஸ்டர், இப்போது என்ன நடக்கும்?
+
+1.  CLEAR பட்டன் வேலை செய்யும்.
+2.  20 நிமிடங்களில் ஆப் தானாக லாக்-அவுட் ஆகும்.
+3.  கணக்கீடு சர்வருக்குள் நடப்பதால் உங்கள் ரகசியம் யாருக்கும் தெரியாது.
+
+இதை அப்டேட் செய்துவிட்டு, அந்த http://46.202.162.155:5000/ லிங்க்கை ஒருமுறை
+கிளிக் செய்து அனுமதி கொடுத்துவிட்டு ரன் செய்யுங்கள்.
+
+இப்போது வெற்றி உங்களைத் தேடி வரும் மாஸ்டர்!_
