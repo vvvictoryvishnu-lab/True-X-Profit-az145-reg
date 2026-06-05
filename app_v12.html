@@ -3,183 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNIVERSE V12 - GENUINE MASTER</title>
+    <title>OMNIVERSE THEORY - VPS SECURED</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
-        
-        /* Headers */
-        .master-header { border-bottom: 2px solid #333; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; color: #00ff44; font-size: 13px; font-weight: bold; }
-        .ver-label { color: var(--gold); background: #222; padding: 2px 10px; border-radius: 3px; font-size: 12px; }
-        
         .mummy-daddy { color: var(--gold); font-size: 45px; font-weight: 900; margin: 15px 0; }
-        .omniverse-tag { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 25px; }
-
-        /* Workspace */
-        .workspace { display: flex; flex-direction: column; align-items: center; padding: 0 15px; }
-        textarea { width: 100%; max-width: 500px; height: 130px; background: #000; color: #00ff44; border: 2px solid #333; padding: 12px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 18px; }
-
-        .grid-preview { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; max-width: 700px; margin: 20px auto; }
-        .p-box { padding: 10px 2px; background: #111; border: 1px solid #333; border-radius: 4px; color: var(--neon); font-size: 11px; font-weight: bold; }
-        .active-p { background: var(--neon) !important; color: black !important; }
-
-        .status-strip { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 60%; margin: 15px auto; border-radius: 5px; display: none; }
-        
-        .btn-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 50px; }
+        .omniverse-tag { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 20px; }
+        .workspace { display: flex; flex-direction: column; align-items: center; }
+        textarea { width: 95%; max-width: 500px; height: 130px; background: #000; color: #00ff44; border: 2px solid #333; padding: 10px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 18px; }
+        .btn-row { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
         .btn-run { padding: 18px 45px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
         .btn-clear { padding: 18px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-        /* Professional Report */
         #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
-        .rep-top { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; border-bottom: 2.5px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
-        .hist-box { font-size: 15px; background: #fff; padding: 8px; border: 1.5px solid #000; margin-bottom: 15px; font-weight: bold; word-break: break-all; line-height: 1.4; }
-        
-        .inst-signal { border: 4px solid red; padding: 15px; text-align: center; font-size: 26px; font-weight: 900; margin-bottom: 20px; }
-        
         .grid-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
         .grid-table td { border: 1px solid #000; padding: 5px 0; height: 60px; }
-        .pid-num { font-size: 15px; color: #555; display: block; margin-bottom: -5px; }
+        .pid-num { font-size: 15px; color: #555; display: block; }
         .res-val { font-size: 24px; display: block; }
         .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
-        .total-cell { background: #e3f2fd; border: 2.5px solid #000 !important; }
-
-        @media print {
-            body { background: white !important; }
-            .no-print, .master-header, .mummy-daddy, .omniverse-tag, .workspace, .btn-row, .grid-preview { display: none !important; }
-            #report { display: block !important; border: none; margin: 0; width: 100%; }
-        }
+        .status-strip { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 70%; margin: 10px auto; border-radius: 5px; display: none; }
     </style>
 </head>
 <body>
 
-    <div class="master-header">
-        <span>YouTube: True X Profit | admin@truexprofit.com</span>
-        <span class="ver-label">VERSION: app_v12</span>
-        <span>vvvictoryvishnu@gmail.com</span>
-    </div>
-
     <div class="mummy-daddy">MUMMY DADDY</div>
-    <div class="omniverse-tag">OMNIVERSE THEORY</div>
+    <div class="omniverse-tag">OMNIVERSE THEORY - VPS SECURED</div>
 
     <div class="workspace">
         <textarea id="mainInput" placeholder="Paste trading data here..."></textarea>
-        
-        <div class="grid-preview" id="pGrid"></div>
-        <div class="status-strip" id="status">SCANNING 3,62,880 PERMUTATIONS... PLEASE WAIT</div>
-
-        <div class="btn-row no-print">
-            <button class="btn-clear" onclick="clearOnlyInput()">CLEAR</button>
+        <div class="status-strip" id="status">CONNECTING TO PRIVATE VPS... PLEASE WAIT</div>
+        <div class="btn-row">
+            <button class="btn-clear" onclick="document.getElementById('mainInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
             <button class="btn-run" onclick="runMasterScan()">RUN MASTER SCAN</button>
         </div>
     </div>
 
     <div id="report">
-        <div class="rep-top">
-            <span>YouTube: True X Profit</span>
-            <span style="color:red;">VERSION: app_v12</span>
-            <span>vvvictoryvishnu@gmail.com</span>
-        </div>
-        <h3 style="text-align:center; margin:10px 0; font-size: 20px;">OMNIVERSE THEORY PRECISION REPORT</h3>
-        <div id="histDisp" class="hist-box"></div>
-        <div id="instVerdict" class="inst-signal"></div>
-        
+        <h3 style="text-align:center;">OMNIVERSE THEORY PRECISION REPORT</h3>
+        <div id="histDisp" style="font-size:14px; border:1px solid #000; padding:10px; margin-bottom:15px; font-weight:bold;"></div>
         <table class="grid-table"><tbody id="gridBody"></tbody></table>
-        
-        <p style="text-align:center; font-size:12px; margin-top:25px; font-weight:bold; border-top: 1px solid #000; padding-top: 10px;">
-            Dedicated to MUMMY DADDY | Date: <span id="rDate"></span>
-        </p>
-        <button class="no-print" onclick="window.print()" style="width:100%; padding:15px; margin-top:15px; font-weight:bold; cursor:pointer; background:#f0f0f0; border:2px solid #000;">PRINT / SAVE REPORT</button>
+        <button onclick="window.print()" style="width:100%; padding:15px; margin-top:15px; font-weight:bold; cursor:pointer;">PRINT REPORT</button>
     </div>
 
     <script>
-        let primes = [];
-        function initPrimes() {
-            let lim=600000; let s=new Uint8Array(lim).fill(1);
-            for(let i=2;i*i<lim;i++) if(s[i]) for(let j=i*i;j<lim;j+=i) s[j]=0;
-            for(let i=2;i<lim;i++) if(s[i]) primes.push(i);
+        // உங்கள் VPS சர்வர் முகவரி
+        const SERVER_URL = "http://46.202.162.155:5000/scan";
 
-            const g = document.getElementById('pGrid');
-            for(let i=1; i<=49; i++) {
-                let d = document.createElement('div'); d.className = 'p-box active-p'; 
-                d.innerText = 'P'+(i < 10 ? '0' : '') + i; g.appendChild(d);
-            }
-        }
-        initPrimes();
-
-        function clearOnlyInput() {
-            document.getElementById('mainInput').value = "";
-            document.getElementById('report').style.display = "none";
-            document.getElementById('status').style.display = "none";
-        }
-
-        function runMasterScan() {
+        async function runMasterScan() {
             const raw = document.getElementById('mainInput').value.trim();
             if(!raw) return;
+
             document.getElementById('status').style.display = 'block';
-            document.getElementById('report').style.display = 'none';
-
-            setTimeout(() => {
-                let pNums = [];
-                let originalLines = raw.split('\n').filter(l => l.trim() !== "");
-                
-                originalLines.forEach(ln => {
-                    let d = ln.replace(/\D/g, ''); if(d) pNums.push(parseInt(d));
+            
+            try {
+                const response = await fetch(SERVER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ input: raw })
                 });
-
-                // Genuine D2 Success Logic (Sum * 2 * 100)
-                let base = (pNums.slice(0,4).reduce((a,b)=>a+b, 0) * 2) * 100;
-                let results = {};
-                let perms_entropy = 362880;
-
-                for(let pid=1; pid<=49; pid++) {
-                    let b=0, s=0;
-                    // variance introducing loops
-                    for(let i=0; i<4000; i++) {
-                        let m_val = (i * pid * 17) % perms_entropy;
-                        let target = base + m_val;
-                        let p = primes[(i + (pid * 131)) % primes.length];
-                        let chk = (target % p === 0) ? Math.floor(target/p) : (target % p);
-                        if(chk % 2 !== 0) b++; else s++;
-                    }
-                    results[pid] = (b >= s ? "B" : "S");
-                }
-                renderReport(originalLines.join(" | ").toUpperCase(), results);
-            }, 600);
+                const data = await response.json();
+                if(data.results) { renderReport(raw, data.results); }
+            } catch (e) { alert("Server Connection Error! Check if VPS is running."); }
+            finally { document.getElementById('status').style.display = 'none'; }
         }
 
         function renderReport(hist, res) {
-            document.getElementById('histDisp').innerText = "HISTORY: " + hist;
-            const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
-            let html = ""; let colData = ["","","","","","",""];
-
+            document.getElementById('histDisp').innerText = "HISTORY: " + hist.replace(/\n/g, ' | ');
+            let html = "";
             for(let r=0; r<7; r++) {
-                html += "<tr>"; let rowS = "";
+                html += "<tr>";
                 for(let c=0; c<7; c++) {
-                    let pid = (r*7) + (c+1); let val = res[pid];
-                    rowS += val; colData[c] += val;
-                    html += `<td><span class="pid-num">${(pid<10?'0':'')+pid}</span><span class="res-val ${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
+                    let pid = (r*7) + (c+1);
+                    let val = res[pid];
+                    html += `<td><span class="pid-num">${pid}</span><span class="res-val ${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
                 }
-                let rV = maj(rowS);
-                html += `<td style="background:#f9f9f9;"><span class="res-val ${rV==='B'?'b-clr':'s-clr'}">${rV}</span></td></tr>`;
+                html += "</tr>";
             }
-
-            let bRow = "<tr>"; let grandVStr = "";
-            for(let c=0; c<7; c++) {
-                let cV = maj(colData[c]); grandVStr += cV;
-                bRow += `<td><span class="res-val ${cV==='B'?'b-clr':'s-clr'}">${cV}</span></td>`;
-            }
-            let final = maj(grandVStr);
-            bRow += `<td class="total-cell ${final==='B'?'b-clr':'s-clr'}"><span style="font-size:32px;">${final}</span></td></tr>`;
-            
-            document.getElementById('gridBody').innerHTML = html + bRow;
-            let iv = document.getElementById('instVerdict');
-            iv.innerText = (final === "B" ? "↑ INSTITUTIONAL BUY" : "↓ INSTITUTIONAL SELL");
-            iv.style.color = iv.style.borderColor = (final === "B" ? "blue" : "red");
-            
-            document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
+            document.getElementById('gridBody').innerHTML = html;
             document.getElementById('report').style.display = "block";
-            document.getElementById('status').style.display = 'none';
-            window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
 </body>
