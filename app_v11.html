@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMNIVERSE V12 - RESEARCH MASTER</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
+        
+        /* Headers */
+        .master-header { border-bottom: 2px solid #333; padding: 8px 20px; display: flex; justify-content: space-between; color: #00ff44; font-size: 12px; font-weight: bold; }
+        .mummy-daddy { color: var(--gold); font-size: 42px; font-weight: 900; margin: 15px 0; }
+        .omniverse-tag { color: var(--neon); font-size: 16px; font-weight: bold; letter-spacing: 4px; margin-bottom: 20px; }
+
+        /* Workspace */
+        .workspace { display: flex; flex-direction: column; align-items: center; }
+        textarea { width: 95%; max-width: 500px; height: 120px; background: #000; color: #00ff44; border: 1px solid #333; padding: 10px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 17px; }
+
+        /* 49 Grid */
+        .grid-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; max-width: 600px; margin: 20px auto; }
+        .p-btn { padding: 8px 2px; background: #111; border: 1px solid #333; border-radius: 3px; color: var(--neon); font-size: 10px; font-weight: bold; }
+        .active-p { background: var(--neon) !important; color: black !important; }
+
+        .status-strip { background: var(--gold); color: black; padding: 8px; font-weight: bold; width: 70%; margin: 15px auto; border-radius: 4px; display: none; }
+        
+        /* Buttons */
+        .btn-row { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; }
+        .btn-run { padding: 15px 35px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .btn-clear { padding: 15px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+        /* Report Print Layout */
+        #report { display: none; background: white; color: black; width: 610px; margin: 20px auto; padding: 20px; border: 1.5px solid #000; text-align: left; }
+        .rep-top { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; border-bottom: 2.5px solid #000; padding-bottom: 4px; margin-bottom: 8px; }
+        .ver-title { color: #d32f2f; font-weight: 900; }
+        
+        .hist-box { font-size: 15px; background: #fff; padding: 6px; border: 1.2px solid #000; margin-bottom: 10px; font-weight: bold; word-break: break-all; }
+        .verdict-line { font-size: 24px; font-weight: 900; text-align: center; margin: 10px 0; }
+        
+        .grid-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
+        .grid-table td { border: 1px solid #000; padding: 4px 0; height: 55px; }
+        .pid-num { font-size: 14px; color: #444; display: block; margin-bottom: -4px; }
+        .res-val { font-size: 24px; display: block; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
+        .total-cell { background: #f0f7ff; border: 2px solid #000 !important; font-size: 28px !important; }
+
+        @media print {
+            body { background: white; }
+            .no-print, .master-header, .mummy-daddy, .omniverse-tag, .workspace, .btn-row, .grid-container { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        // மாஸ்டர்: ஒவ்வொரு ஃபைலுக்கும் இங்கே பெயரை மட்டும் மாற்றவும்
+        const VERSION_NAME = "app_v12"; 
+    </script>
+
+    <div class="master-header">
+        <span>YouTube: True X Profit | admin@truexprofit.com</span>
+        <span>VERSION: <script>document.write(VERSION_NAME)</script></span>
+    </div>
+
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <div class="omniverse-tag">OMNIVERSE THEORY</div>
+
+    <div class="workspace">
+        <div style="color: var(--gold); font-weight: bold; margin-bottom: 5px; font-size: 14px; width: 50%; text-align: left;">INPUT DATA</div>
+        <textarea id="mainInput" placeholder="Paste data here..."></textarea>
+        <div class="grid-container" id="pGrid"></div>
+        <div class="status-strip" id="status">SCANNING... PLEASE WAIT</div>
+        <div class="btn-row">
+            <button class="btn-clear" onclick="clearData()">CLEAR</button>
+            <button class="btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
+        </div>
+    </div>
+
+    <!-- ரிப்போர்ட் பகுதி -->
+    <div id="report">
+        <div class="rep-top">
+            <span>YouTube: True X Profit</span>
+            <span class="ver-title">VERSION: <script>document.write(VERSION_NAME)</script></span>
+            <span>vvvictoryvishnu@gmail.com</span>
+        </div>
+        <h3 style="text-align:center; margin:5px 0; font-size: 18px;">OMNIVERSE THEORY PRECISION REPORT</h3>
+        <div id="histDisp" class="hist-box"></div>
+        <div id="verdictLine" class="verdict-line"></div>
+        
+        <table class="grid-table"><tbody id="gridBody"></tbody></table>
+        
+        <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top: 1px solid #000; padding-top: 10px;">
+            Dedicated to MUMMY DADDY | Date: <span id="rDate"></span>
+        </p>
+        <button class="no-print" onclick="window.print()" style="width:100%; padding:12px; margin-top:10px; font-weight:bold; cursor:pointer;">PRINT / SAVE REPORT</button>
+    </div>
+
+    <script>
+        let primes = [];
+        function init() {
+            let lim=500000; let s=new Uint8Array(lim).fill(1);
+            for(let i=2;i*i<lim;i++) if(s[i]) for(let j=i*i;j<limit;j+=i) s[j]=0;
+            for(let i=2;i<limit;i++) if(s[i]) primes.push(i);
+            const g = document.getElementById('pGrid');
+            for(let i=1; i<=49; i++) {
+                let d = document.createElement('div'); d.className = 'p-btn active-p'; 
+                d.innerText = (i < 10 ? '0' : '') + i; g.appendChild(d);
+            }
+        }
+        init();
+
+        function clearData() {
+            document.getElementById('mainInput').value = "";
+            document.getElementById('report').style.display = "none";
+            document.getElementById('status').style.display = "none";
+        }
+
+        function runOmniverse() {
+            const raw = document.getElementById('mainInput').value.trim();
+            if(!raw) return;
+            document.getElementById('status').style.display = 'block';
+            setTimeout(() => {
+                let pNums = [];
+                raw.split('\n').forEach(ln => {
+                    let d = ln.replace(/\D/g, ''); if(d) pNums.push(parseInt(d));
+                });
+                let base = (pNums.slice(0,4).reduce((a,b)=>a+b, 0) * 2) * 100;
+                let results = {};
+                for(let pid=1; pid<=49; pid++) {
+                    let b=0, s=0;
+                    for(let i=0; i<3000; i++) {
+                        let target = base + (i * 123);
+                        let p = primes[(i + pid * 200 + 5000) % primes.length];
+                        let chk = (target % p === 0) ? Math.floor(target/p) : (target % p);
+                        if(chk % 2 !== 0) b++; else s++;
+                    }
+                    results[pid] = (b >= s ? "B" : "S");
+                }
+                renderReport(raw.replace(/\n/g, ' | '), results);
+            }, 500);
+        }
+
+        function renderReport(hist, res) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + hist;
+            const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
+            let html = ""; let colData = ["","","","","","",""];
+            for(let r=0; r<7; r++) {
+                html += "<tr>"; let rowS = "";
+                for(let c=0; c<7; c++) {
+                    let pid = (r*7) + (c+1); let val = res[pid];
+                    rowS += val; colData[c] += val;
+                    html += `<td><span class="pid-num">${(pid<10?'0':'')+pid}</span><span class="res-val ${val==='B'?'b-clr':'s-clr'}">${val}</span></td>`;
+                }
+                html += `<td style="background:#f9f9f9;"><span class="res-val ${maj(rowS)==='B'?'b-clr':'s-clr'}">${maj(rowS)}</span></td></tr>`;
+            }
+            let bRow = "<tr>"; let grandVStr = "";
+            for(let c=0; c<7; c++) {
+                let cV = maj(colData[c]); grandVStr += cV;
+                bRow += `<td style="background:#f9f9f9;"><span class="res-val ${cV==='B'?'b-clr':'s-clr'}">${cV}</span></td>`;
+            }
+            let final = maj(grandVStr);
+            bRow += `<td class="total-cell ${final==='B'?'b-clr':'s-clr'}">${final}</td></tr>`;
+            document.getElementById('gridBody').innerHTML = html + bRow;
+            let vL = document.getElementById('verdictLine');
+            vL.innerHTML = final === "B" ? "↑ INSTITUTIONAL BUY" : "↓ INSTITUTIONAL SELL";
+            vL.style.color = final === "B" ? "blue" : "red";
+            document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
+            document.getElementById('report').style.display = "block";
+            document.getElementById('status').style.display = 'none';
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
+</body>
+</html>
