@@ -14,7 +14,7 @@ cat << 'EOF' > /var/www/html/app.html
         .btn-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
         .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 6px; font-weight: bold; cursor: pointer; }
         .btn-clear { padding: 15px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 6px; font-weight: bold; cursor: pointer; }
-        #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2.5px solid #000; text-align: left; }
+        #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
         .rep-info { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
         .hist-box { font-size: 13px; background: #f2f2f2; padding: 10px; border: 1px solid #000; margin-bottom: 10px; font-weight: bold; word-break: break-all; }
         table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
@@ -98,5 +98,26 @@ cat << 'EOF' > /var/www/html/app.html
     </script>
 </body>
 </html>
+EOF
+
+# 4. என்ஜினக்ஸ் (Nginx) பாலத்தை அமைத்தல்
+cat << 'EOF' > /etc/nginx/sites-available/default
+server {
+    listen 80;
+    server_name truexprofit.com www.truexprofit.com;
+
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+
+    location /omniverse_scan {
+        proxy_pass http://127.0.0.1:5000/omniverse_scan;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
 EOF
 systemctl restart nginx
