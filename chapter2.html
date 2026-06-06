@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <title>OMNIVERSE - CHAPTER 2</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: Arial; text-align: center; margin: 0; padding: 10px; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; }
+        textarea { width: 90%; max-width: 500px; height: 100px; background: #000; color: #00ff44; border: 1px solid var(--neon); padding: 10px; border-radius: 8px; font-size: 16px; margin: 15px 0; }
+        .btn { padding: 15px 30px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 6px; cursor: pointer; font-weight: bold; margin: 5px; }
+        #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
+        .rep-info { display: flex; justify-content: space-between; font-size: 16px; font-weight: bold; border-bottom: 2px solid #000; }
+        .hist-box { font-size: 18px; background: #f2f2f2; padding: 10px; border: 1px solid #000; margin: 10px 0; font-weight: bold; word-break: break-all; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 22px; table-layout: fixed; }
+        td { border: 1px solid #000; height: 60px; vertical-align: middle; }
+        .p-num { font-size: 14px; color: #555; display: block; margin-bottom: -5px; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
+        .tot-row { background: #e3f2fd; border-top: 2.5px solid #000; }
+        @media print { body { background: white !important; } .no-print, .mummy-daddy, textarea, .btn { display: none !important; } #report { display: block !important; border: none; margin: 0; width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="mummy-daddy no-print">MUMMY DADDY</div>
+    <textarea id="dataInput" class="no-print" placeholder="PASTE DATA HERE"></textarea><br>
+    <div class="no-print">
+        <button class="btn" style="background:#440000" onclick="document.getElementById('dataInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
+        <button class="btn" onclick="runScan()">RUN CHAPTER 2 SCAN</button>
+    </div>
+    <div id="report">
+        <div class="rep-info"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
+        <h2 style="text-align:center; margin:10px 0;">OMNIVERSE THEORY 7x7 GRID</h2>
+        <div id="histDisp" class="hist-box"></div>
+        <table id="resTable"></table>
+        <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top: 1px solid #000; padding-top: 10px;">Dedicated to MUMMY DADDY</p>
+        <button class="btn no-print" style="background:white; color:black; width:100%; border:1px solid #000;" onclick="window.print()">PRINT / SAVE REPORT</button>
+    </div>
+    <script>
+        async function runScan() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) return;
+            try {
+                // கவனிக்க: இப்போது நாம் ஐபி-ஐப் பயன்படுத்தவில்லை, நேரடியாக டொமைன் வழியாகச் செல்கிறோம்
+                const res = await fetch("/scan_logic", { 
+                    method:'POST', 
+                    headers:{'Content-Type':'application/json'}, 
+                    body:JSON.stringify({input:raw}) 
+                });
+                const data = await res.json();
+                if(data.matrix) renderTable(raw, data.matrix);
+            } catch(e) { alert("Server Busy! Please try again in 5 seconds."); }
+        }
+        function renderTable(raw, res) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + raw.replace(/\n/g, ' | ').toUpperCase();
+            const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
+            const clr = (v) => v === "B" ? "b-clr" : "s-clr";
+            let html = ""; let colData = ["","","","","","",""];
+            for(let r=0; r<7; r++) {
+                html += "<tr>"; let rowStr = "";
+                for(let c=0; c<7; c++) {
+                    let pid = (r*7)+(c+1); let v = res[pid.toString()];
+                    rowStr += v; colData[c] += v;
+                    html += `<td><span class="p-num">${pid}</span><span class="${clr(v)}">${v}</span></td>`;
+                }
+                let rV = maj(rowStr); html += `<td style="background:#f9f9f9;" class="${clr(rV)}">${rV}</td></tr>`;
+            }
+            let bRow = "<tr class='tot-row'>"; let grandStr = "";
+            for(let c=0; c<7; c++) {
+                let cV = maj(colData[c]); grandStr += cV;
+                bRow += `<td class="${clr(cV)}">${cV}</td>`;
+            }
+            let fV = maj(grandStr); bRow += `<td class="${clr(fV)}">${fV}</td></tr>`;
+            document.getElementById('resTable').innerHTML = html + bRow;
+            document.getElementById('report').style.display = "block";
+        }
+    </script>
+</body>
+</html>
