@@ -1,13 +1,12 @@
-cat << 'EOF' > /var/www/html/app.html
 <!DOCTYPE html>
 <html lang="ta">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNIVERSE THEORY - TRUE X PROFIT</title>
+    <title>OMNIVERSE V12 - TRUE X PROFIT</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; text-align: center; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
         .mummy-daddy { color: var(--gold); font-size: 38px; font-weight: 900; margin: 15px 0; }
         .header-top { border-bottom: 2px solid #333; padding: 10px 20px; color: #00ff44; font-size: 13px; display: flex; justify-content: space-between; font-weight: bold; }
         textarea { width: 90%; max-width: 500px; height: 110px; background: #000; color: #00ff44; border: 2px solid #333; padding: 10px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 17px; margin: 15px 0; }
@@ -15,8 +14,6 @@ cat << 'EOF' > /var/www/html/app.html
         .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 6px; font-weight: bold; cursor: pointer; }
         .btn-clear { padding: 15px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 6px; font-weight: bold; cursor: pointer; }
         #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
-        .rep-info { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
-        .hist-box { font-size: 13px; background: #f2f2f2; padding: 10px; border: 1px solid #000; margin-bottom: 10px; font-weight: bold; word-break: break-all; }
         table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
         td { border: 1px solid #000; padding: 5px 0; height: 60px; vertical-align: middle; }
         .p-num { font-size: 15px; color: #555; display: block; margin-bottom: -5px; }
@@ -27,97 +24,53 @@ cat << 'EOF' > /var/www/html/app.html
     </style>
 </head>
 <body>
-    <div id="login-gate" style="padding: 50px;">
-        <div class="mummy-daddy">MUMMY DADDY</div>
-        <div style="background: #111; padding: 30px; border-radius: 15px; width: 300px; margin: auto; border: 1px solid var(--neon);">
-            <input type="email" id="uMail" placeholder="Registered Email" style="width:90%; padding:10px; margin:10px 0;">
-            <input type="password" id="uKey" placeholder="Access Key" style="width:90%; padding:10px; margin:10px 0;">
-            <button class="btn-run" style="width:100%" onclick="login()">ACTIVATE</button>
-        </div>
+    <div class="header-top"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <textarea id="dataInput" placeholder="PASTE DATA HERE"></textarea>
+    <div class="btn-row no-print">
+        <button class="btn-clear" onclick="document.getElementById('dataInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
+        <button class="btn-run" onclick="runScan()">RUN OMNIVERSE SCAN</button>
     </div>
-    <div id="main-content" style="display:none;">
-        <div class="header-top"><span>YouTube: True X Profit | admin@truexprofit.com</span><span id="userDisp"></span></div>
-        <div class="mummy-daddy">MUMMY DADDY</div>
-        <textarea id="dataInput" placeholder="PASTE OHLC DATA HERE"></textarea>
-        <div class="btn-row no-print">
-            <button class="btn-clear" onclick="document.getElementById('dataInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
-            <button class="btn-run" onclick="runScan()">RUN OMNIVERSE SCAN</button>
+    <div id="report">
+        <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold;">
+            <span>YouTube: True X Profit</span><span>vvvictoryvishnu@gmail.com</span>
         </div>
-        <div id="report">
-            <div class="rep-info"><span>YouTube: True X Profit</span><span>vvvictoryvishnu@gmail.com</span></div>
-            <h3 style="text-align:center; margin:10px 0;">OMNIVERSE THEORY PRECISION REPORT</h3>
-            <div id="histDisp" class="hist-box"></div>
-            <table id="resTable"></table>
-            <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY | Date: <span id="rDate"></span></p>
-            <button class="btn-run no-print" style="width:100%; background:white; color:black;" onclick="window.print()">PRINT / SAVE REPORT</button>
-        </div>
+        <h3 style="text-align:center; margin:10px 0;">OMNIVERSE THEORY PRECISION REPORT</h3>
+        <div id="histDisp" style="font-size:13px; background:#f2f2f2; padding:10px; border:1px solid #000; margin-bottom:10px; font-weight:bold; word-wrap: break-all;"></div>
+        <table id="resTable"></table>
+        <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY</p>
+        <button class="btn-run no-print" style="width:100%; background:white; color:black; margin-top:15px;" onclick="window.print()">PRINT / SAVE REPORT</button>
     </div>
     <script>
-        const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/users/";
-        async function login() {
-            const email = document.getElementById('uMail').value.trim().toLowerCase();
-            const key = document.getElementById('uKey').value.trim();
-            const res = await fetch(`${FB_URL}${email.replace(/\./g, '_')}.json`);
-            const user = await res.json();
-            if(user && user.key === key && user.status === "active") {
-                document.getElementById('login-gate').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                document.getElementById('userDisp').innerText = email;
-            } else { alert("Access Denied!"); }
-        }
         async function runScan() {
             const raw = document.getElementById('dataInput').value.trim();
             if(!raw) return;
-            const res = await fetch("/omniverse_scan", { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({input:raw}) });
-            const data = await res.json();
-            if(data.results) renderTable(raw, data.results);
+            try {
+                // இப்போது நாம் நேரடியாக உங்கள் VPS சர்வர் வழியாகத் தொடர்பு கொள்கிறோம்
+                const response = await fetch("http://truexprofit.com/omniverse_scan", {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({input: raw})
+                });
+                const data = await response.json();
+                if(data.results) renderTable(raw, data.results);
+            } catch(e) { alert("Please click http://truexprofit.com/ once in a new tab and allow connection."); }
         }
         function renderTable(raw, res) {
             document.getElementById('histDisp').innerText = "HISTORY: " + raw.replace(/\n/g, ' | ').toUpperCase();
             const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
-            let html = ""; let colData = ["","","","","","",""];
-            for(let r=0; r<7; r++) {
-                html += "<tr>"; let rowS = "";
-                for(let c=0; c<7; c++) {
-                    let pid = (r*7)+(c+1); let v = res[pid.toString()];
-                    rowS += v; colData[c] += v;
-                    html += `<td><span class="p-num">${pid}</span><span class="r-val ${v==='B'?'b-clr':'s-clr'}">${v}</span></td>`;
-                }
-                let rV = maj(rowS); html += `<td style="background:#f9f9f9;"><span class="r-val ${rV==='B'?'b-clr':'s-clr'}">${rV}</span></td></tr>`;
+            const clr = (v) => v === "B" ? "b-clr" : "s-clr";
+
+            let html = "<tr><th>LAYER</th><th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th><th>VERDICT</th></tr>";
+            const divs = ["1", "4", "7", "9", "13"]; // இது சர்வருக்குள் உள்ள டிவிசர்கள்
+            let vList = [];
+            for(let i=0; i<15; i++) {
+                // இப்போதைக்கு D1 மட்டும் வரும், மற்றவை சர்வர் அப்டேட்டில் மாறும்
+                let v = res[(i+1).toString()]; vList.push(v);
+                html += `<tr><td>L${i+1}</td><td class="${clr(v)}">${v}</td><td>-</td><td>-</td><td>-</td><td>-</td><td style="background:#f9f9f9;" class="${clr(v)}">${v}</td></tr>`;
             }
-            let bRow = "<tr>"; let grandStr = "";
-            for(let c=0; c<7; c++) {
-                let cV = maj(colData[c]); grandStr += cV;
-                bRow += `<td style="background:#f9f9f9;"><span class="r-val ${cV==='B'?'b-clr':'s-clr'}">${cV}</span></td>`;
-            }
-            let fV = maj(grandStr); bRow += `<td class="tot-row ${fV==='B'?'b-clr':'s-clr'}">${fV}</td></tr>`;
-            document.getElementById('resTable').innerHTML = html + bRow;
+            document.getElementById('resTable').innerHTML = html;
             document.getElementById('report').style.display = "block";
-            document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
         }
     </script>
 </body>
 </html>
-EOF
-
-# 4. என்ஜினக்ஸ் (Nginx) பாலத்தை அமைத்தல்
-cat << 'EOF' > /etc/nginx/sites-available/default
-server {
-    listen 80;
-    server_name truexprofit.com www.truexprofit.com;
-
-    location / {
-        root /var/www/html;
-        index index.html;
-    }
-
-    location /omniverse_scan {
-        proxy_pass http://127.0.0.1:5000/omniverse_scan;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-EOF
-systemctl restart nginx
