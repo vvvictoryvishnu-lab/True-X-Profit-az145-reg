@@ -7,69 +7,97 @@
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; padding: 0; text-align: center; }
-        .mummy-daddy { color: var(--gold); font-size: 38px; font-weight: 900; margin: 15px 0; }
-        .header-top { border-bottom: 2px solid #333; padding: 10px 20px; color: #00ff44; font-size: 13px; display: flex; justify-content: space-between; font-weight: bold; }
-        textarea { width: 90%; max-width: 500px; height: 110px; background: #000; color: #00ff44; border: 2px solid #333; padding: 10px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 17px; margin: 15px 0; }
-        .btn-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
-        .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 6px; font-weight: bold; cursor: pointer; }
-        .btn-clear { padding: 15px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 6px; font-weight: bold; cursor: pointer; }
-        #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
+        .master-header { border-bottom: 2px solid #333; padding: 10px 20px; display: flex; justify-content: space-between; color: #00ff44; font-size: 13px; font-weight: bold; }
+        .mummy-daddy { color: var(--gold); font-size: 45px; font-weight: 900; margin: 15px 0; }
+        .omniverse-tag { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 20px; }
+        .workspace { display: flex; flex-direction: column; align-items: center; }
+        textarea { width: 95%; max-width: 500px; height: 120px; background: #000; color: #00ff44; border: 1px solid #333; padding: 10px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 17px; margin-top: 15px; }
+        .btn-row { display: flex; justify-content: center; gap: 15px; margin: 25px 0; }
+        .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn-clear { padding: 15px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
+        #report { display: none; background: white; color: black; width: 650px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
+        .rep-top { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; border-bottom: 2.5px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
+        .hist-box { font-size: 14px; background: #f2f2f2; padding: 10px; border: 1.5px solid #000; margin-bottom: 15px; font-weight: bold; word-break: break-all; line-height: 1.4; }
+        .inst-signal { border: 4px solid red; padding: 15px; text-align: center; font-size: 26px; font-weight: 900; margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
-        td { border: 1px solid #000; padding: 5px 0; height: 60px; vertical-align: middle; }
-        .p-num { font-size: 15px; color: #555; display: block; margin-bottom: -5px; }
-        .r-val { font-size: 24px; display: block; font-weight: 900; }
+        table td, table th { border: 1px solid #999; padding: 10px; }
         .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
-        .tot-row { background: #e3f2fd; border-top: 2.5px solid #000; font-size: 28px; }
-        @media print { .no-print, .mummy-daddy, textarea, .btn-row, .header-top { display: none !important; } #report { display: block !important; border: none; margin: 0; width: 100%; } }
+        .total-cell { background: #e3f2fd; border-top: 2.5px solid #000 !important; }
+        @media print { .no-print, .master-header, .mummy-daddy, .omniverse-tag, textarea, .btn-row { display: none !important; } #report { display: block !important; border: none; margin: 0; width: 100%; } }
     </style>
 </head>
 <body>
-    <div class="header-top"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
+    <div class="master-header">
+        <span>YouTube: True X Profit | admin@truexprofit.com</span>
+        <span>vvvictoryvishnu@gmail.com</span>
+    </div>
     <div class="mummy-daddy">MUMMY DADDY</div>
-    <textarea id="dataInput" placeholder="PASTE DATA HERE"></textarea>
-    <div class="btn-row no-print">
-        <button class="btn-clear" onclick="document.getElementById('dataInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
-        <button class="btn-run" onclick="runScan()">RUN OMNIVERSE SCAN</button>
+    <div class="omniverse-tag">OMNIVERSE THEORY - V12</div>
+    <div class="workspace">
+        <textarea id="mainInput" placeholder="PASTE DATA HERE"></textarea>
+        <div class="btn-row no-print">
+            <button class="btn-clear" onclick="document.getElementById('mainInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
+            <button class="btn-run" onclick="runScan()">RUN MASTER SCAN</button>
+        </div>
     </div>
     <div id="report">
-        <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold;">
-            <span>YouTube: True X Profit</span><span>vvvictoryvishnu@gmail.com</span>
+        <div class="rep-top">
+            <span>YouTube: True X Profit</span>
+            <span>vvvictoryvishnu@gmail.com</span>
         </div>
-        <h3 style="text-align:center; margin:10px 0;">OMNIVERSE THEORY PRECISION REPORT</h3>
-        <div id="histDisp" style="font-size:13px; background:#f2f2f2; padding:10px; border:1px solid #000; margin-bottom:10px; font-weight:bold; word-wrap: break-all;"></div>
+        <h3 style="text-align:center; margin:10px 0;">GLOBAL PRECISION 15x5 MATRIX REPORT</h3>
+        <div id="histDisp" class="hist-box"></div>
+        <div id="instVerdict" class="inst-signal"></div>
         <table id="resTable"></table>
-        <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY</p>
+        <p style="text-align:center; font-size:12px; margin-top:25px; font-weight:bold; border-top: 1px solid #000; padding-top: 10px;">Dedicated to MUMMY DADDY</p>
         <button class="btn-run no-print" style="width:100%; background:white; color:black; margin-top:15px;" onclick="window.print()">PRINT / SAVE REPORT</button>
     </div>
+
     <script>
+        const API_URL = "http://46.202.162.155:5000/omniverse_scan";
         async function runScan() {
-            const raw = document.getElementById('dataInput').value.trim();
+            const raw = document.getElementById('mainInput').value.trim();
             if(!raw) return;
             try {
-                // இப்போது நாம் நேரடியாக உங்கள் VPS சர்வர் வழியாகத் தொடர்பு கொள்கிறோம்
-                const response = await fetch("http://truexprofit.com/omniverse_scan", {
-                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({input: raw})
                 });
                 const data = await response.json();
-                if(data.results) renderTable(raw, data.results);
-            } catch(e) { alert("Please click http://truexprofit.com/ once in a new tab and allow connection."); }
+                if(data.matrix) renderTable(raw, data.matrix);
+            } catch(e) { alert("Please click http://46.202.162.155:5000 once in new tab to allow connection."); }
         }
-        function renderTable(raw, res) {
+
+        function renderTable(raw, matrix) {
             document.getElementById('histDisp').innerText = "HISTORY: " + raw.replace(/\n/g, ' | ').toUpperCase();
-            const maj = (l) => l.split("B").length-1 >= l.split("S").length-1 ? "B" : "S";
+            const divs = ["1", "4", "7", "9", "13"];
+            const maj = (l) => l.filter(x => x==="B").length >= l.filter(x => x==="S").length ? "B" : "S";
             const clr = (v) => v === "B" ? "b-clr" : "s-clr";
 
             let html = "<tr><th>LAYER</th><th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th><th>VERDICT</th></tr>";
-            const divs = ["1", "4", "7", "9", "13"]; // இது சர்வருக்குள் உள்ள டிவிசர்கள்
-            let vList = [];
+            let logicVerdicts = [];
             for(let i=0; i<15; i++) {
-                // இப்போதைக்கு D1 மட்டும் வரும், மற்றவை சர்வர் அப்டேட்டில் மாறும்
-                let v = res[(i+1).toString()]; vList.push(v);
-                html += `<tr><td>L${i+1}</td><td class="${clr(v)}">${v}</td><td>-</td><td>-</td><td>-</td><td>-</td><td style="background:#f9f9f9;" class="${clr(v)}">${v}</td></tr>`;
+                let row = divs.map(d => matrix[d][i]);
+                let v = maj(row); logicVerdicts.push(v);
+                html += `<tr><td>L${i+1}</td>` + row.map(val => `<td class="${clr(val)}">${val}</td>`).join('') + `<td style="background:#f9f9f9;" class="${clr(v)}">${v}</td></tr>`;
             }
+            
+            // Total Row
+            html += "<tr class='total-cell'><td>TOTAL</td>";
+            divs.forEach(d => {
+                let v = maj(matrix[d]);
+                html += `<td class="${clr(v)}">${v}</td>`;
+            });
+            let grandV = maj(logicVerdicts);
+            html += `<td class="${clr(grandV)}" style="font-size:24px;">${grandV}</td></tr>`;
+            
             document.getElementById('resTable').innerHTML = html;
+            const iv = document.getElementById('instVerdict');
+            iv.innerText = (grandV === "B" ? "↑ INSTITUTIONAL BUY" : "↓ INSTITUTIONAL SELL");
+            iv.style.color = iv.style.borderColor = (grandV === "B" ? "blue" : "red");
             document.getElementById('report').style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
         }
     </script>
 </body>
