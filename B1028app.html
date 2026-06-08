@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUE X MATRIX PRO - OMNIVERSE</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; text-align: center; }
+        
+        /* Login Screen */
+        #gate { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
+        .login-box { background:#111; padding:35px; border:2px solid var(--neon); border-radius:15px; width:320px; box-shadow: 0 0 25px var(--neon); }
+        input { width:90%; padding:12px; margin:10px 0; background:#000; border:1px solid #444; color:var(--neon); text-align:center; border-radius:5px; font-weight:bold; font-size:16px; }
+
+        /* Main UI */
+        #main-app { display:none; padding:10px; }
+        .brand-header { border-bottom: 2px solid #333; padding: 10px; font-weight: bold; color: #00ff44; font-size: 13px; display: flex; justify-content: space-between; }
+        .mummy-daddy { color: var(--gold); font-size: 45px; font-weight: 900; margin: 10px 0; }
+        
+        /* Input Box - Half width */
+        .workspace { display: flex; flex-direction: column; align-items: center; }
+        textarea { width: 95%; max-width: 500px; height: 120px; background: #000; color: #00ff44; border: 2px solid #333; padding: 12px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 18px; margin-top: 10px; }
+
+        .btn-row { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .btn-run { padding: 18px 45px; background: #004d40; color: white; border: 2.5px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn-clear { padding: 18px 25px; background: #440000 !important; color: white !important; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        /* Professional Report (A4 Half Size) */
+        #report { display: none; background: white; color: black; width: 680px; margin: 20px auto; padding: 20px; border: 2px solid #000; text-align: left; }
+        .rep-header { display: flex; justify-content: space-between; font-size: 14px; font-weight: 900; border-bottom: 2.5px solid #000; padding-bottom: 5px; margin-bottom: 10px; color: #000; }
+        
+        /* EXTRA BIG FONT for History */
+        .hist-box { font-size: 20px; background: #f9f9f9; padding: 12px; border: 1.5px solid #000; margin-bottom: 15px; font-weight: 900; word-break: break-all; line-height: 1.4; color: #000; text-align: center; }
+        
+        /* 243 Matrix Table */
+        .table-wrap { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; table-layout: fixed; }
+        th, td { border: 1.5px solid #000; padding: 6px 2px; vertical-align: middle; }
+        th { background: #eee; font-size: 14px; }
+        
+        /* EXTRA BIG FONT for results */
+        .res-cell { font-size: 26px; display: block; font-weight: 900; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
+        .to-cell { background: #e3f2fd; border: 2.5px solid #000 !important; font-size: 28px !important; }
+
+        @media print {
+            body { background: white !important; }
+            .no-print, #gate, .mummy-daddy, textarea, .btn-row, .brand-header { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="gate">
+        <div class="mummy-daddy">MUMMY DADDY</div>
+        <div class="login-box">
+            <h3 style="color:var(--neon)">SYSTEM ACTIVATION</h3>
+            <input type="email" id="uMail" placeholder="Registered Email">
+            <input type="password" id="uKey" placeholder="Access Key">
+            <button class="btn-run" style="width:100%" onclick="login()">ENTER OMNIVERSE</button>
+        </div>
+    </div>
+
+    <div id="main-app">
+        <div class="brand-header no-print">
+            <span>YouTube: True X Profit</span>
+            <span id="userDisp"></span>
+            <span>admin@truexprofit.com</span>
+        </div>
+        <div class="mummy-daddy no-print">MUMMY DADDY</div>
+
+        <div class="workspace no-print">
+            <textarea id="dataInput" placeholder="PASTE DATA HERE"></textarea>
+            <div class="btn-row">
+                <button class="btn-clear" onclick="clearAll()">CLEAR</button>
+                <button class="btn-run" onclick="runScan()">RUN 243-MATRIX SCAN</button>
+            </div>
+        </div>
+
+        <div id="report">
+            <div class="rep-header">
+                <span style="color:green;">YouTube: True X Profit</span>
+                <span style="color:black;">https://www.truexprofit.com/</span>
+                <span style="color:blue;">vvvictoryvishnu@gmail.com</span>
+            </div>
+            <h2 style="text-align:center; margin:10px 0; color:#1a237e;">GLOBAL PRECISION 243-MATRIX REPORT</h2>
+            <div id="histDisp" class="hist-box"></div>
+            
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:45px;">L/D</th>
+                            <th>01</th><th>02</th><th>03</th><th>04</th><th>05</th><th>06</th><th>07</th><th>08</th><th>09</th>
+                            <th class="to-cell">TO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gridBody"></tbody>
+                </table>
+            </div>
+            
+            <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top: 1px solid #000; padding-top: 10px;">
+                Dedicated to MUMMY DADDY | Date: <span id="rDate"></span>
+            </p>
+            <button class="btn-run no-print" style="background:white; color:black; border:2px solid #000; width:100%; margin-top:20px;" onclick="window.print()">PRINT / SAVE REPORT</button>
+        </div>
+    </div>
+
+    <script>
+        const FB_URL = "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        const SERV_URL = "http://46.202.162.155:5000/mega_scan";
+
+        async function login() {
+            const email = document.getElementById('uMail').value.trim().toLowerCase();
+            const key = document.getElementById('uKey').value.trim();
+            if(!email || !key) return;
+            try {
+                const res = await fetch(`${FB_URL}/users/${email.replace(/\./g, '_')}.json`);
+                const user = await res.json();
+                if(user && user.key === key && user.status === "active") {
+                    document.getElementById('gate').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                    document.getElementById('userDisp').innerText = email;
+                } else { alert("Access Denied!"); }
+            } catch(e) { alert("Server Error!"); }
+        }
+
+        function clearAll() {
+            document.getElementById('dataInput').value = "";
+            document.getElementById('report').style.display = "none";
+        }
+
+        async function runScan() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) return;
+            try {
+                const response = await fetch(SERV_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({input: raw})
+                });
+                const data = await response.json();
+                if(data.results) renderReport(raw, data.results);
+            } catch(e) { alert("Server Connection Error! Click http://46.202.162.155:5000 once in new tab."); }
+        }
+
+        function renderReport(raw, results) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + raw.replace(/\n/g, ' | ').toUpperCase();
+            const maj = (l) => l.filter(x=>x==="B").length >= l.filter(x=>x==="S").length ? "B" : "S";
+            const clr = (v) => v === "B" ? "b-clr" : "s-clr";
+
+            let html = "";
+            let colData = [[],[],[],[],[],[],[],[],[]];
+            let grandV = [];
+
+            for(let r=0; r<27; r++) {
+                let row = results.slice(r*9, (r+1)*9);
+                let rowV = maj(row);
+                grandV.push(rowV);
+                html += `<tr><td style="background:#f2f2f2; font-size:11px;">${(r+1)<10?'0':''}${r+1}</td>`;
+                row.forEach((v, c) => {
+                    colData[c].push(v);
+                    html += `<td><span class="res-cell ${clr(v)}">${v}</span></td>`;
+                });
+                html += `<td class="to-cell ${clr(rowV)}">${rowV}</td></tr>`;
+            }
+
+            // Row 28: TO
+            html += `<tr class="to-cell"><td>TO</td>`;
+            colData.forEach(col => {
+                let v = maj(col);
+                html += `<td><span class="res-cell ${clr(v)}">${v}</span></td>`;
+            });
+            let finalV = maj(grandV);
+            html += `<td style="font-size:32px !important;" class="${clr(finalV)}">${finalV}</td></tr>`;
+
+            document.getElementById('gridBody').innerHTML = html;
+            document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
+            document.getElementById('report').style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
+</body>
+</html>
