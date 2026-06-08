@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <title>OMNIVERSE THEORY - MEGA 25</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; text-align: center; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
+        .brand { border-bottom: 2px solid #333; padding: 10px; display: flex; justify-content: space-between; font-size: 12px; color: #00ff44; }
+        
+        textarea { width: 50%; height: 100px; background: #000; color: #00ff44; border: 1px solid var(--neon); padding: 10px; border-radius: 8px; font-size: 16px; margin-top: 20px; }
+        
+        .grid-25 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 600px; margin: 20px auto; }
+        .p-btn { padding: 12px; background: #111; border: 1px solid #333; color: #555; border-radius: 5px; font-weight: bold; cursor: not-allowed; }
+        .unlocked { color: var(--neon); border-color: var(--neon); cursor: pointer; }
+        .active { background: var(--neon); color: black; }
+
+        .btn-row { margin: 20px 0; }
+        .btn { padding: 15px 40px; border-radius: 5px; font-weight: bold; cursor: pointer; margin: 5px; font-size: 16px; }
+        .btn-run { background: #004d40; color: white; border: 2px solid var(--neon); }
+        .btn-clear { background: #440000; color: white; border: 1px solid var(--red); }
+
+        #report { display: none; background: white; color: black; width: 620px; margin: 20px auto; padding: 25px; border: 2px solid #000; text-align: left; }
+        .hist-box { font-size: 12px; background: #f2f2f2; padding: 10px; border: 1px solid #000; margin-bottom: 15px; font-weight: bold; word-break: break-all; }
+        .matrix-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 18px; }
+        .matrix-table td { border: 1px solid #999; padding: 5px; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
+        @media print { .no-print { display: none !important; } #report { display: block !important; border: none; margin: 0; width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="brand"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <h2 style="color:var(--neon)">OMNIVERSE THEORY</h2>
+
+    <textarea id="dataInput" placeholder="INPUT DATA"></textarea>
+    
+    <div class="grid-25" id="grid25"></div>
+
+    <div class="btn-row no-print">
+        <button class="btn btn-clear" onclick="location.reload()">CLEAR ALL</button>
+        <button class="btn btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
+    </div>
+
+    <div id="report">
+        <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold;">
+            <span>YouTube: True X Profit</span><span>vvvictoryvishnu@gmail.com</span>
+        </div>
+        <h3 style="text-align:center;">GLOBAL PRECISION 243-MATRIX REPORT</h3>
+        <div id="histDisp" class="hist-box"></div>
+        <table class="matrix-table" id="resTable"></table>
+        <p style="text-align:center; font-size:11px; margin-top:20px; font-weight:bold; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY</p>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid25');
+        for(let i=1; i<=25; i++) {
+            let b = document.createElement('div'); b.className = 'p-btn unlocked'; 
+            b.innerText = 'PART ' + i; b.onclick = () => b.classList.toggle('active');
+            grid.appendChild(b);
+        }
+
+        async function runOmniverse() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) return;
+            const res = await fetch("http://46.202.162.155:5000/mega_scan", {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({input: raw})
+            });
+            const data = await res.json();
+            if(data.results) renderReport(raw, data.results);
+        }
+
+        function renderReport(raw, results) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + raw.replace(/\n/g, ' | ').toUpperCase();
+            let html = "";
+            // 243 விடைகளை ஒரு அட்டவணையாக மாற்றுதல்
+            for(let i=0; i<results.length; i++) {
+                if(i % 9 == 0) html += "<tr>";
+                let v = results[i];
+                html += `<td class="${v==='B'?'b-clr':'s-clr'}">${v}</td>`;
+                if(i % 9 == 8) html += "</tr>";
+            }
+            document.getElementById('resTable').innerHTML = html;
+            document.getElementById('report').style.display = "block";
+        }
+    </script>
+</body>
+</html>
