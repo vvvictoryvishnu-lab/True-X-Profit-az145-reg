@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <title>OMNIVERSE 243-MATRIX PRO</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: Arial; margin: 0; text-align: center; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
+        .header-top { border-bottom: 2px solid #333; padding: 8px; color: #00ff44; font-size: 11px; display: flex; justify-content: space-between; font-weight: bold; }
+        textarea { width: 90%; max-width: 500px; height: 100px; background: #000; color: #00ff44; border: 1px solid var(--neon); padding: 10px; border-radius: 8px; font-size: 16px; margin: 15px 0; }
+        .btn-row { margin-bottom: 30px; }
+        .btn { padding: 12px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; margin: 5px; }
+        .btn-run { background: #004d40; color: white; border: 1px solid var(--neon); }
+        .btn-clear { background: #440000; color: white; border: 1px solid var(--red); }
+
+        /* Report Styles (Perfectly Clean for Print) */
+        #report { display: none; background: white; color: black; width: 680px; margin: 20px auto; padding: 20px; border: 2px solid #000; text-align: left; }
+        .hist-box { font-size: 11px; background: #f2f2f2; padding: 8px; border: 1px solid #000; margin-bottom: 10px; font-weight: bold; word-break: break-all; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 16px; }
+        th, td { border: 1px solid #999; padding: 5px; }
+        th { background: #eee; font-size: 12px; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
+        .label-cell { background: #f9f9f9; color: #555; font-size: 12px; }
+        .to-cell { background: #e3f2fd; border: 2px solid #000 !important; }
+
+        @media print {
+            body { background: white !important; }
+            .no-print, .mummy-daddy, textarea, .btn-row, .header-top { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-top"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <textarea id="dataInput" placeholder="PASTE DATA HERE"></textarea>
+    <div class="btn-row no-print">
+        <button class="btn btn-clear" onclick="document.getElementById('dataInput').value=''; document.getElementById('report').style.display='none';">CLEAR</button>
+        <button class="btn btn-run" onclick="runScan()">RUN 243-MATRIX SCAN</button>
+    </div>
+
+    <div id="report">
+        <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:bold; border-bottom:1.5px solid #000;">
+            <span>YouTube: True X Profit</span><span>vvvictoryvishnu@gmail.com</span>
+        </div>
+        <h3 style="text-align:center; margin:10px 0;">GLOBAL PRECISION 243-MATRIX REPORT</h3>
+        <div id="histDisp" class="hist-box"></div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:40px;">L/D</th>
+                    <th>01</th><th>02</th><th>03</th><th>04</th><th>05</th><th>06</th><th>07</th><th>08</th><th>09</th>
+                    <th class="to-cell">TO</th>
+                </tr>
+            </thead>
+            <tbody id="resTable"></tbody>
+        </table>
+        
+        <p style="text-align:center; font-size:11px; margin-top:15px; font-weight:bold; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY</p>
+        <button class="btn no-print" style="background:white; color:black; border:2px solid #000; width:100%;" onclick="window.print()">SAVE / PRINT REPORT</button>
+    </div>
+
+    <script>
+        async function runScan() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) return;
+            try {
+                const response = await fetch("http://46.202.162.155:5000/mega_scan", {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({input: raw})
+                });
+                const data = await response.json();
+                if(data.results) renderTable(raw, data.results);
+            } catch(e) { alert("Server Connection Error!"); }
+        }
+
+        function renderTable(raw, results) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + raw.replace(/\n/g, ' | ').toUpperCase();
+            const maj = (l) => l.filter(x=>x==="B").length >= l.filter(x=>x==="S").length ? "B" : "S";
+            const clr = (v) => v === "B" ? "b-clr" : "s-clr";
+
+            let html = "";
+            let colData = [[],[],[],[],[],[],[],[],[]];
+            let grandV = [];
+
+            for(let r=0; r<27; r++) {
+                let row = results.slice(r*9, (r+1)*9);
+                let rowV = maj(row);
+                grandV.push(rowV);
+                html += `<tr><td class="label-cell">${(r+1)<10?'0':''}${r+1}</td>`;
+                row.forEach((v, c) => {
+                    colData[c].push(v);
+                    html += `<td class="${clr(v)}">${v}</td>`;
+                });
+                html += `<td class="to-cell ${clr(rowV)}">${rowV}</td></tr>`;
+            }
+
+            // Bottom TO row (Row 28)
+            html += `<tr class="to-cell"><td>TO</td>`;
+            let colVerdicts = colData.map(col => {
+                let v = maj(col);
+                html += `<td class="${clr(v)}">${v}</td>`;
+                return v;
+            });
+            let final = maj(grandV);
+            html += `<td style="font-size:22px;" class="${clr(final)}">${final}</td></tr>`;
+
+            document.getElementById('resTable').innerHTML = html;
+            document.getElementById('report').style.display = "block";
+        }
+    </script>
+</body>
+</html>
