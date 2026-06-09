@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - TrueX Matrix Pro</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background:#0a001f; color:#eee; }
+    .header { background: linear-gradient(90deg, #00ff9d, #00ccff); color:#000; padding:20px; text-align:center; font-size:1.8rem; font-weight:bold; }
+    .container { max-width: 1450px; margin:20px auto; padding:20px; }
+    .card { background:rgba(20,20,40,0.95); border:1px solid #00ff9d; border-radius:15px; padding:20px; margin-bottom:25px; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:14px; text-align:left; border-bottom:1px solid #333; }
+    th { background:#1a0033; color:#00ffcc; }
+    .btn { padding:10px 18px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin:4px; }
+    .approve { background:#00ff9d; color:black; }
+    .deactivate { background:#ff8800; color:white; }
+    .search { width:100%; padding:15px; background:#1a0033; border:1px solid #00ff9d; color:white; border-radius:10px; margin-bottom:15px; }
+    .login-box { max-width:420px; margin:100px auto; padding:40px; background:rgba(0,0,0,0.9); border:2px solid #00ff9d; border-radius:20px; text-align:center; }
+    input { width:100%; padding:15px; margin:12px 0; background:#1a0033; border:1px solid #00ff9d; color:white; border-radius:10px; font-size:1.1rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div id="loginScreen">
+    <div class="login-box">
+      <h2>🔐 ADMIN CONTROL PANEL</h2>
+      <p>TrueX Matrix Pro</p>
+      <input type="text" id="username" placeholder="Username" value="admin">
+      <input type="password" id="password" placeholder="Password" value="admin123">
+      <button onclick="login()">LOGIN TO ADMIN PANEL</button>
+      <p style="margin-top:20px; color:#888; font-size:0.9rem;">Default: admin / admin123</p>
+    </div>
+  </div>
+
+  <!-- Main Dashboard -->
+  <div id="dashboardScreen" style="display:none;">
+    <div class="header">TRUE X MATRIX PRO - ADMIN CONTROL PANEL</div>
+    
+    <div class="container">
+      <div style="text-align:right; margin-bottom:15px;">
+        <button onclick="logout()" style="background:#ff3366; color:white; padding:10px 20px;">LOGOUT</button>
+      </div>
+
+      <div class="card">
+        <h2>Welcome Admin (admin@truexprofit.com)</h2>
+        <p>Full Control System Active</p>
+      </div>
+
+      <!-- Pending Leads -->
+      <div class="card">
+        <h2>WEB LEADS (PENDING)</h2>
+        <input type="text" class="search" placeholder="Search by Name or Email" onkeyup="searchTable()">
+        <table id="pendingTable">
+          <thead><tr><th>NO</th><th>NAME</th><th>EMAIL</th><th>MOBILE</th><th>PLAN</th><th>ACTION</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Active Users -->
+      <div class="card">
+        <h2>ACTIVE USERS (LICENSED)</h2>
+        <table id="activeTable">
+          <thead><tr><th>NO</th><th>NAME</th><th>EMAIL</th><th>MOBILE</th><th>KEY</th><th>EXPIRY</th><th>ACTION</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let pendingLeads = [{name:"s.vishnukarthick", email:"vvvictoryvishnu@gmail.com", mobile:"+918870950288", plan:"30 Days"}];
+    let activeUsers = [{name:"Bhuvaneswari", email:"goldbhuvanam@gmail.com", mobile:"+91422390950", key:"6lth3jre", expiry:"2026-09-17"}];
+
+    function login() {
+      if (document.getElementById('username').value === "admin" && 
+          document.getElementById('password').value === "admin123") {
+        document.getElementById('loginScreen').style.display = "none";
+        document.getElementById('dashboardScreen').style.display = "block";
+      } else {
+        alert("❌ தவறான Password");
+      }
+    }
+
+    function logout() {
+      if (confirm("Logout செய்ய வேண்டுமா?")) {
+        document.getElementById('dashboardScreen').style.display = "none";
+        document.getElementById('loginScreen').style.display = "block";
+      }
+    }
+
+    function renderTables() {
+      // Pending Leads
+      let html = "";
+      pendingLeads.forEach((lead, i) => {
+        html += `<tr>
+          <td>${i+1}</td><td>${lead.name}</td><td>${lead.email}</td><td>${lead.mobile}</td><td>${lead.plan}</td>
+          <td><button class="btn approve" onclick="approveUser(${i})">APPROVE & ACTIVATE</button></td>
+        </tr>`;
+      });
+      document.getElementById('pendingTable').querySelector('tbody').innerHTML = html;
+
+      // Active Users
+      html = "";
+      activeUsers.forEach((user, i) => {
+        html += `<tr>
+          <td>${i+1}</td><td>${user.name}</td><td>${user.email}</td><td>${user.mobile}</td><td>${user.key}</td><td>${user.expiry}</td>
+          <td><button class="btn deactivate" onclick="deactivateUser(${i})">DEACTIVATE</button></td>
+        </tr>`;
+      });
+      document.getElementById('activeTable').querySelector('tbody').innerHTML = html;
+    }
+
+    function approveUser(i) {
+      const lead = pendingLeads[i];
+      const key = "TXM-" + Math.random().toString(36).substr(2,8).toUpperCase();
+      alert(`✅ Activated!\nName: ${lead.name}\nActivation Key: ${key}`);
+      activeUsers.unshift({...lead, key: key, expiry:"2026-09-07"});
+      pendingLeads.splice(i,1);
+      renderTables();
+    }
+
+    function deactivateUser(i) {
+      if(confirm("Deactivate செய்ய வேண்டுமா?")) {
+        pendingLeads.push(activeUsers[i]);
+        activeUsers.splice(i,1);
+        renderTables();
+      }
+    }
+
+    function searchTable() { /* Simple search */ }
+
+    // Initial Load
+    renderTables();
+  </script>
+</body>
+</html>
