@@ -1,1 +1,140 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMNIVERSE 3-IN-1 - RESEARCH PRO</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; text-align: center; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
+        .brand { border-bottom: 2px solid #333; padding: 10px; font-weight: bold; color: #00ff44; font-size: 13px; display: flex; justify-content: space-between; }
+        
+        textarea { width: 50%; height: 100px; background: #000; color: #00ff44; border: 2px solid var(--neon); padding: 12px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 17px; margin-top: 20px; }
 
+        .mode-selection { margin: 20px 0; display: flex; justify-content: center; gap: 10px; }
+        .btn-mode { padding: 10px 15px; border: 1px solid var(--gold); background: transparent; color: var(--gold); cursor: pointer; font-weight: bold; border-radius: 5px; font-size: 12px; }
+        .btn-mode.active { background: var(--gold); color: black; }
+
+        .btn-row { margin: 20px 0; }
+        .btn-run { padding: 18px 45px; background: #004d40; color: white; border: 2.5px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn-clear { padding: 18px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
+        
+        .status { background: var(--gold); color: black; padding: 8px; font-weight: bold; width: 60%; margin: 15px auto; border-radius: 4px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="brand">
+        <span>YouTube: True X Profit</span>
+        <span>admin@truexprofit.com</span>
+    </div>
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    
+    <textarea id="dataInput" placeholder="PASTE DATA HERE..."></textarea>
+    
+    <div class="mode-selection">
+        <button class="btn-mode active" id="m81" onclick="setMode(81, 9, 9)">81 MATRIX (9x9)</button>
+        <button class="btn-mode" id="m252" onclick="setMode(252, 12, 21)">252 MATRIX (12x21)</button>
+        <button class="btn-mode" id="m240" onclick="setMode(240, 16, 15)">240 MATRIX (16x15)</button>
+    </div>
+
+    <div class="status" id="statusBox">CALCULATING ON VPS... PLEASE WAIT</div>
+
+    <div class="btn-row">
+        <button class="btn-clear" onclick="document.getElementById('dataInput').value=''">CLEAR</button>
+        <button class="btn-run" onclick="runOmniverseScan()">RUN MASTER SCAN</button>
+    </div>
+
+    <script>
+        let currentMode = 81; let currentCols = 9; let currentRows = 9;
+        const SERV_URL = "http://46.202.162.155:5000/triple_scan";
+
+        function setMode(m, c, r) {
+            currentMode = m; currentCols = c; currentRows = r;
+            document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
+            document.getElementById('m'+m).classList.add('active');
+        }
+
+        async function runOmniverseScan() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) return;
+            document.getElementById('statusBox').style.display = 'block';
+
+            try {
+                const response = await fetch(SERV_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({input: raw, mode: currentMode})
+                });
+                const data = await response.json();
+                if(data.results) openReportInNewTab(raw, data.results, data.base);
+            } catch(e) { 
+                alert("Server Connection Error! Make sure you allowed http://46.202.162.155:5000 in your browser."); 
+            } finally { document.getElementById('statusBox').style.display = 'none'; }
+        }
+
+        function openReportInNewTab(raw, results, base) {
+            const reportWindow = window.open('', '_blank');
+            const cleanHist = raw.replace(/\n/g, ' | ').toUpperCase();
+            
+            const maj = (l) => {
+                let b = l.filter(x=>x==="B").length;
+                let s = l.filter(x=>x==="S").length;
+                return b > s ? "B" : (s > b ? "S" : "=");
+            };
+
+            let tableHtml = "<tr><th>L/D</th>";
+            for(let i=1; i<=currentCols; i++) tableHtml += `<th>${i<10?'0':''}${i}</th>`;
+            tableHtml += "<th style='background:#e3f2fd; border:2px solid #000;'>TO</th></tr>";
+
+            let colData = Array.from({length: currentCols}, () => []);
+            let rowMajors = [];
+
+            for(let r=0; r<currentRows; r++) {
+                let row = results.slice(r*currentCols, (r+1)*currentCols);
+                let rV = maj(row); rowMajors.push(rV);
+                tableHtml += `<tr><td style='background:#f9f9f9;'>${(r+1)<10?'0':''}${r+1}</td>`;
+                row.forEach((v, c) => {
+                    colData[c].push(v);
+                    let clr = v === "B" ? "blue" : (v === "S" ? "red" : "black");
+                    tableHtml += `<td style='color:${clr};'>${v}</td>`;
+                });
+                let rvClr = rV === "B" ? "blue" : (rV === "S" ? "red" : "black");
+                tableHtml += `<td style='background:#e3f2fd; border:2px solid #000; color:${rvClr};'>${rV}</td></tr>`;
+            }
+
+            // Bottom TO row
+            tableHtml += "<tr style='background:#e3f2fd; border-top:2px solid #000;'><td>TO</td>";
+            colData.forEach(col => {
+                let v = maj(col);
+                let clr = v === "B" ? "blue" : (v === "S" ? "red" : "black");
+                tableHtml += `<td style='color:${clr};'>${v}</td>`;
+            });
+            let finalV = maj(rowMajors);
+            let fvClr = finalV === "B" ? "blue" : (finalV === "S" ? "red" : "black");
+            tableHtml += `<td style='font-size:20px; border:2px solid #000; color:${fvClr};'>${finalV}</td></tr>`;
+
+            reportWindow.document.write(`
+                <html><head><title>Print Report</title>
+                <style>
+                    body { font-family: Arial; padding: 20px; background: white; color: black; }
+                    .header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; }
+                    .hist-box { font-size: 15px; border: 1.5px solid #000; padding: 10px; margin: 15px 0; font-weight: bold; word-wrap: break-all; }
+                    table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 15px; }
+                    th, td { border: 1px solid #888; padding: 5px; }
+                    .title { text-align: center; font-size: 20px; margin: 10px 0; }
+                </style></head>
+                <body>
+                    <div class="header"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
+                    <div class="title">GLOBAL PRECISION ${currentMode}-MATRIX REPORT</div>
+                    <div class="hist-box">HISTORY: ${cleanHist}<br><span style="color:red">BASE: ${base}</span></div>
+                    <table>${tableHtml}</table>
+                    <p style="text-align:center; font-size:12px; margin-top:20px;">Dedicated to MUMMY DADDY | Date: ${new Date().toLocaleDateString('en-GB')}</p>
+                    <button onclick="window.print()" style="width:100%; padding:15px; margin-top:20px; font-weight:bold; cursor:pointer;">PRINT / SAVE PDF</button>
+                </body></html>
+            `);
+            reportWindow.document.close();
+        }
+    </script>
+</body>
+</html>
