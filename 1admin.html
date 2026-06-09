@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - TrueX Matrix Pro</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background:#0a001f; color:#eee; }
+    .header { background: linear-gradient(90deg, #00ff9d, #00ccff); color:#000; padding:25px; text-align:center; font-size:2rem; font-weight:bold; }
+    .container { max-width: 1450px; margin:20px auto; padding:20px; }
+    .card { background:rgba(20,20,40,0.95); border:1px solid #00ff9d; border-radius:15px; padding:20px; margin-bottom:25px; box-shadow:0 0 20px rgba(0,255,157,0.15); }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:14px; text-align:left; border-bottom:1px solid #333; }
+    th { background:#1a0033; color:#00ffcc; }
+    .btn { padding:10px 18px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin:3px; }
+    .approve { background:#00ff9d; color:black; }
+    .deactivate { background:#ff8800; color:white; }
+    .delete { background:#ff3366; color:white; }
+    .search { width:100%; padding:15px; background:#1a0033; border:1px solid #00ff9d; color:white; border-radius:10px; margin-bottom:15px; font-size:1.1rem; }
+    .status-pending { color:#ffcc00; font-weight:bold; }
+    .status-active { color:#00ff9d; font-weight:bold; }
+  </style>
+</head>
+<body>
+  <div class="header">TRUE X MATRIX PRO - ADMIN CONTROL PANEL</div>
+  
+  <div class="container">
+    <div class="card">
+      <h2>📊 Dashboard Overview</h2>
+      <p><strong>Total Pending Leads:</strong> <span id="pendingCount">2</span> | 
+         <strong>Active Users:</strong> <span id="activeCount">5</span></p>
+    </div>
+
+    <!-- Pending Leads -->
+    <div class="card">
+      <h2>WEB LEADS (PENDING)</h2>
+      <input type="text" class="search" id="searchInput" placeholder="Search by Name or Email..." onkeyup="searchTable()">
+      
+      <table id="pendingTable">
+        <thead>
+          <tr>
+            <th>NO</th><th>NAME</th><th>EMAIL</th><th>MOBILE</th><th>PLAN</th><th>STATUS</th><th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Active Users -->
+    <div class="card">
+      <h2>ACTIVE USERS (LICENSED)</h2>
+      <table id="activeTable">
+        <thead>
+          <tr>
+            <th>NO</th><th>NAME</th><th>EMAIL</th><th>MOBILE</th><th>KEY</th><th>EXPIRY</th><th>STATUS</th><th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let pendingLeads = [];
+    let activeUsers = [];
+
+    function renderTables() {
+      // Pending Leads
+      let html = "";
+      pendingLeads.forEach((lead, i) => {
+        html += `<tr>
+          <td>${i+1}</td>
+          <td>${lead.name}</td>
+          <td>${lead.email}</td>
+          <td>${lead.mobile}</td>
+          <td>${lead.plan}</td>
+          <td class="status-pending">Pending</td>
+          <td>
+            <button class="btn approve" onclick="approveUser(${i})">APPROVE & ACTIVATE</button>
+          </td>
+        </tr>`;
+      });
+      document.getElementById('pendingTable').querySelector('tbody').innerHTML = html || "<tr><td colspan='7' style='text-align:center;color:#888;'>No pending leads</td></tr>";
+
+      // Active Users
+      html = "";
+      activeUsers.forEach((user, i) => {
+        html += `<tr>
+          <td>${i+1}</td>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.mobile}</td>
+          <td>${user.key}</td>
+          <td>${user.expiry}</td>
+          <td class="status-active">ACTIVE</td>
+          <td><button class="btn deactivate" onclick="deactivateUser(${i})">DEACTIVATE</button></td>
+        </tr>`;
+      });
+      document.getElementById('activeTable').querySelector('tbody').innerHTML = html || "<tr><td colspan='8' style='text-align:center;color:#888;'>No active users</td></tr>";
+    }
+
+    function approveUser(i) {
+      const lead = pendingLeads[i];
+      const key = "TXM-" + Math.random().toString(36).substr(2,8).toUpperCase();
+      
+      alert(`✅ Activated Successfully!\nName: ${lead.name}\nKey: ${key}\n\nCustomer-க்கு Email/WhatsApp அனுப்பப்பட்டது.`);
+
+      activeUsers.unshift({ ...lead, key: key, expiry: "2026-09-07" });
+      pendingLeads.splice(i, 1);
+      renderTables();
+    }
+
+    function deactivateUser(i) {
+      if (confirm("இந்த User-ஐ Deactivate செய்ய விரும்புகிறீர்களா?")) {
+        pendingLeads.push(activeUsers[i]);
+        activeUsers.splice(i, 1);
+        renderTables();
+      }
+    }
+
+    function searchTable() {
+      // Can be enhanced later
+    }
+
+    // Initial Data
+    pendingLeads = [{ name:"s.vishnukarthick", email:"vvvictoryvishnu@gmail.com", mobile:"+918870950288", plan:"30 Days" }];
+    activeUsers = [{ name:"Bhuvaneswari", email:"goldbhuvanam@gmail.com", mobile:"+91422390950", key:"6lth3jre", expiry:"2026-09-17" }];
+
+    renderTables();
+  </script>
+</body>
+</html>
