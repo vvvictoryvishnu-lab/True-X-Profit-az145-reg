@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMNIVERSE 3-IN-1 RESEARCH</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; --tie: #000000; }
+        body { background: var(--bg); color: white; font-family: Arial; margin: 0; text-align: center; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
+        textarea { width: 90%; max-width: 500px; height: 100px; background: #000; color: #00ff44; border: 1px solid var(--neon); padding: 10px; border-radius: 8px; font-size: 16px; }
+        
+        .mode-selection { margin: 20px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .btn-mode { padding: 10px 20px; border: 1px solid var(--gold); background: transparent; color: var(--gold); cursor: pointer; font-weight: bold; border-radius: 5px; }
+        .btn-mode.active { background: var(--gold); color: black; }
+        
+        .btn-run { padding: 15px 40px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 18px; }
+
+        /* Report Styles */
+        #report { display: none; background: white; color: black; padding: 15px; border: 2px solid #000; margin: 20px auto; text-align: left; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 14px; }
+        th, td { border: 1px solid #999; padding: 4px; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); } .e-clr { color: var(--tie); font-size: 20px; }
+        .to-cell { background: #e3f2fd; border: 2px solid #000 !important; }
+
+        @media print { .no-print { display: none !important; } #report { display: block !important; border: none; width: 100%; margin: 0; } }
+    </style>
+</head>
+<body>
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <textarea id="dataInput" placeholder="PASTE DATA HERE"></textarea>
+    
+    <div class="mode-selection no-print">
+        <button class="btn-mode active" id="m81" onclick="setMode(81, 9, 9)">81 MATRIX (9x9)</button>
+        <button class="btn-mode" id="m252" onclick="setMode(252, 12, 21)">252 MATRIX (12x21)</button>
+        <button class="btn-mode" id="m240" onclick="setMode(240, 16, 15)">240 MATRIX (16x15)</button>
+    </div>
+
+    <button class="btn-run no-print" onclick="runMegaScan()">RUN OMNIVERSE SCAN</button>
+
+    <div id="report">
+        <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:bold; border-bottom:1px solid #000;">
+            <span>YouTube: True X Profit</span><span>admin@truexprofit.com</span>
+        </div>
+        <h3 id="repTitle" style="text-align:center; margin:10px 0;">GLOBAL PRECISION REPORT</h3>
+        <div id="histDisp" style="font-size:11px; background:#f2f2f2; padding:5px; border:1px solid #000; margin-bottom:10px; font-weight:bold;"></div>
+        <table id="resTable"></table>
+        <button class="no-print" style="margin-top:20px; width:100%; padding:10px; cursor:pointer;" onclick="window.print()">SAVE / PRINT REPORT</button>
+    </div>
+
+    <script>
+        let currentMode = 81; let currentCols = 9; let currentRows = 9;
+        const SERV_URL = "http://46.202.162.155:5000/triple_scan";
+
+        function setMode(m, c, r) {
+            currentMode = m; currentCols = c; currentRows = r;
+            document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
+            document.getElementById('m'+m).classList.add('active');
+        }
+
+        async function runMegaScan() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) return;
+            const res = await fetch(SERV_URL, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({input: raw, mode: currentMode})
+            });
+            const data = await res.json();
+            if(data.results) renderMatrix(raw, data.results);
+        }
+
+        function renderMatrix(raw, results) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + raw.replace(/\n/g, ' | ').toUpperCase();
+            document.getElementById('repTitle').innerText = `GLOBAL PRECISION ${currentMode}-MATRIX REPORT`;
+            
+            const maj = (l) => {
+                let b = l.filter(x=>x==="B").length;
+                let s = l.filter(x=>x==="S").length;
+                return b > s ? "B" : (s > b ? "S" : "=");
+            };
+            const clr = (v) => v === "B" ? "b-clr" : (v === "S" ? "s-clr" : "e-clr");
+
+            let html = "<tr><th>L/D</th>";
+            for(let i=1; i<=currentCols; i++) html += `<th>${i<10?'0':''}${i}</th>`;
+            html += "<th class='to-cell'>TO</th></tr>";
+
+            let colData = Array.from({length: currentCols}, () => []);
+            let rowMajors = [];
+
+            for(let r=0; r<currentRows; r++) {
+                let row = results.slice(r*currentCols, (r+1)*currentCols);
+                let rV = maj(row); rowMajors.push(rV);
+                html += `<tr><td>${(r+1)<10?'0':''}${r+1}</td>`;
+                row.forEach((v, c) => {
+                    colData[c].push(v);
+                    html += `<td class="${clr(v)}">${v}</td>`;
+                });
+                html += `<td class="to-cell ${clr(rV)}">${rV}</td></tr>`;
+            }
+
+            html += "<tr class='to-cell'><td>TO</td>";
+            colData.forEach(col => {
+                let v = maj(col);
+                html += `<td class="${clr(v)}">${v}</td>`;
+            });
+            let finalV = maj(rowMajors);
+            html += `<td style="font-size:22px;" class="${clr(finalV)}">${finalV}</td></tr>`;
+
+            document.getElementById('resTable').innerHTML = html;
+            document.getElementById('report').style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
+</body>
+</html>
