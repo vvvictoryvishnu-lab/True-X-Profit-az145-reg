@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - TrueX Matrix Pro</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background: linear-gradient(135deg, #0a001f, #1a0033); color:white; }
+    .container { max-width: 620px; margin: 40px auto; padding: 35px; background: rgba(0,0,0,0.85); border-radius: 16px; border: 1px solid #00ff9d; }
+    input, select { width: 100%; padding: 14px; margin: 12px 0; background: #1a0033; border: 1px solid #00ff9d; color: white; border-radius: 8px; font-size: 1.05rem; }
+    button { width: 100%; padding: 16px; font-size: 1.3rem; background: linear-gradient(45deg, #00ff9d, #00ccff); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+    .note { color: #00ffcc; text-align:center; margin: 15px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 style="text-align:center; color:#00ffcc;">Create Your Account</h2>
+    <p class="note">Pay What You Want • Instant Activation</p>
+    
+    <form id="regForm">
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email Address" required>
+      
+      <div style="display:flex; gap:10px;">
+        <select id="countryCode" style="width:32%;">
+          <option value="+91">+91</option>
+          <option value="+44">+44</option>
+        </select>
+        <input type="tel" id="whatsapp" placeholder="WhatsApp Number" required style="width:68%;">
+      </div>
+      
+      <select id="plan">
+        <option value="1">1 Day Plan - Pay What You Want</option>
+        <option value="10">10 Days Plan - Pay What You Want</option>
+        <option value="30" selected>30 Days Plan - Pay What You Want</option>
+        <option value="60">60 Days Plan - Pay What You Want</option>
+        <option value="90">90 Days Plan - Pay What You Want</option>
+      </select>
+      
+      <button type="submit">SUBMIT & PROCEED TO PAYMENT</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('regForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value;
+      const whatsapp = document.getElementById('countryCode').value + document.getElementById('whatsapp').value.replace(/\D/g,'');
+      const plan = document.getElementById('plan').value + " Days";
+
+      alert(`✅ Registration Successful!\n\nName: ${name}\nEmail: ${email}\nWhatsApp: ${whatsapp}\nPlan: ${plan}\n\nPayment Screenshot அனுப்பினால் உடனே Activate செய்கிறோம்.`);
+
+      const encodedName = encodeURIComponent(name);
+      window.location.href = `dashboard.html?name=${encodedName}`;
+    });
+  </script>
+</body>
+</html>
