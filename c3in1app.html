@@ -2,8 +2,7 @@
 <html lang="ta">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNIVERSE MASTER PRO - 4 IN 1</title>
+    <title>OMNIVERSE MASTER FINAL PRO</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; text-align: center; }
@@ -11,16 +10,12 @@
         .login-box { background:#111; padding:40px; border:2px solid var(--neon); border-radius:15px; width:300px; }
         input { width:90%; padding:12px; margin:10px 0; background:#000; border:1px solid #444; color:var(--neon); text-align:center; border-radius:5px; font-weight:bold; }
         #app-content { display:none; padding:15px; }
-        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
-        .brand { border-bottom: 2px solid #333; padding: 10px; font-weight: bold; color: #00ff44; display: flex; justify-content: space-between; font-size: 13px; }
-        textarea { width: 60%; height: 110px; background: #000; color: #00ff44; border: 2px solid var(--neon); padding: 12px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 17px; margin-top: 20px; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; }
+        textarea { width: 50%; height: 110px; background: #000; color: #00ff44; border: 2px solid var(--neon); padding: 12px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 17px; margin-top: 20px; }
         .mode-selection { margin: 25px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
         .btn-mode { padding: 12px 20px; border: 1.5px solid var(--gold); background: transparent; color: var(--gold); cursor: pointer; font-weight: bold; border-radius: 5px; font-size: 12px; }
         .btn-mode.active { background: var(--gold); color: black; }
-        .btn-all { border-color: #00ff44; color: #00ff44; }
-        .btn-all.active { background: #00ff44; color: black; }
         .btn-run { padding: 18px 50px; background: #004d40; color: white; border: 2.5px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .btn-clear { padding: 18px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -34,20 +29,15 @@
     </div>
 
     <div id="app-content">
-        <div class="brand"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
         <div class="mummy-daddy">MUMMY DADDY</div>
-        <textarea id="dataInput" placeholder="PASTE DATA HERE..."></textarea>
+        <textarea id="dataInput" placeholder="PASTE DATA HERE"></textarea>
         <div class="mode-selection">
             <button class="btn-mode active" id="m81" onclick="setMode(81, 9, 9)">81 MATRIX (9x9)</button>
             <button class="btn-mode" id="m252" onclick="setMode(252, 12, 21)">252 MATRIX (12x21)</button>
             <button class="btn-mode" id="m240" onclick="setMode(240, 16, 15)">240 MATRIX (16x15)</button>
-            <button class="btn-mode btn-all" id="mall" onclick="setMode('all', 0, 0)">ALL (3 IN 1 PRINT)</button>
+            <button class="btn-mode" style="border-color:#00ff44; color:#00ff44;" id="mall" onclick="setMode('all', 0, 0)">ALL (3 IN 1 PRINT)</button>
         </div>
-        <div id="status" style="background:var(--gold); color:black; padding:8px; width:60%; margin:10px auto; display:none; font-weight:bold;">SCANNING VPS...</div>
-        <div class="btn-row">
-            <button class="btn-clear" onclick="document.getElementById('dataInput').value=''">CLEAR</button>
-            <button class="btn-run" onclick="runScan()">RUN MASTER SCAN</button>
-        </div>
+        <button class="btn-run" onclick="runScan()">RUN MASTER SCAN</button>
     </div>
 
     <script>
@@ -69,84 +59,70 @@
         function setMode(m, c, r) {
             currentMode = m; currentCols = c; currentRows = r;
             document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
-            document.getElementById('m'+m).classList.add('active');
+            if(m !== 'all') document.getElementById('m'+m).classList.add('active');
+            else document.getElementById('mall').classList.add('active');
         }
 
         async function runScan() {
             const raw = document.getElementById('dataInput').value.trim();
             if(!raw) return;
-            document.getElementById('status').style.display = 'block';
-            try {
-                const response = await fetch(SERV_URL, {
-                    method: 'POST', headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({input: raw, mode: currentMode})
-                });
-                const data = await response.json();
-                if(currentMode === "all") openCombinedReport(raw, data.results);
-                else openSingleReport(raw, data.results, currentMode, currentCols, currentRows);
-            } catch(e) { alert("Server Error!"); }
-            finally { document.getElementById('status').style.display = 'none'; }
+            const response = await fetch(SERV_URL, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({input: raw, mode: currentMode})
+            });
+            const data = await response.json();
+            if(currentMode === "all") openCombined(raw, data.results);
+            else openSingle(raw, data.results, currentMode, currentCols, currentRows);
         }
 
-        function getTable(results, cols, rows) {
+        function getTable(res, cols, rows, kuLabel) {
             const maj = (l) => {
                 let b = l.filter(x=>x==="B").length, s = l.filter(x=>x==="S").length;
                 return b > s ? "B" : (s > b ? "S" : "=");
             };
             const clr = (v) => v==="B"?"blue":v==="S"?"red":"black";
-            
-            let html = `<table><thead><tr><th>L/D</th>`;
+            let html = `<table><tr><th>L/D</th>`;
             for(let i=1; i<=cols; i++) html += `<th>${i<10?'0':''}${i}</th>`;
-            html += `<th style="background:#f0f0f0; border:2px solid #000;">TO</th></tr></thead><tbody>`;
-            
-            let colData = Array.from({length: cols}, () => []), rowVerdicts = [];
+            html += `<th>TO</th></tr>`;
+            let colD = Array.from({length: cols}, () => []), rowV = [];
             for(let r=0; r<rows; r++) {
-                let row = results.slice(r*cols, (r+1)*cols), rV = maj(row); rowVerdicts.push(rV);
-                html += `<tr><td style="background:#f9f9f9;">${(r+1)<10?'0':''}${r+1}</td>`;
-                row.forEach((v, c) => { colData[c].push(v); html += `<td style="color:${clr(v)};">${v}</td>`; });
-                html += `<td style="background:#f0f0f0; border:2px solid #000; color:${clr(rV)};">${rV}</td></tr>`;
+                let row = res.slice(r*cols, (r+1)*cols), v = maj(row); rowV.push(v);
+                html += `<tr><td>${(r+1)<10?'0':''}${r+1}</td>`;
+                row.forEach((bit, c) => { colD[c].push(bit); html += `<td style="color:${clr(bit)}">${bit}</td>`; });
+                html += `<td style="background:#f0f0f0; color:${clr(v)}">${v}</td></tr>`;
             }
-            
-            // TO Row
-            html += `<tr style="background:#f0f0f0; border-top:2px solid #000;"><td>TO</td>`;
-            let colResults = colData.map(col => {
-                let v = maj(col); html += `<td style="color:${clr(v)};">${v}</td>`; return v;
-            });
-            let grandV = maj(rowVerdicts);
-            html += `<td style="font-size:20px; border:2px solid #000; color:${clr(grandV)};">${grandV}</td></tr></tbody></table>`;
-            
-            // கிராண்ட் டோட்டல் வரி (மாஸ்டர் கேட்டது)
-            html += `<div style="margin-top:15px; text-align:right; font-size:22px; font-weight:900;">= <span style="color:${clr(grandV)}">${grandV}</span></div>`;
+            html += `<tr style="background:#f0f0f0;"><td>TO</td>`;
+            colD.forEach(c => html += `<td style="color:${clr(maj(c))}">${maj(c)}</td>`);
+            let final = maj(rowV);
+            html += `<td style="font-size:20px; border:2px solid #000; color:${clr(final)}">${final}</td></tr></table>`;
+            html += `<div style="text-align:right; font-size:20px; font-weight:900; margin-top:10px;">${kuLabel} KU = <span style="color:${clr(final)}">${final}</span></div>`;
             return html;
         }
 
-        function openSingleReport(raw, results, mode, cols, rows) {
+        function openSingle(raw, res, mode, c, r) {
             const win = window.open('', '_blank');
-            writeToWin(win, raw, `<h2>${mode} MATRIX REPORT</h2>` + getTable(results, cols, rows));
+            write(win, raw, `<h2>${mode} MATRIX</h2>` + getTable(res, c, r, mode === 81 ? 9 : mode === 240 ? 16 : 12));
         }
 
-        function openCombinedReport(raw, all) {
+        function openCombined(raw, all) {
             const win = window.open('', '_blank');
-            let body = `<h2>81 MATRIX (9x9)</h2>${getTable(all["81"], 9, 9)}<hr style="margin:40px 0;">`;
-            body += `<h2>240 MATRIX (16x15)</h2>${getTable(all["240"], 16, 15)}<hr style="margin:40px 0;">`;
-            body += `<h2>252 MATRIX (12x21)</h2>${getTable(all["252"], 12, 21)}`;
-            writeToWin(win, raw, body);
+            let b = `<h2>81 MATRIX (9x9)</h2>${getTable(all["81"], 9, 9, 9)}<hr>` +
+                    `<h2>240 MATRIX (16x15)</h2>${getTable(all["240"], 16, 15, 16)}<hr>` +
+                    `<h2>252 MATRIX (12x21)</h2>${getTable(all["252"], 12, 21, 12)}`;
+            write(win, raw, b);
         }
 
-        function writeToWin(win, raw, body) {
-            const hist = raw.replace(/\n/g, ' | ').toUpperCase();
+        function write(win, raw, body) {
             win.document.write(`<html><head><style>
                 body { font-family: Arial; padding: 20px; text-align: center; background: white; color: black; }
-                .header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; }
                 .hist { font-size: 15px; border: 1.5px solid #000; padding: 10px; margin: 15px 0; font-weight: bold; word-break: break-all; text-align: left; }
-                table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 15px; margin-top: 10px; }
+                table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 15px; }
                 th, td { border: 1px solid #888; padding: 4px; }
             </style></head><body>
-                <div class="header"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
-                ${body}
-                <div class="hist">HISTORY: ${hist}</div>
+                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold; border-bottom:2px solid #000;"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
+                ${body}<div class="hist">HISTORY: ${raw.replace(/\n/g, ' | ').toUpperCase()}</div>
                 <p>Dedicated to MUMMY DADDY | Date: ${new Date().toLocaleDateString('en-GB')}</p>
-                <button style="width:100%; padding:15px; font-weight:bold; cursor:pointer;" onclick="window.print()">PRINT / SAVE PDF</button>
+                <button onclick="window.print()" style="width:100%; padding:15px; font-weight:bold;">PRINT / SAVE PDF</button>
             </body></html>`);
             win.document.close();
         }
