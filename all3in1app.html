@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMNIVERSE MASTER PRO</title>
+    <style>
+        :root {
+            --neon: #00E5FF;
+            --gold: #FFD700;
+            --bg: #050505;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 10px;
+            min-height: 100vh;
+        }
+        .brand {
+            padding: 10px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: #111;
+            border-bottom: 2px solid var(--neon);
+        }
+        .mummy-daddy {
+            color: var(--gold);
+            font-size: 28px;
+            font-weight: 900;
+            margin: 15px 0;
+        }
+        textarea {
+            width: 100%;
+            max-width: 600px;
+            height: 180px;
+            background: #000;
+            color: #00ff44;
+            border: 2px solid var(--neon);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 16px;
+            margin: 15px auto;
+            display: block;
+        }
+        .mode-selection {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+        }
+        .btn-mode {
+            padding: 12px 18px;
+            border: 2px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-mode.active {
+            background: var(--gold);
+            color: black;
+        }
+        .btn-run {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .status {
+            background: var(--gold);
+            color: black;
+            padding: 12px;
+            margin: 15px auto;
+            max-width: 500px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        /* Login Gate */
+        #login-gate {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: #111;
+            padding: 30px;
+            border: 2px solid var(--neon);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 320px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #000;
+            border: 1px solid #666;
+            color: var(--neon);
+            border-radius: 6px;
+            text-align: center;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login Gate -->
+<div id="login-gate">
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <div class="login-box">
+        <h3 style="color:var(--neon); margin-bottom:15px;">MASTER ACTIVATION</h3>
+        <input type="email" id="uMail" placeholder="Registered Email">
+        <input type="password" id="uKey" placeholder="Access Key">
+        <button class="btn-run" style="width:100%; background:#004d40;" onclick="login()">LOGIN</button>
+    </div>
+</div>
+
+<!-- Main App -->
+<div id="app-content" style="display:none;">
+    <div class="brand">
+        <span>YouTube: True X Profit</span>
+        <span>admin@truexprofit.com</span>
+    </div>
+    <div class="mummy-daddy">MUMMY DADDY</div>
+
+    <textarea id="dataInput" placeholder="PASTE OHLC DATA HERE..."></textarea>
+
+    <div class="mode-selection">
+        <button class="btn-mode active" onclick="setMode(81)">81 MATRIX</button>
+        <button class="btn-mode" onclick="setMode(252)">252 MATRIX</button>
+        <button class="btn-mode" onclick="setMode(240)">240 MATRIX</button>
+        <button class="btn-mode" style="border-color:#00ff44;color:#00ff44;" onclick="setMode('all')">ALL (3 IN 1)</button>
+    </div>
+
+    <div class="status" id="statusBox">Connecting to Server...</div>
+
+    <button class="btn-run" style="background:#440000;" onclick="clearData()">CLEAR</button>
+    <button class="btn-run" style="background:#004d40;" onclick="runScan()">RUN MASTER SCAN</button>
+</div>
+
+<script>
+    let currentMode = 81;
+    const SERV_URL = "http://46.202.162.155:5001/triple_scan";
+    const MASTER_KEY = "OMNIVERSE1493MASTERKEY2026";
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
+    }
+
+    async function login() {
+        const email = document.getElementById('uMail').value.trim();
+        const key = document.getElementById('uKey').value.trim();
+
+        if (!email || !key) {
+            alert("Email மற்றும் Key இரண்டும் தேவை");
+            return;
+        }
+
+        if (key.length > 10) {
+            document.getElementById('login-gate').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+            localStorage.setItem("loggedIn", "true");
+        } else {
+            alert("தவறான Access Key!");
+        }
+    }
+
+    function clearData() {
+        document.getElementById('dataInput').value = '';
+    }
+
+    async function runScan() {
+        const raw = document.getElementById('dataInput').value.trim();
+        if (!raw) {
+            alert("Data Paste செய்யவும்");
+            return;
+        }
+
+        document.getElementById('statusBox').style.display = 'block';
+
+        try {
+            const response = await fetch(SERV_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': MASTER_KEY
+                },
+                body: JSON.stringify({ input: raw, mode: currentMode })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                alert("Error: " + data.error);
+            } else {
+                openReport(data);
+            }
+        } catch(e) {
+            alert("Server-உடன் தொடர்பு இல்லை");
+        } finally {
+            document.getElementById('statusBox').style.display = 'none';
+        }
+    }
+
+    function openReport(data) {
+        const win = window.open('', '_blank');
+        win.document.write(`
+            <html><head><title>MASTER SCAN REPORT</title>
+            <style>
+                body { font-family: Arial; background:#000; color:#0f0; padding:20px; }
+                table { width:100%; border-collapse:collapse; margin:20px 0; }
+                th, td { border:1px solid #333; padding:10px; text-align:center; }
+                th { background:#111; }
+            </style>
+            </head><body>
+            <h2>MUMMY DADDY - MASTER SCAN RESULT</h2>
+            <pre>${data.results ? JSON.stringify(data.results, null, 2) : 'Success'}</pre>
+            <button onclick="window.print()">PRINT</button>
+            </body></html>
+        `);
+        win.document.close();
+    }
+
+    // Auto Login Check
+    if (localStorage.getItem("loggedIn") === "true") {
+        document.getElementById('login-gate').style.display = 'none';
+        document.getElementById('app-content').style.display = 'block';
+    }
+</script>
+</body>
+</html>
