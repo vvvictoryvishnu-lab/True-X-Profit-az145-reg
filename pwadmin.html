@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - TrueX Matrix Pro</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background: linear-gradient(135deg, #0a001f, #1a0033); color:white; height:100vh; display:flex; align-items:center; justify-content:center; }
+    .login-box { background:rgba(0,0,0,0.85); padding:40px; border-radius:15px; border:1px solid #00ff9d; width:380px; text-align:center; }
+    input { width:100%; padding:14px; margin:12px 0; background:#1a0033; border:1px solid #00ff9d; color:white; border-radius:8px; font-size:1.1rem; }
+    button { width:100%; padding:16px; font-size:1.3rem; background:linear-gradient(45deg,#00ff9d,#00ccff); color:black; border:none; border-radius:10px; cursor:pointer; font-weight:bold; }
+    .dashboard { display:none; }
+  </style>
+</head>
+<body>
+
+  <!-- Login Page -->
+  <div id="loginPage" class="login-box">
+    <h2>🔐 Admin Control Panel</h2>
+    <p>TrueX Matrix Pro</p>
+    <input type="text" id="username" placeholder="Username" value="admin">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">LOGIN TO ADMIN PANEL</button>
+    <p style="margin-top:20px; color:#888; font-size:0.9rem;">Default: admin / admin123</p>
+  </div>
+
+  <!-- Main Admin Dashboard (Hidden initially) -->
+  <div id="dashboardPage" class="dashboard">
+    <div style="background: linear-gradient(90deg, #00ff9d, #00ccff); color:#000; padding:20px; text-align:center; font-size:1.8rem; font-weight:bold;">
+      TRUE X MATRIX PRO - ADMIN CONTROL PANEL
+    </div>
+    
+    <div style="max-width:1450px; margin:20px auto; padding:20px;">
+      <!-- உங்கள் முந்தைய Admin Dashboard Code இங்கே வரும் -->
+      <div class="card" style="background:rgba(20,20,40,0.95); border:1px solid #00ff9d; padding:20px;">
+        <h2>Welcome Admin (admin@truexprofit.com)</h2>
+        <p>Full Control System Active</p>
+      </div>
+      
+      <!-- Pending Leads & Active Users Tables -->
+      <!-- (முன்பு கொடுத்த Admin Panel Code-ஐ இங்கே Paste செய்யலாம்) -->
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+
+      if (user === "admin" && (pass === "admin123" || pass === "truex2026")) {
+        document.getElementById('loginPage').style.display = "none";
+        document.getElementById('dashboardPage').style.display = "block";
+        alert("✅ Welcome Master! Admin Panel Opened Successfully.");
+      } else {
+        alert("❌ தவறான Username அல்லது Password");
+      }
+    }
+
+    // Enter key-ஐ அழுத்தினாலும் Login ஆகும்
+    document.getElementById('password').addEventListener("keypress", function(e) {
+      if (e.key === "Enter") login();
+    });
+  </script>
+</body>
+</html>
