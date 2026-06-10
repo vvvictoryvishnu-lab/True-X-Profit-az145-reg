@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal | TrueX Matrix Pro</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #0a001f, #1a0033); color: #e0e0e0; margin:0; padding:0; line-height:1.7; }
+    .container { max-width: 950px; margin:40px auto; padding:30px; background:rgba(20,20,40,0.95); border-radius:15px; border:1px solid #00ff9d; box-shadow:0 0 30px rgba(0,255,157,0.2); }
+    h1 { color:#00ffea; text-align:center; margin-bottom:10px; }
+    .lang-switch { text-align:center; margin:25px 0; }
+    .lang-btn { padding:10px 20px; margin:0 8px; background:#222; color:white; border:none; border-radius:25px; cursor:pointer; font-size:1.05rem; }
+    .lang-btn.active { background:#00ff9d; color:black; font-weight:bold; }
+    h2 { color:#00ff9d; border-bottom:2px solid #00ff9d; padding-bottom:10px; margin-top:35px; }
+    .important { background:#330000; padding:18px; border-left:6px solid #ff0066; margin:25px 0; }
+    .footer { text-align:center; margin-top:60px; color:#888; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TRUE X MATRIX PRO</h1>
+    
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="switchLang('en')">English</button>
+      <button class="lang-btn" onclick="switchLang('ta')">தமிழ்</button>
+      <button class="lang-btn" onclick="switchLang('hi')">हिन्दी</button>
+    </div>
+
+    <h2>Legal Documents</h2>
+
+    <div id="content-en">
+      <h2>1. Terms & Conditions</h2>
+      <p><strong>Last Updated: 07 June 2026</strong></p>
+      <p>TrueX Matrix Pro is a mathematical educational tool for traders.</p>
+      <div class="important">⚠️ RISK DISCLAIMER: Trading involves high risk of loss. Users are fully responsible for their decisions.</div>
+      
+      <h2>2. Privacy Policy</h2>
+      <p>We collect only necessary information: Name, Email, WhatsApp Number.</p>
+
+      <h2>3. Refund Policy</h2>
+      <p>All sales are final. No refunds after activation.</p>
+
+      <h2>4. Intellectual Property</h2>
+      <p>All logic and software are protected.</p>
+    </div>
+
+    <div id="content-ta" style="display:none;">
+      <h2>1. விதிமுறைகள் & நிபந்தனைகள்</h2>
+      <p><strong>கடைசி புதுப்பிப்பு: 07 ஜூன் 2026</strong></p>
+      <p>TrueX Matrix Pro வர்த்தகர்களுக்கான கணித கல்வி கருவியாகும்.</p>
+      <div class="important">⚠️ ரிஸ்க் எச்சரிக்கை: டிரேடிங் பெரும் இழப்பு அபாயம். பயனரே பொறுப்பு.</div>
+      
+      <h2>2. தனியுரிமை கொள்கை</h2>
+      <p>பெயர், மின்னஞ்சல், வாட்ஸ்அப் எண் மட்டுமே சேகரிக்கப்படும்.</p>
+
+      <h2>3. பணம் திருப்பி கொள்கை</h2>
+      <p>ஒருமுறை அணுகல் கொடுத்த பிறகு பணம் திருப்பி அளிக்கப்படாது.</p>
+
+      <h2>4. அறிவுசார் சொத்து</h2>
+      <p>அனைத்து லாஜிக் மற்றும் மென்பொருள் எங்களுக்குரியது.</p>
+    </div>
+
+    <div id="content-hi" style="display:none;">
+      <h2>1. नियम और शर्तें</h2>
+      <p><strong>अंतिम अपडेट: 07 जून 2026</strong></p>
+      <p>TrueX Matrix Pro व्यापारियों के लिए गणितीय शैक्षिक उपकरण है।</p>
+      <div class="important">⚠️ जोखिम अस्वीकरण: ट्रेडिंग में भारी नुकसान का खतरा है। उपयोगकर्ता स्वयं जिम्मेदार हैं।</div>
+      
+      <h2>2. गोपनीयता नीति</h2>
+      <p>हम केवल नाम, ईमेल, व्हाट्सएप नंबर एकत्र करते हैं।</p>
+
+      <h2>3. रिफंड नीति</h2>
+      <p>सभी बिक्री अंतिम हैं। सक्रियण के बाद रिफंड नहीं।</p>
+
+      <h2>4. बौद्धिक संपदा</h2>
+      <p>सभी सॉफ्टवेयर हमारी संपत्ति है।</p>
+    </div>
+
+    <div class="footer">
+      <p>© 2026 TrueX Matrix Pro. All Rights Reserved.</p>
+    </div>
+  </div>
+
+  <script>
+    function switchLang(lang) {
+      document.getElementById('content-en').style.display = lang === 'en' ? 'block' : 'none';
+      document.getElementById('content-ta').style.display = lang === 'ta' ? 'block' : 'none';
+      document.getElementById('content-hi').style.display = lang === 'hi' ? 'block' : 'none';
+      
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
