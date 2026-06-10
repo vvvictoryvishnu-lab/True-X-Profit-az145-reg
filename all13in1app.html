@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMNIVERSE THEORY - ALL IN ONE</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #440000; --green: #00ff44; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; text-align: center; }
+        
+        /* Top Header Info */
+        .brand-header { padding: 15px 30px; display: flex; justify-content: space-between; font-weight: bold; font-size: 13px; color: #00ff44; }
+        
+        .mummy-daddy { color: var(--gold); font-size: 45px; font-weight: 900; margin: 20px 0; letter-spacing: 2px; }
+        .omniverse-text { color: var(--neon); font-size: 18px; font-weight: bold; letter-spacing: 5px; margin-bottom: 25px; }
+
+        /* Input Box (Half width as per image) */
+        textarea { width: 60%; max-width: 600px; height: 130px; background: #000; color: #00ff44; border: 2px solid var(--neon); padding: 15px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 17px; outline: none; }
+
+        /* Mode Selection Buttons */
+        .mode-row { margin: 25px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .btn-mode { padding: 12px 18px; background: transparent; border: 1.5px solid var(--gold); color: var(--gold); font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.3s; }
+        .btn-mode.active { background: var(--gold); color: black; }
+        
+        /* The Green ALL Button */
+        .btn-all { background: var(--green); color: black; border: 1.5px solid var(--green); padding: 12px 25px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 12px; }
+        .btn-all:hover { background: #00cc33; }
+
+        /* Action Buttons Row */
+        .action-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 50px; }
+        .btn-run { padding: 18px 50px; background: #004d40; color: white; border: 2px solid var(--neon); border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn-clear { padding: 18px 30px; background: var(--red); color: white; border: 1.5px solid #ff3131; border-radius: 10px; font-weight: bold; cursor: pointer; }
+
+        .status { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 60%; margin: 15px auto; border-radius: 5px; display: none; }
+
+        /* Print Table Style (Pure White) */
+        .print-table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 15px; margin-top: 10px; }
+        .print-table td, .print-table th { border: 1px solid #888; padding: 5px; }
+        .b-clr { color: blue; } .s-clr { color: red; }
+    </style>
+</head>
+<body>
+
+    <div class="brand-header">
+        <span>YouTube: True X Profit</span>
+        <span>admin@truexprofit.com</span>
+    </div>
+
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <div class="omniverse-text">OMNIVERSE THEORY</div>
+
+    <textarea id="dataInput" placeholder="PASTE DATA HERE..."></textarea>
+
+    <div class="mode-row">
+        <button class="btn-mode active" id="m81" onclick="setMode(81, 9, 9)">81 MATRIX (9x9)</button>
+        <button class="btn-mode" id="m252" onclick="setMode(252, 12, 21)">252 MATRIX (12x21)</button>
+        <button class="btn-mode" id="m240" onclick="setMode(240, 16, 15)">240 MATRIX (16x15)</button>
+        <button class="btn-all" onclick="setMode('all', 0, 0)">ALL (3 IN 1 PRINT)</button>
+    </div>
+
+    <div class="status" id="statusMsg">SCANNING MASTER VPS... PLEASE WAIT</div>
+
+    <div class="action-row">
+        <button class="btn-clear" onclick="clearAll()">CLEAR</button>
+        <button class="btn-run" onclick="runMasterScan()">RUN MASTER SCAN</button>
+    </div>
+
+    <script>
+        let mode = 81, cols = 9, rows = 9;
+        const SERV_URL = "http://46.202.162.155:5000/triple_scan";
+
+        function setMode(m, c, r) {
+            mode = m; cols = c; rows = r;
+            document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
+            if(m !== 'all') document.getElementById('m'+m).classList.add('active');
+            else alert("All 3 Matrices will be generated in one report!");
+        }
+
+        function clearAll() {
+            document.getElementById('dataInput').value = "";
+        }
+
+        async function runMasterScan() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) { alert("Please paste data!"); return; }
+            
+            document.getElementById('statusMsg').style.display = 'block';
+
+            try {
+                const response = await fetch(SERV_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({input: raw, mode: mode})
+                });
+                const data = await response.json();
+                if(data.results) openPrintWindow(raw, data.results);
+            } catch(e) { 
+                alert("Connection Error! Please click http://46.202.162.155:5000 once in a new tab."); 
+            } finally {
+                document.getElementById('statusMsg').style.display = 'none';
+            }
+        }
+
+        function getTableHTML(results, c, r, title) {
+            const maj = (l) => l.filter(x=>x==="B").length >= l.filter(x=>x==="S").length ? "B" : "S";
+            let html = `<h3>${title}</h3><table class="print-table"><tr><th>L/D</th>`;
+            for(let i=1; i<=c; i++) html += `<th>${i<10?'0':''}${i}</th>`;
+            html += `<th style="background:#f0f7ff">TO</th></tr>`;
+
+            let colD = Array.from({length:c},()=>[]), rMaj=[];
+            for(let i=0; i<r; i++) {
+                let row = results.slice(i*c, (i+1)*c);
+                let rv = maj(row); rMaj.push(rv);
+                html += `<tr><td>${(i+1)<10?'0':''}${i+1}</td>`;
+                row.forEach((v, idx) => { colD[idx].push(v); html += `<td class="${v==='B'?'b-clr':'s-clr'}">${v}</td>`; });
+                html += `<td style="background:#f0f7ff" class="${rv==='B'?'b-clr':'s-clr'}">${rv}</td></tr>`;
+            }
+            html += `<tr style="background:#f0f7ff"><td>TO</td>`;
+            let toRow = colD.map(col => {
+                let v = maj(col); html += `<td class="${v==='B'?'b-clr':'s-clr'}">${v}</td>`; return v;
+            });
+            let fV = maj(toRow);
+            html += `<td style="font-size:20px; border:2px solid #000;" class="${fV==='B'?'b-clr':'s-clr'}">${fV}</td></tr></table>`;
+            html += `<div style="text-align:right; font-size:18px; font-weight:bold; margin-top:5px;"> = ${fV}</div>`;
+            return html;
+        }
+
+        function openPrintWindow(raw, results) {
+            const win = window.open('', '_blank');
+            const h = raw.replace(/\n/g, ' | ').toUpperCase();
+            let content = "";
+            
+            if(mode === 'all') {
+                content = getTableHTML(results["81"], 9, 9, "81 MATRIX (9x9)") + 
+                          "<div style='page-break-after:always'></div>" +
+                          getTableHTML(results["240"], 16, 15, "240 MATRIX (16x15)") + 
+                          "<div style='page-break-after:always'></div>" +
+                          getTableHTML(results["252"], 12, 21, "252 MATRIX (12x21)");
+            } else {
+                content = getTableHTML(results, cols, rows, mode + " MATRIX");
+            }
+
+            win.document.write(`<html><head><style>
+                body{font-family:Arial; padding:20px; text-align:center; color:black; background:white;}
+                .h-box{font-size:15px; border:2.1px solid #000; padding:10px; margin:15px 0; font-weight:bold; text-align:left; word-break:break-all;}
+            </style></head><body>
+                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold; border-bottom:2px solid #000;">
+                    <span>YouTube: True X Profit</span><span>admin@truexprofit.com</span>
+                </div>
+                <h2>OMNIVERSE THEORY PRECISION REPORT</h2>
+                <div class="h-box">HISTORY: ${h}</div>
+                ${content}
+                <p style="margin-top:30px; font-weight:bold;">Dedicated to MUMMY DADDY | Date: ${new Date().toLocaleDateString('en-GB')}</p>
+                <button onclick="window.print()" style="width:100%; padding:15px; font-weight:bold; cursor:pointer;">PRINT / SAVE PDF</button>
+            </body></html>`);
+            win.document.close();
+        }
+    </script>
+</body>
+</html>
