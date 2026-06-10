@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - TrueX Matrix Pro</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <style>
+    body { margin:0; font-family:'Segoe UI',sans-serif; background:#0a001f; color:#ddd; }
+    .header { background:linear-gradient(90deg,#00ff9d,#00ccff); color:black; padding:20px; text-align:center; font-size:1.8rem; font-weight:bold; }
+    .container { padding:20px; max-width:1400px; margin:auto; }
+    .card { background:rgba(255,255,255,0.05); border:1px solid #00ff9d; border-radius:12px; padding:20px; margin-bottom:20px; }
+    table { width:100%; border-collapse:collapse; margin:15px 0; }
+    th, td { padding:12px; text-align:center; border-bottom:1px solid #333; }
+    th { background:#1a0033; }
+    button { padding:10px 18px; margin:5px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; }
+    .approve { background:#00cc66; color:white; }
+    .deactivate { background:#ff9800; color:white; }
+    .block { background:#f44336; color:white; }
+    .delete { background:#b71c1c; color:white; }
+  </style>
+</head>
+<body>
+
+  <div class="header">TRUE X MATRIX PRO - MASTER ADMIN CONTROL PANEL</div>
+  
+  <div class="container">
+    <div class="card">
+      <h2>🌐 WEB LEADS (PENDING)</h2>
+      <table id="leadsTable">
+        <thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Plan</th><th>Time</th><th>Action</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>✅ ACTIVE USERS (LICENSED)</h2>
+      <table id="usersTable">
+        <thead><tr><th>No</th><th>Name</th><th>Email</th><th>Mobile</th><th>Key</th><th>Expiry</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // === Firebase Config (உங்கள் Firebase-ஐ போடுங்கள்) ===
+    const firebaseConfig = {
+      databaseURL: "https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Load Pending Leads
+    function loadLeads() {
+      db.ref('leads').once('value', snapshot => {
+        let html = '';
+        snapshot.forEach(child => {
+          const data = child.val();
+          const email = child.key.replace(/_/g, '.');
+          html += `<tr>
+            <td>${data.name || '-'}</td>
+            <td>${email}</td>
+            <td>${data.mobile || '-'}</td>
+            <td>${data.plan || 'N/A'}</td>
+            <td>${data.time || '-'}</td>
+            <td><button class="approve" onclick="approveLead('${child.key}')">APPROVE</button></td>
+          </tr>`;
+        });
+        document.querySelector("#leadsTable tbody").innerHTML = html || "<tr><td colspan='6'>No pending leads</td></tr>";
+      });
+    }
+
+    // Approve Lead
+    window.approveLead = function(key) {
+      const days = prompt("Enter Validity Days:", "30");
+      if (!days) return;
+
+      db.ref('leads/' + key).once('value', snap => {
+        const data = snap.val();
+        const expiry = new Date(Date.now() + parseInt(days)*86400000).toISOString().slice(0,16);
+
+        db.ref('users/' + key).set({
+          name: data.name,
+          mobile: data.mobile,
+          key: "TXM-" + Math.random().toString(36).substr(2,10).toUpperCase(),
+          expiry: expiry,
+          status: "active"
+        });
+
+        db.ref('leads/' + key).remove();
+        alert("✅ User Approved Successfully!");
+        loadLeads();
+        loadUsers();
+      });
+    };
+
+    // Load Active Users
+    function loadUsers() {
+      db.ref('users').once('value', snapshot => {
+        let html = '';
+        let count = 1;
+        snapshot.forEach(child => {
+          const data = child.val();
+          const email = child.key.replace(/_/g, '.');
+          html += `<tr>
+            <td>${count++}</td>
+            <td>${data.name || '-'}</td>
+            <td>${email}</td>
+            <td>${data.mobile || '-'}</td>
+            <td>${data.key || '-'}</td>
+            <td>${data.expiry || '-'}</td>
+            <td>${data.status || 'active'}</td>
+            <td>
+              <button class="deactivate" onclick="updateStatus('${child.key}', 'deactive')">Deactivate</button>
+              <button class="block" onclick="updateStatus('${child.key}', 'blocked')">Block</button>
+              <button class="delete" onclick="deleteUser('${child.key}')">Delete</button>
+            </td>
+          </tr>`;
+        });
+        document.querySelector("#usersTable tbody").innerHTML = html || "<tr><td colspan='8'>No active users</td></tr>";
+      });
+    }
+
+    window.updateStatus = function(key, status) {
+      db.ref('users/' + key).update({status: status});
+      alert("Status Updated!");
+      loadUsers();
+    };
+
+    window.deleteUser = function(key) {
+      if (confirm("Delete this user permanently?")) {
+        db.ref('users/' + key).remove();
+        loadUsers();
+      }
+    };
+
+    // Initial Load
+    loadLeads();
+    loadUsers();
+    setInterval(() => { loadLeads(); loadUsers(); }, 10000); // Auto refresh every 10 sec
+  </script>
+</body>
+</html>
