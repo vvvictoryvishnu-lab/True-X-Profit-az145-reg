@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <title>OMNIVERSE V15 - MASTER FINAL</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; text-align: center; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
+        .brand { border-bottom: 2px solid #333; padding: 10px; display: flex; justify-content: space-between; font-size: 13px; color: #00ff44; font-weight: bold; }
+        textarea { width: 60%; height: 110px; background: #000; color: #00ff44; border: 1px solid var(--neon); padding: 10px; border-radius: 8px; font-size: 16px; margin-top: 15px; }
+        
+        /* Buttons */
+        .btn-row { margin: 20px 0; display: flex; justify-content: center; gap: 10px; }
+        .btn { padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .btn-mode { border: 1.5px solid var(--gold); background: transparent; color: var(--gold); }
+        .btn-mode.active { background: var(--gold); color: black; }
+        .btn-run { background: #004d40; color: white; border: 2px solid var(--neon); }
+        .btn-clear { background: #440000; color: white; border: 1px solid var(--red); }
+        .status { background: var(--gold); color: black; padding: 8px; font-weight: bold; width: 60%; margin: 15px auto; border-radius: 4px; display: none; }
+
+        /* Report Print Style */
+        #report { display: none; background: white; color: black; width: 680px; margin: 20px auto; padding: 20px; border: 2.5px solid #000; text-align: left; }
+        .hist-box { font-size: 15px; background: #f2f2f2; padding: 10px; border: 1.5px solid #000; margin-bottom: 15px; font-weight: 900; word-break: break-all; text-align: left; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 15px; table-layout: fixed; }
+        th, td { border: 1.2px solid #555; padding: 4px 0; }
+        
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); } .t-clr { color: black; }
+        .green-box { border: 2.5px solid #28a745 !important; background: #f0fff4; }
+        .final-v { font-size: 22px; font-weight: 900; text-align: right; margin-top: 5px; }
+
+        @media print {
+            body { background: white !important; }
+            .no-print, .mummy-daddy, textarea, .btn-row, .brand, h2 { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="brand no-print"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
+    <div class="mummy-daddy no-print">MUMMY DADDY</div>
+    <textarea id="dataInput" class="no-print" placeholder="PASTE DATA HERE"></textarea>
+    
+    <div class="btn-row no-print">
+        <button class="btn btn-mode active" id="m81" onclick="setMode(81,9,9)">81 (9x9)</button>
+        <button class="btn btn-mode" id="m240" onclick="setMode(240,16,15)">240 (16x15)</button>
+        <button class="btn btn-mode" id="m252" onclick="setMode(252,12,21)">252 (12x21)</button>
+        <button class="btn btn-mode" style="border-color:#00ff44; color:#00ff44;" onclick="setMode('all',0,0)">ALL PRINT</button>
+    </div>
+
+    <div class="status" id="stBox">CALCULATING ON PRIVATE VPS...</div>
+
+    <div class="btn-row no-print">
+        <button class="btn btn-clear" onclick="document.getElementById('dataInput').value=''">CLEAR</button>
+        <button class="btn btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
+    </div>
+
+    <div id="report">
+        <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold; border-bottom:2px solid #000; padding-bottom:5px;">
+            <span>YouTube: True X Profit</span><span>vvvictoryvishnu@gmail.com</span>
+        </div>
+        <h3 style="text-align:center; margin:10px 0;">GLOBAL PRECISION REPORT</h3>
+        <div id="histDisp" class="hist-box"></div>
+        <div id="reportBody"></div>
+        <p style="text-align:center; font-size:11px; margin-top:20px; font-weight:bold; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY | Date: <span id="rDate"></span></p>
+        <button class="no-print" onclick="window.print()" style="width:100%; padding:15px; font-weight:bold; margin-top:20px; cursor:pointer;">PRINT / SAVE PDF</button>
+    </div>
+
+    <script>
+        let mode=81, c=9, r=9;
+        function setMode(m,cols,rows){ mode=m; c=cols; r=rows; document.querySelectorAll('.btn-mode').forEach(b=>b.classList.remove('active')); }
+
+        async function runOmniverse() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) return;
+            document.getElementById('stBox').style.display='block';
+            try {
+                const res = await fetch("http://46.202.162.155:5000/scan_omniverse", {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({input:raw, mode:mode})
+                });
+                const data = await res.json();
+                renderReport(raw, data.results);
+            } catch(e) { alert("Server Connection Error!"); }
+            finally { document.getElementById('stBox').style.display='none'; }
+        }
+
+        function buildTable(res, cols, rows, title) {
+            const maj = (l) => {
+                let b=l.filter(x=>x==="B").length, s=l.filter(x=>x==="S").length;
+                return b>s?"B":(s>b?"S":"=");
+            };
+            const clr = (v) => v==="B"?"blue":v==="S"?"red":"t-clr";
+            
+            let html = `<h4>${title}</h4><table border="1"><tr><th>L/D</th>`;
+            for(let i=1; i<=cols; i++) html += `<th>${i<10?'0':''}${i}</th>`;
+            html += "<th>TO</th></tr>";
+
+            let colD = Array.from({length:cols},()=>[]), rowVerdicts=[];
+            for(let i=0; i<rows; i++) {
+                let row = res.slice(i*cols, (i+1)*cols);
+                let rv = maj(row); rowVerdicts.push(rv);
+                html += `<tr><td>${(i+1)<10?'0':''}${i+1}</td>`;
+                row.forEach((v, idx) => { colD[idx].push(v); html += `<td class="${clr(v)}">${v}</td>`; });
+                html += `<td class="${clr(rv)}">${rv} <span style="font-size:10px; color:#555;">3KU</span></td></tr>`;
+            }
+            
+            // Bottom TO Row
+            html += "<tr><td>TO</td>";
+            let toRowVerdicts = colD.map(col => {
+                let v = maj(col); html += `<td class="${clr(v)}">${v}</td>`; return v;
+            });
+            let grandV = maj(toRowVerdicts);
+            html += `<td class="${clr(grandV)}">${grandV}</td></tr></table>`;
+            
+            // Green Box Majority (3KU TOTAL)
+            html += `<div class="final-v ${clr(grandV)}">3KU TOTAL = ${grandV}</div>`;
+            return html;
+        }
+
+        function renderReport(raw, results) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + raw.replace(/\n/g, ' | ').toUpperCase();
+            let finalHtml = "";
+            if(mode === "all") {
+                finalHtml += buildTable(results["81"], 9, 9, "81 MATRIX (9x9)");
+                finalHtml += buildTable(results["240"], 16, 15, "240 MATRIX (16x15)");
+                finalHtml += buildTable(results["252"], 12, 21, "252 MATRIX (12x21)");
+            } else {
+                finalHtml = buildTable(results, c, r, `${mode} MATRIX`);
+            }
+            document.getElementById('reportBody').innerHTML = finalHtml;
+            document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
+            document.getElementById('report').style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
+</body>
+</html>
