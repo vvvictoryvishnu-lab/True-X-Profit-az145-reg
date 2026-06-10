@@ -2,177 +2,112 @@
 <html lang="ta">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNIVERSE 3-IN-1 - FINAL PRO</title>
+    <title>OMNIVERSE V15 - TRUE X PROFIT</title>
     <style>
         :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Arial; margin: 0; text-align: center; }
-        
-        /* Login */
-        #gate { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
-        .login-box { background:#111; padding:35px; border:2px solid var(--neon); border-radius:15px; width:320px; box-shadow: 0 0 25px var(--neon); }
-        input { width:90%; padding:12px; margin:10px 0; background:#000; border:1px solid #444; color:var(--neon); text-align:center; border-radius:5px; font-weight:bold; }
-
-        /* Main App */
-        #main-app { display:none; padding:10px; }
-        .brand-header { border-bottom: 2px solid #333; padding: 10px; font-weight: bold; color: #00ff44; font-size: 13px; display: flex; justify-content: space-between; }
-        .mummy-daddy { color: var(--gold); font-size: 40px; font-weight: 900; margin: 10px 0; }
-        
-        textarea { width: 95%; max-width: 500px; height: 100px; background: #000; color: #00ff44; border: 2px solid #333; padding: 12px; border-radius: 10px; font-family: 'Consolas', monospace; font-size: 18px; margin-top: 10px; }
-
-        .mode-row { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
-        .btn-m { padding: 10px 15px; border: 1.5px solid var(--gold); background: transparent; color: var(--gold); cursor: pointer; font-weight: bold; border-radius: 5px; font-size: 12px; }
-        .btn-m.active { background: var(--gold); color: black; }
-
-        .btn-row { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
-        .btn-run { padding: 18px 45px; background: #004d40; color: white; border: 2.5px solid var(--neon); border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .btn-clear { padding: 18px 25px; background: #440000; color: white; border: 1px solid var(--red); border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .status { background: var(--gold); color: black; padding: 8px; font-weight: bold; width: 60%; margin: 10px auto; border-radius: 4px; display: none; }
+        body { background: var(--bg); color: white; font-family: Arial; margin: 0; text-align: center; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
+        textarea { width: 60%; height: 110px; background: #000; color: #00ff44; border: 2px solid var(--neon); padding: 10px; border-radius: 8px; font-size: 17px; margin-top: 20px; }
+        .btn-row { margin: 25px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 15px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 15px; }
+        .btn-mode { border: 1.5px solid var(--gold); background: transparent; color: var(--gold); }
+        .btn-mode.active { background: var(--gold); color: black; }
+        .btn-run { background: #004d40; color: white; border: 2px solid var(--neon); }
+        .btn-clear { background: #440000; color: white; border: 1px solid var(--red); }
+        .status { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 60%; margin: 15px auto; border-radius: 4px; display: none; }
     </style>
 </head>
 <body>
-
-    <div id="gate">
-        <div class="mummy-daddy">MUMMY DADDY</div>
-        <div class="login-box">
-            <h3 style="color:var(--neon)">SYSTEM ACTIVATION</h3>
-            <input type="email" id="uMail" placeholder="Registered Email">
-            <input type="password" id="uKey" placeholder="Access Key">
-            <button class="btn-run" style="width:100%" onclick="login()">ACTIVATE</button>
-        </div>
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <textarea id="dataInput" placeholder="PASTE DATA HERE"></textarea>
+    <div class="btn-row">
+        <button class="btn btn-mode active" id="m81" onclick="setM(81,9,9)">81 MATRIX</button>
+        <button class="btn btn-mode" id="m252" onclick="setM(252,12,21)">252 MATRIX</button>
+        <button class="btn btn-mode" id="m240" onclick="setM(240,16,15)">240 MATRIX</button>
+        <button class="btn btn-mode" id="mall" onclick="setM('all',0,0)">ALL PRINT</button>
     </div>
-
-    <div id="main-app">
-        <div class="brand-header">
-            <span>YouTube: True X Profit</span>
-            <span id="userDisp"></span>
-            <span>admin@truexprofit.com</span>
-        </div>
-        <div class="mummy-daddy">MUMMY DADDY</div>
-
-        <textarea id="dataInput" placeholder="PASTE DATA HERE"></textarea>
-        
-        <div class="mode-row">
-            <button class="btn-m active" id="m81" onclick="setMode(81,9,9)">81 (9x9)</button>
-            <button class="btn-m" id="m252" onclick="setMode(252,12,21)">252 (12x21)</button>
-            <button class="btn-m" id="m240" onclick="setMode(240,16,15)">240 (16x15)</button>
-            <button class="btn-m" style="border-color:#00ff44; color:#00ff44;" id="mall" onclick="setMode('all',0,0)">ALL PRINT</button>
-        </div>
-
-        <div class="status" id="stBox">CALCULATING... PLEASE WAIT</div>
-
-        <div class="btn-row">
-            <button class="btn-clear" onclick="document.getElementById('dataInput').value=''">CLEAR</button>
-            <button class="btn-run" onclick="runOmniverse()">RUN MASTER SCAN</button>
-        </div>
+    <div class="status" id="st">CONNECTING TO VPS...</div>
+    <div class="btn-row">
+        <button class="btn btn-clear" onclick="document.getElementById('dataInput').value=''">CLEAR</button>
+        <button class="btn btn-run" onclick="runScan()">RUN MASTER SCAN</button>
     </div>
 
     <script>
         let mode=81, cols=9, rows=9;
-        const SERV_URL = "http://46.202.162.155:5000/triple_scan";
-
-        async function login() {
-            const email = document.getElementById('uMail').value.trim().toLowerCase();
-            const key = document.getElementById('uKey').value.trim();
-            if(!email || !key) return;
-            const res = await fetch(`https://az145-maste-default-rtdb.asia-southeast1.firebasedatabase.app/users/${email.replace(/\./g, '_')}.json`);
-            const user = await res.json();
-            if(user && user.key === key && user.status === "active") {
-                document.getElementById('gate').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-                document.getElementById('userDisp').innerText = email;
-            } else { alert("Key Invalid!"); }
+        function setM(m,c,r){ 
+            mode=m; cols=c; rows=r; 
+            document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
+            document.getElementById(m==='all'?'mall':'m'+m).classList.add('active');
         }
-
-        function setMode(m,c,r) {
-            mode = m; cols = c; rows = r;
-            document.querySelectorAll('.btn-m').forEach(b => b.classList.remove('active'));
-            document.getElementById('m'+m).classList.add('active');
-        }
-
-        async function runOmniverse() {
+        
+        async function runScan() {
             const raw = document.getElementById('dataInput').value.trim();
             if(!raw) return;
-            document.getElementById('stBox').style.display = 'block';
+            document.getElementById('st').style.display='block';
             try {
-                const response = await fetch(SERV_URL, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({input: raw, mode: mode})
+                const res = await fetch("http://46.202.162.155:5000/triple_scan", {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({input:raw, mode:mode})
                 });
-                const data = await response.json();
-                if(data.results) generateNewTabReport(raw, data.results);
+                const data = await res.json();
+                openNewTab(raw, data.results);
             } catch(e) { alert("Server Connection Error!"); }
-            finally { document.getElementById('stBox').style.display = 'none'; }
+            finally { document.getElementById('st').style.display='none'; }
         }
 
-        function generateTable(results, c, r) {
+        function getTbl(res, c, r) {
             const maj = (l) => {
-                let b = l.filter(x=>x==="B").length, s = l.filter(x=>x==="S").length;
-                return b > s ? "B" : (s > b ? "S" : "=");
+                let b=l.filter(x=>x==="B").length, s=l.filter(x=>x==="S").length;
+                return b>s?"B":(s>b?"S":"=");
             };
-            const clr = (v) => v==="B" ? "blue" : (v==="S"?"red":"black");
-
-            let html = `<table><thead><tr><th>L/D</th>`;
+            const clr = (v) => v==="B"?"blue":v==="S"?"red":"black";
+            let html = "<table><tr><th>L/D</th>";
             for(let i=1; i<=c; i++) html += `<th>${i<10?'0':''}${i}</th>`;
-            html += `<th style="background:#e3f2fd; border:2px solid #000;">TO</th></tr></thead><tbody>`;
+            html += "<th style='background:#e3f2fd; border:2px solid #000;'>TO</th></tr>";
 
-            let colData = Array.from({length: c}, () => []);
-            let rowMajors = [];
-
+            let colD = Array.from({length:c},()=>[]), rMaj=[];
             for(let i=0; i<r; i++) {
-                let row = results.slice(i*c, (i+1)*c);
-                let rV = maj(row); rowMajors.push(rV);
-                html += `<tr><td style="background:#f2f2f2; font-size:12px;">${(i+1)<10?'0':''}${i+1}</td>`;
-                row.forEach((v, idx) => {
-                    colData[idx].push(v);
-                    html += `<td style="color:${clr(v)};">${v}</td>`;
-                });
-                html += `<td style="background:#e3f2fd; border:2px solid #000; color:${clr(rV)};">${rV}</td></tr>`;
+                let row = res.slice(i*c, (i+1)*c);
+                let rv = maj(row); rMaj.push(rv);
+                html += `<tr><td style='background:#f9f9f9; font-size:12px;'>${(i+1)<10?'0':''}${i+1}</td>`;
+                row.forEach((v, idx) => { colD[idx].push(v); html += `<td style="color:${clr(v)}; font-size:15px;">${v}</td>`; });
+                html += `<td style="background:#e3f2fd; border:1px solid #000; color:${clr(rv)}; font-size:15px;">${rv}</td></tr>`;
             }
-
-            html += `<tr style="background:#e3f2fd; border-top:2px solid #000;"><td>TO</td>`;
-            let toRow = colData.map(col => {
-                let v = maj(col);
-                html += `<td style="color:${clr(v)};">${v}</td>`;
-                return v;
+            
+            html += "<tr style='background:#e3f2fd; border-top:2px solid #000;'><td>TO</td>";
+            let toRow = colD.map(col => {
+                let v = maj(col); html += `<td style="color:${clr(v)}; font-size:15px;">${v}</td>`; return v;
             });
-            let finalV = maj(rowMajors);
-            html += `<td style="font-size:28px !important; border:2.5px solid #000; color:${clr(finalV)};">${finalV}</td></tr>`;
-            html += `</tbody></table><div style="text-align:right; font-size:26px; font-weight:900; margin-top:10px; color:${clr(finalV)};"> = ${finalV}</div>`;
+            let finalV = maj(toRow);
+            html += `<td style="border:2.5px solid #000; font-size:24px; color:${clr(finalV)}">${finalV}</td></tr></table>`;
+            html += `<div style="text-align:right; font-size:24px; font-weight:900; margin-top:10px; color:${clr(finalV)}"> = ${finalV}</div>`;
             return html;
         }
 
-        function generateNewTabReport(raw, results) {
+        function openNewTab(raw, results) {
             const win = window.open('', '_blank');
             const h = raw.replace(/\n/g, ' | ').toUpperCase();
-            let content = "";
-            
+            let body = "";
             if(mode === "all") {
-                content = `<h2>81 MATRIX (9x9)</h2>` + generateTable(results["81"], 9, 9) + 
-                          `<div style="page-break-after:always;"></div><h2>252 MATRIX (12x21)</h2>` + generateTable(results["252"], 12, 21) + 
-                          `<div style="page-break-after:always;"></div><h2>240 MATRIX (16x15)</h2>` + generateTable(results["240"], 16, 15);
+                body = "<h2>81 MATRIX (9x9)</h2>"+getTbl(results["81"],9,9)+"<div style='page-break-after:always'></div>" +
+                       "<h2>240 MATRIX (16x15)</h2>"+getTbl(results["240"],16,15)+"<div style='page-break-after:always'></div>" +
+                       "<h2>252 MATRIX (12x21)</h2>"+getTbl(results["252"],12,21);
             } else {
-                content = `<h2>GLOBAL PRECISION ${mode} MATRIX REPORT</h2>` + generateTable(results, cols, rows);
+                body = `<h2>${mode} MATRIX REPORT</h2>` + getTbl(results, cols, rows);
             }
-
-            win.document.write(`
-                <html><head><style>
-                    body { font-family: Arial; padding: 20px; background: white; color: black; text-align: center; }
-                    .header { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; }
-                    .hist { font-size: 15px; border: 1.5px solid #000; padding: 10px; margin: 15px 0; font-weight: bold; word-break: break-all; text-align: left; }
-                    table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 15px; table-layout: fixed; }
-                    th, td { border: 1px solid #888; padding: 4px 1px; overflow: hidden; }
-                    h2 { margin: 20px 0 10px 0; color: #1a237e; font-size: 18px; }
-                </style></head>
-                <body>
-                    <div class="header"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
-                    <div class="hist">HISTORY: ${h}</div>
-                    ${content}
-                    <p style="margin-top:30px; font-size:12px; font-weight:bold;">Dedicated to MUMMY DADDY | Date: ${new Date().toLocaleDateString('en-GB')}</p>
-                    <button onclick="window.print()" style="width:100%; padding:15px; margin-top:20px; font-weight:bold; cursor:pointer;">SAVE / PRINT PDF</button>
-                </body></html>
-            `);
+            win.document.write(`<html><head><style>
+                body{font-family:Arial; padding:20px; background:white; color:black; text-align:center;}
+                .header{display:flex; justify-content:space-between; font-size:12px; font-weight:bold; border-bottom:2px solid #000; padding-bottom:5px;}
+                .hist{font-size:15px; border:2px solid #000; padding:10px; margin:15px 0; font-weight:bold; word-break:break-all; text-align:left;}
+                table{width:100%; border-collapse:collapse; text-align:center; font-weight:bold; margin:auto;}
+                th,td{border:1px solid #888; padding:4px;}
+            </style></head><body>
+                <div class="header"><span>YouTube: True X Profit</span><span>admin@truexprofit.com</span></div>
+                <div class="hist">HISTORY: ${h}</div>
+                ${body}
+                <p style="margin-top:20px;">Dedicated to MUMMY DADDY | Date: ${new Date().toLocaleDateString('en-GB')}</p>
+                <button onclick="window.print()" style="width:100%; padding:15px; font-weight:bold; cursor:pointer;">PRINT / SAVE REPORT</button>
+            </body></html>`);
             win.document.close();
         }
     </script>
