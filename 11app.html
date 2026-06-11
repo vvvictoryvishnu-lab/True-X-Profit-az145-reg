@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <title>OMNIVERSE 3KU PRO - TRUE X PROFIT</title>
+    <style>
+        :root { --neon: #00E5FF; --gold: #FFD700; --bg: #050505; --red: #FF3131; --blue: #0070FF; }
+        body { background: var(--bg); color: white; font-family: Arial; margin: 0; text-align: center; }
+        .mummy-daddy { color: var(--gold); font-size: 35px; font-weight: 900; margin: 10px 0; }
+        textarea { width: 60%; height: 100px; background: #000; color: #00ff44; border: 2px solid var(--neon); padding: 10px; border-radius: 8px; font-size: 16px; margin-top: 15px; }
+        .btn-row { margin: 20px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.3s; }
+        .btn-mode { border: 1.5px solid var(--gold); background: transparent; color: var(--gold); }
+        .btn-mode.active { background: var(--gold); color: black; }
+        .btn-run { background: #004d40; color: white; border: 2px solid var(--neon); }
+        .btn-clear { background: #440000; color: white; border: 1px solid var(--red); }
+        .status-bar { background: var(--gold); color: black; padding: 10px; font-weight: bold; width: 60%; margin: 15px auto; border-radius: 4px; display: none; }
+
+        /* Report Print Style (Perfect Clean) */
+        #report { display: none; background: white; color: black; width: 680px; margin: 20px auto; padding: 20px; border: 2px solid #000; text-align: left; }
+        .rep-head { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
+        .hist-box { font-size: 15px; background: #f2f2f2; padding: 10px; border: 1.5px solid #000; margin-bottom: 15px; font-weight: 900; word-break: break-all; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-weight: bold; font-size: 15px; margin-bottom: 10px; }
+        th, td { border: 1.2px solid #888; padding: 4px; }
+        .b-clr { color: var(--blue); } .s-clr { color: var(--red); }
+        .to-cell { background: #e3f2fd; border: 2px solid #000 !important; }
+        .ku-total-box { border: 3px solid #28a745; padding: 15px; text-align: center; font-size: 24px; font-weight: 900; margin-top: 15px; }
+
+        @media print {
+            body { background: white !important; }
+            .no-print, .mummy-daddy, textarea, .btn-row, .status-bar { display: none !important; }
+            #report { display: block !important; border: none; margin: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mummy-daddy">MUMMY DADDY</div>
+    <textarea id="dataInput" placeholder="PASTE DATA HERE"></textarea>
+    
+    <div class="btn-row no-print">
+        <button class="btn btn-mode active" id="m81" onclick="setMode(81,9,9)">81 (9x9)</button>
+        <button class="btn btn-mode" id="m240" onclick="setMode(240,16,15)">240 (16x15)</button>
+        <button class="btn btn-mode" id="m252" onclick="setMode(252,12,21)">252 (12x21)</button>
+        <button class="btn btn-mode" style="border-color:#00ff44; color:#00ff44;" onclick="setMode('all',0,0)">ALL PRINT</button>
+    </div>
+
+    <div class="status-bar" id="stBox">CALCULATING ON MASTER VPS... PLEASE WAIT</div>
+
+    <div class="btn-row no-print">
+        <button class="btn btn-clear" onclick="document.getElementById('dataInput').value=''">CLEAR</button>
+        <button class="btn btn-run" onclick="runMasterScan()">RUN MASTER SCAN</button>
+    </div>
+
+    <div id="report">
+        <div class="rep-head">
+            <span>YouTube: True X Profit</span>
+            <span>vvvictoryvishnu@gmail.com</span>
+        </div>
+        <h3 id="repTitle" style="text-align:center; margin:10px 0;">GLOBAL PRECISION 3KU MATRIX REPORT</h3>
+        <div id="histDisp" class="hist-box"></div>
+        <div id="matrixContainer"></div>
+        <div id="kuVerdict" class="ku-total-box"></div>
+        <p style="text-align:center; font-size:12px; margin-top:20px; font-weight:bold; border-top:1px solid #000; padding-top:10px;">Dedicated to MUMMY DADDY | Date: <span id="rDate"></span></p>
+        <button class="btn no-print" style="background:white; color:black; border:2px solid #000; width:100%; margin-top:15px;" onclick="window.print()">PRINT / SAVE REPORT</button>
+    </div>
+
+    <script>
+        let currentMode = 81, cols = 9, rows = 9;
+        const SERV_URL = "http://46.202.162.155:5000/triple_scan";
+
+        function setMode(m, c, r) {
+            currentMode = m; cols = c; rows = r;
+            document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
+            document.getElementById(m==='all'?'mall':'m'+m).classList.add('active');
+        }
+
+        async function runMasterScan() {
+            const raw = document.getElementById('dataInput').value.trim();
+            if(!raw) return;
+            document.getElementById('stBox').style.display = 'block';
+            try {
+                const res = await fetch(SERV_URL, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({input: raw, mode: currentMode})
+                });
+                const data = await res.json();
+                if(data.results) showReport(raw, data.results);
+            } catch(e) { alert("Please Allow Insecure Content in Browser Settings!"); }
+            finally { document.getElementById('stBox').style.display = 'none'; }
+        }
+
+        function createTable(results, c, r) {
+            const maj = (l) => l.filter(x=>x==="B").length >= l.filter(x=>x==="S").length ? "B" : "S";
+            const clr = (v) => v==="B"?"blue":v==="S"?"red":"black";
+            let html = "<table><tr><th>L/D</th>";
+            for(let i=1; i<=c; i++) html += `<th>${i<10?'0':''}${i}</th>`;
+            html += "<th class='to-cell'>TO</th></tr>";
+            let colData = Array.from({length:c},()=>[]), rVerdicts=[];
+            for(let i=0; i<r; i++) {
+                let row = results.slice(i*c, (i+1)*c);
+                let rv = maj(row); rVerdicts.push(rv);
+                html += `<tr><td style='background:#f2f2f2;'>${(i+1)<10?'0':''}${i+1}</td>`;
+                row.forEach((v, idx) => { colData[idx].push(v); html += `<td class="${clr(v)}">${v}</td>`; });
+                html += `<td class="to-cell ${clr(rv)}">${rv}</td></tr>`;
+            }
+            html += "<tr class='to-cell'><td>TO</td>";
+            let colVerdicts = colData.map(col => { let v = maj(col); html += `<td class="${clr(v)}">${v}</td>`; return v; });
+            let finalV = maj(rVerdicts);
+            html += `<td style="font-size:20px;">${finalV}</td></tr></table>`;
+            return { html: html, verdict: finalV };
+        }
+
+        function showReport(raw, results) {
+            document.getElementById('histDisp').innerText = "HISTORY: " + raw.replace(/\n/g, ' | ').toUpperCase();
+            let container = document.getElementById('matrixContainer');
+            container.innerHTML = "";
+            let vList = [];
+            
+            if(currentMode === "all") {
+                ["81", "240", "252"].forEach(m => {
+                    let c = m==="81"?9:m==="240"?16:12;
+                    let r = m==="81"?9:m==="240"?15:21;
+                    let t = createTable(results[m], c, r);
+                    vList.push(t.verdict);
+                    container.innerHTML += `<h4>${m} MATRIX</h4>` + t.html + "<br>";
+                });
+            } else {
+                let t = createTable(results, cols, rows);
+                vList.push(t.verdict);
+                container.innerHTML = t.html;
+            }
+
+            const finalMaj = (l) => l.filter(x=>x==="B").length >= l.filter(x=>x==="S").length ? "B" : "S";
+            let fV = finalMaj(vList);
+            document.getElementById('kuVerdict').innerText = "3KU TOTAL = " + fV;
+            document.getElementById('kuVerdict').style.color = (fV==="B"?"blue":"red");
+            document.getElementById('rDate').innerText = new Date().toLocaleDateString('en-GB');
+            document.getElementById('report').style.display = "block";
+        }
+    </script>
+</body>
+</html>
