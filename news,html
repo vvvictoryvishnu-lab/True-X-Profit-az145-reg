@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUE X PROFIT - LIVE PANEL</title>
+    <style>
+        body { background-color: #050b14; color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 
+
+15px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 600px; width: 100%; }
+        
+        /* நியூஸ் பேனல் ஸ்டைல் */
+        .news-card { background: linear-gradient(135deg, #1e0000, #050b14); border: 2px solid #ff0055; border-radius: 
+
+10px; padding: 20px; box-shadow: 0 0 15px rgba(255, 0, 85, 0.4); margin-bottom: 25px; }
+        .news-header { color: #ff0055; font-size: 20px; font-weight: bold; border-bottom: 1px solid rgba(255,0,85,0.3); 
+
+padding-bottom: 10px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .news-date { font-size: 13px; color: #ffaa00; margin-bottom: 10px; font-weight: bold; }
+        .news-content { font-size: 16px; line-height: 1.6; color: #fff; }
+        
+               
+        /* பேமெண்ட் கார்டு ஸ்டைல் */
+        .pay-card { background: rgba(0, 240, 255, 0.03); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 10px; 
+
+padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .pay-header { color: #00f0ff; font-size: 18px; font-weight: bold; margin-bottom: 15px; text-shadow: 0 0 10px 
+
+rgba(0,240,255,0.3); }
+        .qr-box img { max-width: 200px; width: 100%; border: 4px solid #fff; border-radius: 8px; margin: 10px 0; }
+        .bank-details { text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 6px; font-size: 
+
+14px; line-height: 1.5; margin: 15px 0; border-left: 4px solid #00f0ff; }
+        
+        /* புதிய அதிநவீன ஈமெயில் பட்டன் */
+        .btn-email { display: block; background: #00f0ff; color: #000; text-decoration: none; padding: 14px; font-size: 
+
+15px; font-weight: bold; border-radius: 6px; text-transform: uppercase; margin-top: 15px; box-shadow: 0 4px 10px rgba(0, 
+
+240, 255, 0.3); text-align: center; transition: 0.3s; }
+        .btn-email:hover { background: #ffffff; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="flash-news">
+        <marquee scrollamount="5">⚠️ எச்சரிக்கை: விதிமுறைகளின் படி கவனமாக டிரேடிங் செய்யவும். ⚠️</marquee>
+    </div>
+
+    <div class="news-card">
+        <div class="news-header">📢 இன்றைய நேரடி அறிவிப்பு பலகை</div>
+        <div class="news-date">தேதி: 12-06-2026 (வெள்ளிக்கிழமை)</div>
+        <div class="news-content">
+            வணக்கம் மாஸ்டர் நண்பர்களே! <br><br>
+            இன்று நமது True X Profit சாப்ட்வேரில் முதல் முறை மட்டும் <b>ரூ.500 செலுத்தி பதிந்து கொண்டு 5 நாள் 1 க்கு ரூ.100 முழு வேலிடிட்டியை</b> நீங்கள் 
+
+பெற்றுக்கொள்ளலாம். <br><br>
+            கீழே உள்ள வங்கி கணக்கு மூலம் பணம் அனுப்பிவிட்டு, அந்த ஸக்கீரின் ஷாட்டை ஈமெயில் vvvictoryvishnu@gmail.com அனுப்பினால் உடனடியாக உங்கள் சாப்ட்வேர் கீ 
+
+(Key) ஆக்டிவேட் செய்யப்படும்! நன்றி.
+        </div>
+    </div>
+
+    <div class="pay-card">
+        <div class="pay-header">💳 நேரடி பேமெண்ட் நுழைவாயில்</div>
+        
+        <div class="qr-box">
+            <p style="font-size: 13px; color: #aaa; margin: 0;">Scan to Pay ( PhonePe / GPay )</p>
+            <img src="qr.png" alt="Payment QR" onerror="this.style.display='none';">
+        </div>
+
+        <div class="bank-details">
+            <b>வங்கி பெயர்:</b> HDFC Bank <br>
+            <b>அக்கவுண்ட் எண்:</b> 12712000001645 <br>
+            <b>IFSC கோடு:</b> HDFC0001850 <br>
+            <b>பெயர்:</b> S. VISHNU KARTHICK
+        </div>
+
+        <p style="font-size: 13px; color: #ffaa00;">👉 பணம் அனுப்பிய பின் கீழே உள்ள பட்டனை அழுத்தி ஸ்கிரீன்ஷாட்டை ஈமெயிலில் அட்டாச் செய்து 
+
+அனுப்பவும்.</p>
+        
+        <!-- புதிய ஆட்டோமேட்டிக் ஈமெயில் லிங்க் -->
+        <a href="mailto:vvvictoryvishnu@gmail.com?subject=Payment%20Screenshot%20-%20True%20X%20Profit&body=Hi%20Master,
+
+%20I%20have%20sent%20the%20payment.%20Please%20find%20attached%20screenshot%20and%20activate%20my%20software%20key." 
+
+class="btn-email">
+            📩 அனுப்பிவிட்டேன் (Send Screenshot via Email)
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>
